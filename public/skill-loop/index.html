@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Skill Loop · Test · Detect · Improve — Organized AI</title>
+<meta name="description" content="The Skill Loop: turning AI research into repeatable measurement skills. Baseline, detect effectiveness drift, test the fix, and review before anything changes.">
+<meta name="theme-color" content="#0c0b09">
+<link rel="preconnect" href="https://fonts.googleapis.com/">
+<link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg-primary:#0c0b09;--bg-secondary:#141210;--bg-card:#1a1814;--bg-card-hover:#211e18;--border:#2a2520;--border-hover:#3a3428;--gold:#F5D623;--gold-dim:#8B7A12;--gold-bright:#FFE94A;--gold-glow:rgba(245,214,35,.06);--gold-glow-strong:rgba(245,214,35,.12);--rust:#C4943D;--rust-dim:rgba(196,148,61,.15);--text-primary:#f0ece4;--text-secondary:#a09888;--text-muted:#605848;--red:#e05252;--red-dim:rgba(224,82,82,.12);--cyan:#22d3ee;--green:#4ade80;--font-mono:'JetBrains Mono',monospace;--font-body:'Inter',-apple-system,sans-serif}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg-primary);color:var(--text-secondary);font-family:var(--font-body);font-size:16px;-webkit-font-smoothing:antialiased}
+a{color:var(--cyan);text-decoration:none}a:hover{color:var(--gold)}
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(12,11,9,.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:13px 36px}
+.nav-logo{font-family:var(--font-mono);font-weight:800;font-size:.82rem;color:var(--text-primary);letter-spacing:.18em;text-transform:uppercase}.nav-logo span{color:var(--gold)}.nav-logo em{font-style:normal;color:var(--text-muted);font-weight:500;letter-spacing:.12em;margin-left:10px}
+.nav-right{display:flex;align-items:center;gap:24px}.nav-dots{display:flex;gap:6px}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--border);cursor:pointer;transition:background .2s}.dot.active{background:var(--gold)}
+.slide-counter{font-family:var(--font-mono);font-size:10px;color:var(--text-muted);letter-spacing:.1em;min-width:56px;text-align:right}
+.progress{position:fixed;top:0;left:0;height:2px;background:var(--gold);z-index:101;width:0}
+.slides-container{padding-top:56px}
+.slide{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:64px 72px;border-bottom:1px solid var(--border);position:relative;overflow:hidden}
+.slide::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.024) 2px,rgba(0,0,0,.024) 4px);pointer-events:none;z-index:0}
+.slide::before{content:attr(data-num);position:absolute;top:76px;right:72px;font-family:var(--font-mono);font-size:10px;color:var(--text-muted);letter-spacing:.1em;z-index:1}
+.slide-content{position:relative;z-index:1;max-width:1020px;width:100%;margin:0 auto}
+.slide-tag{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:18px;display:flex;align-items:center;gap:12px}
+.slide-tag::before{content:"";display:block;width:20px;height:1px;background:var(--gold-dim)}
+h1{font-family:var(--font-mono);font-size:clamp(36px,5.5vw,68px);font-weight:800;line-height:1.06;letter-spacing:-.02em;color:var(--text-primary);margin-bottom:22px}
+h2{font-family:var(--font-mono);font-size:clamp(26px,3.8vw,48px);font-weight:800;line-height:1.1;letter-spacing:-.02em;color:var(--text-primary);margin-bottom:28px}
+h3{font-family:var(--font-mono);font-size:.88rem;font-weight:700;color:var(--text-primary);margin-bottom:10px;letter-spacing:.02em}
+.subtitle{font-size:1rem;color:var(--text-secondary);line-height:1.65;max-width:640px;margin-bottom:32px}
+.highlight{color:var(--gold);font-style:italic}
+code{font-family:var(--font-mono);font-size:.88em;color:var(--gold);background:rgba(245,214,35,.06);padding:1px 5px;border-radius:2px}
+.tag-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:28px}
+.tag{font-family:var(--font-mono);font-size:.65rem;padding:5px 12px;border:1px solid var(--border);border-radius:2px;color:var(--text-muted);letter-spacing:.08em;text-transform:uppercase}
+.tag.gold{border-color:var(--gold-dim);color:var(--gold)}.tag.rust{border-color:var(--rust);color:var(--rust)}.tag.cyan{border-color:var(--cyan);color:var(--cyan)}.tag.red{border-color:var(--red);color:var(--red)}
+.card-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:8px}
+.cols-3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:8px}
+.cols-4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:8px}
+.card{background:var(--bg-card);border:1px solid var(--border);border-radius:3px;padding:24px;transition:border-color .3s,background .3s}
+.card-gold{border-top:2px solid var(--gold)}.card-rust{border-top:2px solid var(--rust)}.card-cyan{border-top:2px solid var(--cyan)}.card-red{border-top:2px solid var(--red)}.card-green{border-top:2px solid var(--green)}
+.card p,.card li{font-size:.85rem;color:var(--text-secondary);line-height:1.55}
+.card ul{list-style:none;margin-top:6px}.card li{padding-left:16px;position:relative;margin-bottom:6px}.card li::before{content:"↳";position:absolute;left:0;color:var(--gold-dim)}
+.card .num{font-family:var(--font-mono);font-size:.65rem;color:var(--gold);letter-spacing:.12em;margin-bottom:10px;display:block}
+.card.lit{border-color:var(--gold-dim);background:var(--bg-card-hover)}
+.layers{display:flex;flex-direction:column;gap:8px}
+.layer{display:flex;align-items:center;gap:20px;background:var(--bg-card);border:1px solid var(--border);border-radius:3px;padding:12px 20px}
+.layer-num{font-family:var(--font-mono);font-size:.65rem;color:var(--gold);min-width:40px;letter-spacing:.08em}
+.layer-name{font-family:var(--font-mono);font-weight:700;font-size:.82rem;color:var(--text-primary);min-width:110px}
+.layer-desc{font-size:.8rem;color:var(--text-secondary);flex:1;line-height:1.5}
+.layer-badge{font-family:var(--font-mono);font-size:.6rem;padding:4px 9px;border:1px solid var(--gold-dim);border-radius:2px;color:var(--gold);white-space:nowrap;letter-spacing:.06em}
+.layer-badge.red{border-color:var(--red);color:var(--red)}
+.stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:28px;margin-top:8px}
+.stat-block{border-left:1px solid var(--gold-dim);padding-left:18px}
+.stat-num{font-family:var(--font-mono);font-size:2.4rem;font-weight:800;color:var(--text-primary);line-height:1}
+.stat-num .of{font-size:1.1rem;color:var(--text-muted);font-weight:600}
+.stat-label{font-size:.78rem;color:var(--text-muted);margin-top:6px;line-height:1.5}
+.pi-callout{margin-top:22px;background:rgba(196,148,61,.06);border:1px solid var(--rust);border-radius:3px;padding:18px 24px;display:flex;align-items:center;gap:22px}
+.pi-callout-icon{font-family:var(--font-mono);font-size:22px;color:var(--rust)}
+.pi-callout-title{font-family:var(--font-mono);font-weight:700;font-size:.95rem;color:var(--text-primary);margin-bottom:4px}
+.pi-callout-desc{font-size:.85rem;color:var(--text-secondary);line-height:1.55}
+.title-grid{display:grid;grid-template-columns:1fr auto;gap:60px;align-items:center}
+.title-glow{position:absolute;top:40%;left:30%;width:600px;height:600px;background:radial-gradient(circle,rgba(245,214,35,.06) 0%,transparent 70%);pointer-events:none}
+.title-code{width:300px;border:1px solid var(--border);border-radius:8px;background:rgba(0,0,0,.3);padding:28px 30px;font-family:var(--font-mono);font-size:13px;line-height:2;color:var(--text-muted);box-shadow:rgba(245,214,35,.06) 0 0 80px}
+.title-code .comment{color:var(--gold);margin-bottom:10px}.gold{color:var(--gold)}.rust{color:var(--rust)}.cyan{color:var(--cyan)}.red{color:var(--red)}.green{color:var(--green)}.muted{color:var(--text-muted)}
+.panel{background:var(--bg-secondary);border:1px solid var(--border);border-radius:8px;padding:22px}
+.panel-label{font-family:var(--font-mono);font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--text-muted);margin-bottom:10px;display:flex;justify-content:space-between;gap:10px}
+.split{display:grid;grid-template-columns:1.05fr 1fr;gap:28px;align-items:center}
+.terminal{font-family:var(--font-mono);font-size:.74rem;line-height:1.9;background:rgba(0,0,0,.35);border:1px solid var(--border);border-radius:8px;padding:18px 20px}
+.terminal .ln{display:flex;gap:12px;white-space:nowrap;overflow:hidden}
+.terminal .t{color:var(--text-muted)}.terminal .k{min-width:98px;font-weight:700}
+.compare-table{width:100%;border-collapse:collapse;margin-top:8px;background:var(--bg-card);border:1px solid var(--border);border-radius:4px;overflow:hidden}
+.compare-table th,.compare-table td{text-align:left;padding:12px 16px;font-family:var(--font-mono);font-size:.76rem;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.55}
+.compare-table th{background:rgba(245,214,35,.04);color:var(--gold);font-weight:700;letter-spacing:.04em;text-transform:uppercase;font-size:.66rem}
+.compare-table td:first-child{color:var(--text-primary);font-weight:600;white-space:nowrap}
+.compare-table td{color:var(--text-secondary)}.compare-table tr:last-child td{border-bottom:none}
+.sections-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:14px}
+.section-tile{background:var(--bg-card);border:1px solid var(--border);border-radius:3px;padding:16px 14px}
+.section-tile .num{font-family:var(--font-mono);font-size:1.6rem;font-weight:800;color:var(--gold);line-height:1}
+.section-tile .name{font-family:var(--font-mono);font-size:.76rem;color:var(--text-primary);margin-top:8px}
+.section-tile .desc{font-size:.72rem;color:var(--text-muted);margin-top:4px;line-height:1.45}
+.phase-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.phase{font-family:var(--font-mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);border-top:1px solid var(--gold-dim);padding-top:8px}
+.phase span{display:block;color:var(--text-muted);text-transform:none;letter-spacing:0;font-size:.72rem;margin-top:4px;font-family:var(--font-body)}
+.big-num-hero{text-align:left;margin:0 0 18px}
+.big-num-hero .num{font-family:var(--font-mono);font-size:clamp(88px,12vw,160px);font-weight:800;color:var(--gold);line-height:.95;letter-spacing:-.04em}
+.big-num-hero .label{font-family:var(--font-mono);font-size:.95rem;color:var(--text-secondary);margin-top:6px}
+.footnote{font-family:var(--font-mono);font-size:.66rem;color:var(--text-muted);margin-top:18px;line-height:1.6;letter-spacing:.02em}
+.cmd{font-family:var(--font-mono);font-size:.78rem;background:rgba(0,0,0,.35);border:1px solid var(--border);border-left:2px solid var(--gold);border-radius:3px;padding:12px 16px;color:var(--text-primary);margin-top:10px;overflow-x:auto;white-space:nowrap}
+.cmd .p{color:var(--gold-dim);margin-right:8px}
+.link-list{margin-top:18px;font-family:var(--font-mono);font-size:.95rem;line-height:2.3}
+.link-list .arrow{color:var(--gold-dim);margin-right:12px}.link-list .label{color:var(--text-muted);margin-left:14px;font-size:.76rem}
+.qr-row{display:flex;gap:22px;margin-top:10px}
+.qr{text-align:center;font-family:var(--font-mono);font-size:.62rem;color:var(--text-muted);letter-spacing:.1em;text-transform:uppercase}
+.qr svg{width:132px;height:132px;display:block;border:1px solid var(--border);border-radius:6px;margin-bottom:8px}
+.signature{margin-top:36px;font-family:var(--font-mono);font-size:.78rem;color:var(--text-muted);text-align:center;letter-spacing:.08em}
+svg text{font-family:var(--font-mono)}
+@media (max-width:900px){.slide{padding:48px 24px}.slide::before{top:60px;right:24px}.title-grid,.split{grid-template-columns:1fr}.title-code{width:100%}.card-grid,.cols-3,.cols-4,.stat-row,.sections-grid,.phase-row{grid-template-columns:1fr 1fr!important}.layer{flex-wrap:wrap}.nav{padding:13px 18px}.nav-logo em{display:none}}
+@media (max-width:560px){.card-grid,.cols-3,.cols-4,.stat-row,.sections-grid,.phase-row{grid-template-columns:1fr!important}.nav-dots{display:none}}
+@media print{.nav,.progress{display:none}.slide{min-height:auto;page-break-after:always}}
+</style>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+<nav class="nav">
+  <div class="nav-logo">Organized<span>AI</span><em>· The Skill Loop</em></div>
+  <div class="nav-right"><div class="nav-dots" id="dots"></div><div class="slide-counter" id="counter">01 / 11</div></div>
+</nav>
+
+<main class="slides-container">
+
+<!-- 01 TITLE -->
+<section class="slide slide-title" data-num="01 / 11">
+  <div class="title-glow"></div>
+  <div class="slide-content">
+    <div class="title-grid">
+      <div>
+        <div class="slide-tag reveal">Brain Gainz · The Skill Loop</div>
+        <h1 class="reveal"><span class="highlight">Test</span> · <span class="highlight" style="color:var(--rust)">Detect</span> · <span class="highlight" style="color:var(--cyan)">Improve</span>.</h1>
+        <p class="subtitle reveal">Turning AI research into repeatable measurement skills. <strong style="color:var(--gold)">Test</strong> a skill against fixed evidence. <strong style="color:var(--rust)">Detect</strong> when it quietly gets worse. <strong style="color:var(--cyan)">Improve</strong> it with a tested revision a human approves.</p>
+        <div class="tag-row reveal">
+          <span class="tag gold">Brain Gainz</span><span class="tag rust">MeasureU</span><span class="tag cyan">Open source</span><span class="tag">Thu · Sep 10 · 2026</span><span class="tag">11 a.m.–noon CT</span><span class="tag gold">With Jordaaan</span>
+        </div>
+      </div>
+      <div class="title-code reveal">
+        <div class="comment">// the workshop cycle</div>
+        <span class="gold">01 research</span> → the rule<br>
+        <span class="rust">02 execute</span> → fixed input<br>
+        <span class="cyan">03 check</span> &nbsp;&nbsp;→ evidence<br>
+        <span class="green">04 improve</span> → retest<br><br>
+        <span class="muted">↻ repeat on a schedule</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 02 PROBLEM -->
+<section class="slide" data-num="02 / 11">
+  <div class="slide-content">
+    <div class="slide-tag reveal">The problem</div>
+    <div class="split">
+      <div>
+        <h2 class="reveal">Skills don't fail loudly. They get <span class="highlight">quietly worse.</span></h2>
+        <p class="subtitle reveal">A model update ships. The skill you built six months ago starts giving subtly wrong answers, and nothing tells you. You find out when a member complains, or you don't find out at all.</p>
+      </div>
+      <div class="panel reveal">
+        <div class="panel-label"><span>QA score · same suite, same checks</span><span class="red">illustrative</span></div>
+        <svg id="driftChart" viewBox="0 0 520 230" width="100%" role="img" aria-label="Illustrative chart: score holds near 92, drops to 61 after a model update, and recovers to 94 after an approved fix">
+          <g stroke="#2a2520" stroke-width="1"><line x1="30" y1="38" x2="500" y2="38"/><line x1="30" y1="98" x2="500" y2="98"/><line x1="30" y1="158" x2="500" y2="158"/><line x1="30" y1="200" x2="500" y2="200"/></g>
+          <g font-size="9" fill="#605848"><text x="0" y="41">94</text><text x="0" y="101">74</text><text x="0" y="161">54</text></g>
+          <line id="modelLine" x1="250" y1="20" x2="250" y2="205" stroke="#e05252" stroke-dasharray="3 4" stroke-width="1"/>
+          <text x="256" y="28" font-size="9" fill="#e05252">model update</text>
+          <line id="fixLine" x1="370" y1="20" x2="370" y2="205" stroke="#4ade80" stroke-dasharray="3 4" stroke-width="1"/>
+          <text x="376" y="28" font-size="9" fill="#4ade80">fix approved</text>
+          <path id="driftPath" d="M40,44 L100,41 L160,44 L220,44 L280,137 L340,131 L400,38 L460,38" fill="none" stroke="#F5D623" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+          <circle id="driftDot" cx="280" cy="137" r="5" fill="#e05252"/>
+          <text x="288" y="156" font-size="10" fill="#e05252">92% → 61%</text>
+          <text x="400" y="60" font-size="10" fill="#4ade80">94%</text>
+        </svg>
+      </div>
+    </div>
+    <div class="pi-callout reveal">
+      <div class="pi-callout-icon">!</div>
+      <div><div class="pi-callout-title">Building v1 gets all the attention.</div><div class="pi-callout-desc">Nobody plans for servicing it. The Skill Loop is the servicing plan: a baseline, a fixed test set, and a staged fix that waits for your approval.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 03 WORKSHOP CYCLE -->
+<section class="slide" data-num="03 / 11">
+  <div class="slide-content">
+    <div class="slide-tag reveal">The workshop cycle</div>
+    <h2 class="reveal">A repeatable way to <span class="highlight">improve.</span></h2>
+    <div class="split" style="grid-template-columns:320px 1fr">
+      <div class="reveal">
+        <svg id="cycle" viewBox="-60 0 440 320" width="100%" aria-label="Research, Execute, Check, Improve cycle">
+          <circle cx="160" cy="160" r="120" fill="none" stroke="#2a2520" stroke-width="2"/>
+          <circle id="cycleRing" cx="160" cy="160" r="120" fill="none" stroke="#F5D623" stroke-width="2" transform="rotate(-90 160 160)"/>
+          <path id="cyclePath" d="M160,40 A120,120 0 1,1 159.99,40" fill="none" stroke="none"/>
+          <g font-size="11" font-weight="700" text-anchor="middle">
+            <circle cx="160" cy="40" r="7" fill="#0c0b09" stroke="#F5D623" stroke-width="2"/><text x="160" y="22" fill="#F5D623">01 RESEARCH</text>
+            <circle cx="280" cy="160" r="7" fill="#0c0b09" stroke="#C4943D" stroke-width="2"/><text x="294" y="164" fill="#C4943D" text-anchor="start">02 EXECUTE</text>
+            <circle cx="160" cy="280" r="7" fill="#0c0b09" stroke="#22d3ee" stroke-width="2"/><text x="160" y="306" fill="#22d3ee">03 CHECK</text>
+            <circle cx="40" cy="160" r="7" fill="#0c0b09" stroke="#4ade80" stroke-width="2"/><text x="26" y="164" fill="#4ade80" text-anchor="end">04 IMPROVE</text>
+          </g>
+          <text x="160" y="156" text-anchor="middle" font-size="30" fill="#f0ece4" font-weight="800">↻</text>
+          <text x="160" y="180" text-anchor="middle" font-size="9" fill="#605848" letter-spacing="2">SKILL LOOP</text>
+          <circle id="cycleDot" r="6" fill="#FFE94A"/>
+        </svg>
+      </div>
+      <div class="card-grid" id="cycleCards">
+        <div class="card card-gold reveal"><span class="num">01 · RESEARCH</span><h3>Find the rule</h3><p>Find the rule that defines a correct result, from an authoritative source.</p></div>
+        <div class="card card-rust reveal"><span class="num">02 · EXECUTE</span><h3>Run the procedure</h3><p>Run a saved procedure against a fixed input.</p></div>
+        <div class="card card-cyan reveal"><span class="num">03 · CHECK</span><h3>Compare to evidence</h3><p>Compare the result with observable evidence, not a vibe.</p></div>
+        <div class="card card-green reveal"><span class="num">04 · IMPROVE</span><h3>Revise and retest</h3><p>Revise, retest, and review the difference before it ships.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 04 THE SCHEDULED LOOP -->
+<section class="slide" data-num="04 / 11">
+  <div class="slide-content">
+    <div class="slide-tag reveal">The loop</div>
+    <h2 class="reveal">Baseline. Detect drift. <span class="highlight">Test the fix.</span></h2>
+    <div class="split" style="align-items:start">
+      <div class="layers">
+        <div class="layer reveal"><div class="layer-num">00</div><div class="layer-name">CRON</div><div class="layer-desc">Weekly, on your schedule.</div></div>
+        <div class="layer reveal"><div class="layer-num">01</div><div class="layer-name">SCORE</div><div class="layer-desc">Run the skill against a fixed test set and grade the output.</div></div>
+        <div class="layer reveal"><div class="layer-num">02</div><div class="layer-name">DETECT</div><div class="layer-desc">Compare to baseline, tagged by model version.</div><div class="layer-badge red">regression?</div></div>
+        <div class="layer reveal"><div class="layer-num">03</div><div class="layer-name">RESEARCH</div><div class="layer-desc">Re-fetch current docs and API reference for what broke.</div></div>
+        <div class="layer reveal"><div class="layer-num">04</div><div class="layer-name">REDRAFT</div><div class="layer-desc">Patch only the failing section, then re-run the test set.</div></div>
+        <div class="layer reveal"><div class="layer-num">05</div><div class="layer-name">STAGE</div><div class="layer-desc">Open a diff. Nothing publishes without your approval.</div><div class="layer-badge">human gate</div></div>
+      </div>
+      <div class="reveal">
+        <div class="panel-label"><span>gtm-audit · weekly cron</span><span class="red">illustrative · not live results</span></div>
+        <div class="terminal" id="term">
+          <div class="ln"><span class="t">10:00:00</span><span class="k muted">SCANNING</span><span>gtm-audit × 14 test cases</span></div>
+          <div class="ln"><span class="t">10:00:04</span><span class="k red">REGRESSION</span><span>92% → 61% since model change</span></div>
+          <div class="ln"><span class="t">10:00:05</span><span class="k cyan">RESEARCHING</span><span>re-fetch GTM API scopes + docs</span></div>
+          <div class="ln"><span class="t">10:00:41</span><span class="k rust">REDRAFTING</span><span>patch failing SKILL.md section</span></div>
+          <div class="ln"><span class="t">10:00:58</span><span class="k green">RE-TESTING</span><span>score restored: 94%</span></div>
+          <div class="ln"><span class="t">10:01:02</span><span class="k gold">STAGED</span><span>diff ready — awaiting approval</span></div>
+        </div>
+        <p class="footnote">Research and scheduling depend on your configured host. The first release runs <code>watch</code> in the foreground only; no background service starts on install.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 05 WHAT DRIFT MEANS -->
+<section class="slide" data-num="05 / 11">
+  <div class="slide-content">
+    <div class="slide-tag reveal">Vocabulary</div>
+    <h2 class="reveal">Three kinds of <span class="highlight">change.</span> Only one is drift.</h2>
+    <table class="compare-table reveal">
+      <tr><th>Term</th><th>What happened</th><th>What it means</th></tr>
+      <tr><td class="gold">Effectiveness drift</td><td>A check that passed now fails under the same versioned suite, scorer, and runner settings.</td><td>Investigate and repeat. Model randomness can cause failures; one failure is evidence, not proof of cause.</td></tr>
+      <tr><td class="rust">Conditions changed</td><td>The suite or runner settings changed.</td><td>The old baseline is no longer comparable. Establish a new one, reviewed separately.</td></tr>
+      <tr><td class="cyan">GTM config drift</td><td>The container snapshot changed.</td><td>Checks whether static audit dimensions got worse. It does not prove live conversion tracking broke.</td></tr>
+    </table>
+    <div class="pi-callout reveal"><div class="pi-callout-icon">≠</div><div><div class="pi-callout-title">A changed file is not drift.</div><div class="pi-callout-desc">Drift is a previously passing check that now fails. That distinction keeps the loop honest about what it actually knows.</div></div></div>
+  </div>
+</section>
+
+<!-- 06 SHARED ENGINE -->
+<section class="slide" data-num="06 / 11">
+  <div class="slide-content">
+    <div class="slide-tag reveal">Shared foundation</div>
+    <h2 class="reveal">One shared engine. <span class="highlight">Different QA checks.</span></h2>
+    <p class="subtitle reveal">Skill Loop and GTM Autoresearch share bounded iteration, command execution, and evidence handling. Their adapters define the inputs, the evaluation rules, and the changes each is allowed to make.</p>
+    <div class="card-grid">
+      <div class="card card-gold reveal"><span class="num">ADAPTER · SKILL LOOP</span><h3>Checks output against task fixtures</h3><ul><li>Candidate must strictly improve the score</li><li>No previously passing check may be lost</li><li>Approval verifies skill, suite, baseline and evidence, then backs up the original</li></ul></div>
+      <div class="card card-rust reveal"><span class="num">ADAPTER · GTM AUTORESEARCH</span><h3>Checks six static config dimensions</h3><ul><li>Candidates restricted to metadata edits</li><li>No lost audit dimension, no new critical findings</li><li>No live import or publish</li></ul></div>
+    </div>
+    <div class="tag-row reveal"><span class="tag gold">Stops at round limit</span><span class="tag gold">Stops on plateau</span><span class="tag gold">Stops on failure limit</span><span class="tag">Node 22+ · zero npm deps</span><span class="tag cyan">CLI + MCP call the same functions</span></div>
+  </div>
+</section>
+
+<!-- 07 PRINCIPLES -->
+<section class="slide" data-num="07 / 11">
+  <div class="slide-content">
+    <div class="slide-tag reveal">Why it's built this way</div>
+    <h2 class="reveal">Evidence first. <span class="highlight">Humans approve.</span></h2>
+    <div class="cols-3">
+      <div class="card card-gold reveal"><span class="num">01</span><h3>Never auto-publishes</h3><p>Every fix is staged as a diff. A human approves before it reaches anyone. Installing or testing never authorizes changing the active skill.</p></div>
+      <div class="card card-rust reveal"><span class="num">02</span><h3>Targeted, not blind</h3><p>Uses observed failures and cited QA sources to propose a revision, then tests it before review.</p></div>
+      <div class="card card-cyan reveal"><span class="num">03</span><h3>Model-version aware</h3><p>Runs record the configured runner and test conditions. Drift flags an investigation; it does not prove the cause.</p></div>
+    </div>
+    <div class="pi-callout reveal"><div class="pi-callout-icon">✓</div><div><div class="pi-callout-title">If every check passes, keep the skill.</div><div class="pi-callout-desc">Don't invent a failure or weaken the original to manufacture an improvement. An all-pass result is a result.</div></div></div>
+  </div>
+</section>
+
+<!-- 08 HOW IT WORKS -->
+<section class="slide" data-num="08 / 11">
+  <div class="slide-content">
+    <div class="slide-tag reveal">Under the hood</div>
+    <h2 class="reveal">Eight steps, <span class="highlight">three moves.</span></h2>
+    <div class="phase-row reveal">
+      <div class="phase">01 → Discover &amp; understand<span>Read accessible instructions and files. Record version and access limits.</span></div>
+      <div class="phase">02 → Test &amp; explain<span>Run explicit checks. Separate package findings, behavior, and human review.</span></div>
+      <div class="phase">03 ↻ Improve &amp; remember<span>Stage a revision, retest, review, optionally save history.</span></div>
+    </div>
+    <div class="sections-grid">
+      <div class="section-tile reveal"><div class="num">1</div><div class="name">Connect</div><div class="desc">Declare scope. Installing grants no access to every skill.</div></div>
+      <div class="section-tile reveal"><div class="num">2</div><div class="name">Discover</div><div class="desc">Inventory the full package with fingerprints and gaps.</div></div>
+      <div class="section-tile reveal"><div class="num">3</div><div class="name">Define good</div><div class="desc">A versioned suite with stated coverage and QA source.</div></div>
+      <div class="section-tile reveal"><div class="num">4</div><div class="name">Run checks</div><div class="desc">Actual outputs, deterministic evaluators, per-check results.</div></div>
+      <div class="section-tile reveal"><div class="num">5</div><div class="name">Diagnose</div><div class="desc">Same checks, compatible conditions. Lost passes = drift.</div></div>
+      <div class="section-tile reveal"><div class="num">6</div><div class="name">Repair</div><div class="desc">Stage in a working copy. Inspect lost and gained passes.</div></div>
+      <div class="section-tile reveal"><div class="num">7</div><div class="name">Explore</div><div class="desc">Interactive QA artifact: cases, versions, findings.</div></div>
+      <div class="section-tile reveal"><div class="num">8</div><div class="name">Save</div><div class="desc">Optional D1 history, only after verified readback.</div></div>
+    </div>
+    <p class="footnote reveal">Auto Mode (bounded check → repair → retest with stop conditions) is planned, not released. Today, revisions are staged for review.</p>
+  </div>
+</section>
+
+<!-- 09 RECEIPTS -->
+<section class="slide" data-num="09 / 11">
+  <div class="slide-content">
+    <div class="slide-tag reveal">Receipts · regular Claude Chat · Sep 10, 2026</div>
+    <div class="split" style="align-items:end">
+      <div class="big-num-hero reveal"><div class="num" data-count="93">93</div><div class="label">skills inventoried from one GitHub link</div></div>
+      <p class="subtitle reveal" style="margin-bottom:22px">No upload, no install, no Cowork. One chat cloned the branch, ran the engine with Node 22, and returned interactive QA artifacts.</p>
+    </div>
+    <div class="stat-row">
+      <div class="stat-block reveal"><div class="stat-num"><span data-count="15">15</span><span class="of">/15</span></div><div class="stat-label">Humanizer 2.9.1 live checks passed. Baseline saved; skill left byte-identical.</div></div>
+      <div class="stat-block reveal"><div class="stat-num"><span data-count="84">84</span><span class="of">/93</span></div><div class="stat-label">pass Anthropic's <code>quick_validate</code>. 9 flagged: stray keys, missing name, broken YAML.</div></div>
+      <div class="stat-block reveal"><div class="stat-num"><span data-count="19">19</span></div><div class="stat-label">packages with referenced files missing, some real, some parser false positives, labeled.</div></div>
+      <div class="stat-block reveal"><div class="stat-num"><span data-count="1">1</span></div><div class="stat-label">skill asking for data its own script never outputs, caught by reading the source.</div></div>
+    </div>
+    <p class="footnote reveal">Behavioral checks on 8 skills passed 85/85, but the same assistant wrote the checks and the answers, so that's an initial check, not independent evidence. Next step: a blind pass from a fresh chat.</p>
+  </div>
+</section>
+
+<!-- 10 GET STARTED -->
+<section class="slide" data-num="10 / 11">
+  <div class="slide-content">
+    <div class="slide-tag reveal">Bring a recurring measurement task</div>
+    <h2 class="reveal">Leave with a skill you can <span class="highlight">keep improving.</span></h2>
+    <div class="cols-3">
+      <div class="card card-gold reveal"><span class="num">PRACTICE</span><h3>Participant workbook</h3><p>Choose a task. Write a procedure. Test it against evidence. Practice uses fictional lead-event records: no analytics account, API key, or install.</p></div>
+      <div class="card card-rust reveal"><span class="num">CLAUDE DESKTOP</span><h3>One request, one link</h3><p>Paste one request with the GitHub link in regular Claude Chat. Assess accessible skills and get an interactive QA artifact.</p></div>
+      <div class="card card-cyan reveal"><span class="num">CODEX DESKTOP</span><h3>Guided setup</h3><p>Copy the setup request into Codex. The app installs Skill Loop, then starts your first check.</p></div>
+    </div>
+    <div class="cmd reveal"><span class="p">$</span>node scripts/cli.mjs demo ~/skill-loop-demo <span class="muted">&nbsp;# offline QA demo · empty destination · no account or model</span></div>
+    <p class="footnote reveal">Use an AI assistant or work it through on paper. Keep a copy of the procedure and the test evidence.</p>
+  </div>
+</section>
+
+<!-- 11 LINKS -->
+<section class="slide" data-num="11 / 11">
+  <div class="title-glow" style="left:10%;top:30%"></div>
+  <div class="slide-content">
+    <div class="slide-tag reveal">Keep going</div>
+    <h2 class="reveal">Test your skills. <span class="highlight">Improve with evidence.</span></h2>
+    <div class="split" style="align-items:start">
+      <div class="link-list reveal">
+        <div><span class="arrow">→</span><a href="https://skill.organizedai.vip/workshop/" target="_blank" rel="noopener">skill.organizedai.vip/workshop</a><span class="label">session kit</span></div>
+        <div><span class="arrow">→</span><a href="https://skill.organizedai.vip/loop" target="_blank" rel="noopener">skill.organizedai.vip/loop</a><span class="label">the framework</span></div>
+        <div><span class="arrow">→</span><a href="https://github.com/Organized-AI/plugin-marketplace/tree/codex/skill-loop-engine/plugins/skill-loop" target="_blank" rel="noopener">github · plugin-marketplace</a><span class="label">engine</span></div>
+        <div><span class="arrow">→</span><a href="https://my.measureu.com/c/accelerator-calendar/brain-gainz-the-skill-loop" target="_blank" rel="noopener">MeasureU · Brain Gainz</a><span class="label">event</span></div>
+        <div><span class="arrow">→</span><a href="https://www.linkedin.com/in/jordaaanhill" target="_blank" rel="noopener">linkedin.com/in/jordaaanhill</a><span class="label">Jordaaan</span></div>
+      </div>
+      <div class="qr-row reveal">
+        <div class="qr"><svg width="132" height="132" class="segno"><g transform="scale(4)"><path fill="#0c0b09" d="M0 0h33v33h-33z"/><path class="qrline" stroke="#f5d623" d="M2 2.5h7m2 0h1m4 0h1m2 0h2m3 0h7m-29 1h1m5 0h1m1 0h1m2 0h1m1 0h2m5 0h1m1 0h1m5 0h1m-29 1h1m1 0h3m1 0h1m1 0h1m5 0h2m2 0h1m1 0h1m1 0h1m1 0h3m1 0h1m-29 1h1m1 0h3m1 0h1m1 0h1m1 0h1m1 0h2m1 0h3m2 0h1m1 0h1m1 0h3m1 0h1m-29 1h1m1 0h3m1 0h1m2 0h1m1 0h1m2 0h1m1 0h1m1 0h3m1 0h1m1 0h3m1 0h1m-29 1h1m5 0h1m2 0h4m3 0h1m1 0h1m3 0h1m5 0h1m-29 1h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7m-21 1h2m1 0h1m3 0h1m3 0h1m-20 1h1m5 0h1m1 0h1m2 0h2m2 0h3m1 0h4m2 0h3m-27 1h2m1 0h1m6 0h2m1 0h2m1 0h3m3 0h2m1 0h2m-26 1h3m1 0h2m1 0h1m2 0h1m2 0h2m1 0h1m1 0h1m1 0h1m1 0h1m-24 1h4m2 0h2m1 0h1m4 0h1m7 0h1m1 0h1m-25 1h3m2 0h1m2 0h2m2 0h2m1 0h1m1 0h1m1 0h4m4 0h1m-29 1h1m1 0h2m1 0h1m2 0h1m3 0h2m1 0h6m1 0h3m2 0h2m-29 1h2m1 0h4m1 0h3m2 0h3m1 0h1m4 0h5m-26 1h1m3 0h1m1 0h1m1 0h2m2 0h4m1 0h2m6 0h1m1 0h1m-29 1h3m1 0h3m1 0h2m2 0h1m1 0h4m1 0h1m5 0h2m-27 1h1m1 0h1m1 0h1m2 0h1m2 0h1m4 0h2m2 0h2m1 0h3m1 0h3m-29 1h2m4 0h1m1 0h2m1 0h5m3 0h1m5 0h1m2 0h1m-29 1h1m1 0h1m1 0h1m4 0h1m4 0h3m1 0h1m2 0h2m-23 1h1m3 0h5m2 0h2m4 0h1m2 0h5m1 0h3m-21 1h2m2 0h2m1 0h1m1 0h2m1 0h1m3 0h2m-26 1h7m6 0h4m1 0h3m1 0h1m1 0h3m-27 1h1m5 0h1m2 0h1m1 0h1m1 0h1m1 0h2m2 0h2m3 0h1m3 0h1m-29 1h1m1 0h3m1 0h1m3 0h1m2 0h1m1 0h1m3 0h7m2 0h1m-29 1h1m1 0h3m1 0h1m2 0h2m4 0h2m2 0h3m3 0h2m1 0h1m-29 1h1m1 0h3m1 0h1m2 0h1m2 0h2m1 0h2m1 0h2m2 0h6m-28 1h1m5 0h1m3 0h1m3 0h2m2 0h1m3 0h2m1 0h2m1 0h1m-29 1h7m1 0h3m6 0h3m1 0h2m1 0h3"/></g></svg>workshop</div>
+        <div class="qr"><svg width="132" height="132" class="segno"><g transform="scale(4)"><path fill="#0c0b09" d="M0 0h33v33h-33z"/><path class="qrline" stroke="#f5d623" d="M2 2.5h7m2 0h7m1 0h2m3 0h7m-29 1h1m5 0h1m1 0h1m1 0h1m1 0h1m2 0h1m4 0h1m1 0h1m5 0h1m-29 1h1m1 0h3m1 0h1m1 0h1m2 0h1m2 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h3m1 0h1m-29 1h1m1 0h3m1 0h1m1 0h4m2 0h4m2 0h1m1 0h1m1 0h3m1 0h1m-29 1h1m1 0h3m1 0h1m6 0h3m2 0h3m1 0h1m1 0h3m1 0h1m-29 1h1m5 0h1m2 0h6m3 0h1m3 0h1m5 0h1m-29 1h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7m-21 1h3m2 0h1m5 0h1m-20 1h1m5 0h1m1 0h1m1 0h2m2 0h2m1 0h1m1 0h4m2 0h3m-28 1h2m1 0h1m4 0h1m1 0h1m3 0h1m1 0h4m3 0h2m1 0h2m-28 1h1m1 0h1m2 0h2m3 0h1m1 0h1m2 0h1m2 0h1m1 0h1m1 0h1m1 0h1m-25 1h1m2 0h2m3 0h3m1 0h1m1 0h1m8 0h1m1 0h1m-25 1h2m1 0h1m1 0h1m6 0h3m2 0h1m1 0h4m4 0h1m-29 1h1m2 0h1m1 0h1m1 0h1m1 0h3m1 0h8m1 0h3m2 0h2m-29 1h3m2 0h6m2 0h5m4 0h5m-27 1h3m1 0h1m3 0h2m1 0h5m2 0h2m6 0h1m1 0h1m-29 1h1m3 0h1m1 0h1m1 0h1m1 0h2m2 0h1m2 0h1m1 0h1m5 0h2m-27 1h6m3 0h3m3 0h2m2 0h2m1 0h3m1 0h3m-29 1h3m1 0h1m1 0h2m2 0h1m1 0h4m3 0h1m5 0h1m2 0h1m-29 1h1m3 0h1m3 0h1m5 0h3m1 0h1m2 0h2m-23 1h1m3 0h5m1 0h3m4 0h1m2 0h5m1 0h3m-21 1h2m2 0h2m1 0h1m1 0h2m1 0h1m3 0h2m-26 1h7m2 0h1m2 0h4m2 0h3m1 0h1m1 0h3m-27 1h1m5 0h1m3 0h2m1 0h1m2 0h1m2 0h2m3 0h1m3 0h1m-29 1h1m1 0h3m1 0h1m3 0h4m2 0h1m2 0h7m1 0h2m-29 1h1m1 0h3m1 0h1m2 0h2m1 0h2m1 0h2m2 0h3m3 0h2m1 0h1m-29 1h1m1 0h3m1 0h1m2 0h2m3 0h3m1 0h2m2 0h6m-28 1h1m5 0h1m2 0h1m2 0h1m2 0h1m2 0h1m3 0h2m1 0h2m1 0h1m-29 1h7m1 0h1m2 0h2m1 0h1m2 0h3m1 0h2m1 0h3"/></g></svg>the loop</div>
+      </div>
+    </div>
+    <div class="signature reveal">ORGANIZED AI · BRAIN GAINZ · THE SKILL LOOP · WITH JORDAAAN</div>
+  </div>
+</section>
+
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/DrawSVGPlugin.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/MotionPathPlugin.min.js"></script>
+<script>
+// Navigation (AIMUG pattern): dots, counter, keyboard, IntersectionObserver
+const slides=document.querySelectorAll('.slide'),dotsEl=document.getElementById('dots'),counter=document.getElementById('counter'),total=slides.length;let current=0;
+slides.forEach((_,i)=>{const d=document.createElement('div');d.className='dot'+(i===0?' active':'');d.onclick=()=>go(i);dotsEl.appendChild(d)});
+function go(i){if(i<0||i>=total)return;current=i;slides[i].scrollIntoView({behavior:'smooth'});ui(i)}
+function ui(i){document.querySelectorAll('.dot').forEach((d,j)=>d.classList.toggle('active',j===i));counter.textContent=slides[i].dataset.num}
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){current=[...slides].indexOf(e.target);ui(current)}}),{threshold:.5});slides.forEach(s=>io.observe(s));
+document.addEventListener('keydown',e=>{if(['INPUT','TEXTAREA'].includes(document.activeElement.tagName))return;switch(e.key){case'ArrowRight':case'ArrowDown':case'PageDown':case' ':case'Enter':e.preventDefault();go(current+1);break;case'ArrowLeft':case'ArrowUp':case'PageUp':case'Backspace':e.preventDefault();go(current-1);break;case'Home':e.preventDefault();go(0);break;case'End':e.preventDefault();go(total-1);break}});
+window.addEventListener('scroll',()=>{const h=document.documentElement;document.getElementById('progress').style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%'},{passive:true});
+
+// GSAP motion layer. Content is visible by default; animations only run if GSAP loads and motion is allowed.
+const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+if(window.gsap&&!reduce){
+  gsap.registerPlugin(ScrollTrigger,DrawSVGPlugin,MotionPathPlugin);
+  slides.forEach(s=>{const r=s.querySelectorAll('.reveal');if(r.length)gsap.from(r,{y:26,opacity:0,duration:.7,ease:'power3.out',stagger:.07,scrollTrigger:{trigger:s,start:'top 70%',once:true}})});
+  // 02 drift chart
+  gsap.timeline({scrollTrigger:{trigger:'#driftChart',start:'top 75%',once:true}})
+    .from('#driftPath',{drawSVG:0,duration:2.2,ease:'power1.inOut'})
+    .from('#modelLine',{drawSVG:0,duration:.4},.9)
+    .from('#driftDot',{scale:0,transformOrigin:'center',duration:.4,ease:'back.out(3)'},1.2)
+    .to('#driftDot',{scale:1.6,repeat:3,yoyo:true,duration:.35,transformOrigin:'center'},1.6)
+    .from('#fixLine',{drawSVG:0,duration:.4},1.6);
+  // 03 cycle ring + orbiting dot + card highlight
+  gsap.from('#cycleRing',{drawSVG:0,duration:1.6,ease:'power2.inOut',scrollTrigger:{trigger:'#cycle',start:'top 75%',once:true}});
+  const cards=document.querySelectorAll('#cycleCards .card');
+  const orbit=gsap.timeline({repeat:-1,paused:true});
+  orbit.to('#cycleDot',{motionPath:{path:'#cyclePath',align:'#cyclePath',alignOrigin:[.5,.5]},duration:8,ease:'none'},0);
+  [0,2,4,6].forEach((t,i)=>orbit.call(()=>cards.forEach((c,j)=>c.classList.toggle('lit',j===i)),null,t));
+  ScrollTrigger.create({trigger:'#cycle',start:'top 80%',end:'bottom 10%',onToggle:self=>self.isActive?orbit.play():orbit.pause()});
+  // 04 terminal log types in line by line
+  gsap.from('#term .ln',{clipPath:'inset(0 100% 0 0)',opacity:0,duration:.5,ease:'steps(24)',stagger:.55,scrollTrigger:{trigger:'#term',start:'top 80%',once:true}});
+  // 09 count-up stats
+  document.querySelectorAll('[data-count]').forEach(el=>{const n=+el.dataset.count,o={v:0};gsap.to(o,{v:n,duration:1.4,ease:'power2.out',scrollTrigger:{trigger:el,start:'top 85%',once:true},onUpdate:()=>el.textContent=Math.round(o.v)})});
+}else{
+  const d=document.getElementById('cycleDot');if(d){d.setAttribute('cx',160);d.setAttribute('cy',40)}
+}
+</script>
+</body>
+</html>

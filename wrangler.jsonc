@@ -1,0 +1,9 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "skill-loop-talk",
+  "compatibility_date": "2026-09-01",
+  "account_id": "691fe25d377abac03627d6a88d3eeac9",
+  "assets": { "directory": "./public", "html_handling": "auto-trailing-slash", "not_found_handling": "404-page" },
+  "routes": [ { "pattern": "talk.organizedai.vip/skill-loop*", "zone_id": "446a0461f84d37aba20abc5834480783" } ],
+  "workers_dev": false
+}
