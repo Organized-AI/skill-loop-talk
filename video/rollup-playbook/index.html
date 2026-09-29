@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>The AI roll-up playbook</title>
+<style>
+@font-face{font-family:JBM;src:url(assets/fonts/jetbrains-mono-latin-400-normal.woff2) format("woff2");font-weight:400}
+@font-face{font-family:JBM;src:url(assets/fonts/jetbrains-mono-latin-700-normal.woff2) format("woff2");font-weight:700}
+@font-face{font-family:JBM;src:url(assets/fonts/jetbrains-mono-latin-800-normal.woff2) format("woff2");font-weight:800}
+@font-face{font-family:Inter;src:url(assets/fonts/inter-latin-400-normal.woff2) format("woff2");font-weight:400}
+@font-face{font-family:Inter;src:url(assets/fonts/inter-latin-600-normal.woff2) format("woff2");font-weight:600}
+:root{--bg:#0c0b09;--card:#1a1814;--border:#2a2520;--gold:#F5D623;--gdim:#8B7A12;--rust:#C4943D;--text:#f0ece4;--t2:#a09888;--mut:#8a8272;--cyan:#22d3ee;--green:#4ade80}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1920px;height:1080px;background:var(--bg);overflow:hidden}
+#root{position:relative;width:1920px;height:1080px;background:var(--bg);font-family:Inter,sans-serif;color:var(--t2)}
+.clip{position:absolute;inset:0}
+.scene{padding:130px 150px;display:flex;flex-direction:column;justify-content:center;background:radial-gradient(circle at 75% 30%,rgba(245,214,35,.05),rgba(12,11,9,0) 55%),var(--bg)}
+.tag{font-family:JBM;font-size:26px;letter-spacing:6px;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:18px;margin-bottom:34px}
+.tag:before{content:"";width:40px;height:2px;background:var(--gdim)}
+h1{font-family:JBM;font-weight:800;font-size:96px;line-height:1.05;letter-spacing:-2px;color:var(--text)}
+h2{font-family:JBM;font-weight:800;font-size:72px;line-height:1.1;letter-spacing:-1.5px;color:var(--text);margin-bottom:48px}
+.hl{color:var(--gold);font-style:italic}.cy{color:var(--cyan);font-style:italic}
+.sub{font-size:38px;line-height:1.45;color:var(--t2);max-width:1400px}
+.foot{position:absolute;left:150px;right:150px;bottom:60px;display:flex;justify-content:space-between;font-family:JBM;font-size:22px;letter-spacing:4px;text-transform:uppercase;color:var(--mut)}
+.foot b{color:var(--gold);font-weight:400}
+.big{font-family:JBM;font-weight:800;font-size:260px;line-height:1;color:var(--gold);letter-spacing:-6px}
+.card{background:var(--card);border:1px solid var(--border);border-top:4px solid var(--gold);padding:34px 36px}
+.card h3{font-family:JBM;font-weight:700;font-size:36px;color:var(--text);margin-bottom:12px}
+.card p{font-size:30px;line-height:1.4;color:var(--t2)}
+.row{display:flex;gap:28px;align-items:stretch}
+.bars{display:flex;flex-direction:column;gap:26px;width:1100px}
+.bar{display:flex;align-items:center;gap:28px;font-family:JBM;font-size:30px;color:var(--text)}
+.bar .lab{width:170px;color:var(--t2)}
+.bar .track{flex:1;height:54px;background:#15130f;border:1px solid var(--border);position:relative}
+.bar .fill{position:absolute;left:0;top:0;bottom:0;width:0}
+.bar .val{width:170px;text-align:right;font-weight:700}
+.tree{font-family:JBM;font-size:36px;line-height:1.75;color:var(--text)}
+.tree .d{color:var(--cyan)}.tree .g{color:var(--mut)}.tree .k{color:var(--gold)}
+.pipe{display:flex;align-items:center;gap:22px}
+.pipe .card{flex:1;min-height:250px}
+.arrow{font-family:JBM;font-size:60px;color:var(--gdim)}
+.file{background:#100f0c;border:1px solid var(--border);border-radius:10px;padding:40px 48px;font-family:JBM;font-size:32px;line-height:1.7;color:var(--text);width:1400px}
+.file .hd{color:var(--mut);margin-bottom:18px}
+.file .sec{color:var(--gold);font-weight:700}
+.loop{position:relative;width:560px;height:560px}
+.ring{position:absolute;inset:0;border:6px dashed var(--gdim);border-radius:50%}
+.node{position:absolute;background:var(--card);border:2px solid var(--cyan);padding:20px 26px;font-family:JBM;font-size:28px;color:var(--text);white-space:nowrap}
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="root" data-width="1920" data-height="1080">
+
+<!-- 1 HOOK 0-7 -->
+<div class="clip scene" id="s1" data-start="0" data-duration="7">
+  <div class="tag a1">The market</div>
+  <div class="big a1"><span id="count">$0</span> <span style="font-size:150px">TRILLION</span></div>
+  <p class="sub a1" style="margin-top:40px">of small businesses are changing hands as their owners <span style="color:var(--text)">retire.</span></p>
+  <div class="foot"><span>Organized<b>AI</b> · DealCon</span><span>The AI roll-up playbook</span></div>
+</div>
+
+<!-- 2 FUND PLAYBOOK 7-17 -->
+<div class="clip scene" id="s2" data-start="7" data-duration="10">
+  <div class="tag a2">The fund playbook</div>
+  <h2 class="a2">Build the agents. <span class="hl">Then</span> buy the firm.</h2>
+  <div class="row" style="align-items:center;gap:70px">
+    <div class="bars">
+      <div class="bar a2"><span class="lab">Before</span><span class="track"><span class="fill" id="m1" style="background:var(--rust)"></span></span><span class="val" style="color:var(--rust)">5–10%</span></div>
+      <div class="bar a2"><span class="lab">After</span><span class="track"><span class="fill" id="m2" style="background:var(--gold)"></span></span><span class="val" style="color:var(--gold)">30–40%</span></div>
+      <p class="a2" style="font-family:JBM;font-size:26px;color:var(--mut);letter-spacing:3px">OPERATING MARGIN · REVENUE HOLDS, COSTS DROP</p>
+    </div>
+    <div class="card a2" style="width:460px;border-top-color:var(--cyan)"><h3>Founder deal</h3><p>60–70% cash.<br>~30% rolled into equity, so they stay through the handover.</p></div>
+  </div>
+  <p class="sub a2" style="margin-top:40px;font-size:30px">Accounting firms, property managers, support centers. The model used by Thrive Holdings and General Catalyst.</p>
+</div>
+
+<!-- 3 SMALL-DEAL GAP 17-25 -->
+<div class="clip scene" id="s3" data-start="17" data-duration="8">
+  <div class="tag a3">The small-deal gap</div>
+  <h2 class="a3">Around <span class="hl">$2M</span> is too small for a fund.</h2>
+  <div class="row a3" style="gap:40px;margin-bottom:44px">
+    <div class="card" style="flex:1;border-top-color:var(--rust)"><h3>Big funds</h3><p>Skip bookkeeping firms and other small deals.</p></div>
+    <div class="card" style="flex:1;border-top-color:var(--cyan)"><h3>Retiring owners</h3><p>Often would rather sell to a person than to a fund.</p></div>
+  </div>
+  <p class="sub a3" style="color:var(--text)">That gap is the opening for a <span class="hl">one-person holding company.</span></p>
+</div>
+
+<!-- 4 FOLDERS 25-34 -->
+<div class="clip scene" id="s4" data-start="25" data-duration="9">
+  <div class="tag a4">The folder structure</div>
+  <h2 class="a4">One shared layer. <span class="cy">One folder</span> per business.</h2>
+  <div class="tree">
+    <div class="a4"><span class="k">holdco/</span></div>
+    <div class="a4"><span class="g">├─ </span><span class="d">shared/</span><span class="g">          global rules · test examples · runbooks</span></div>
+    <div class="a4"><span class="g">├─ </span><span class="d">bookkeeping-co/</span></div>
+    <div class="a4"><span class="g">│  ├─ </span>clients/  people/  rules/</div>
+    <div class="a4"><span class="g">│  └─ </span><span class="k">corrections-log.md</span></div>
+    <div class="a4"><span class="g">└─ </span><span class="d">next-business/</span><span class="g">   same shape, same agents</span></div>
+  </div>
+</div>
+
+<!-- 5 PIPELINE 34-43 -->
+<div class="clip scene" id="s5" data-start="34" data-duration="9">
+  <div class="tag a5">The agent pipeline</div>
+  <h2 class="a5">Three agents. <span class="hl">One human.</span></h2>
+  <div class="pipe">
+    <div class="card a5" style="border-top-color:var(--cyan)"><h3>Intake</h3><p>Gathers the inputs.</p></div>
+    <div class="arrow a5">→</div>
+    <div class="card a5" style="border-top-color:var(--cyan)"><h3>Preparer</h3><p>Does the work.</p></div>
+    <div class="arrow a5">→</div>
+    <div class="card a5" style="border-top-color:var(--cyan)"><h3>Reviewer</h3><p>Checks the work.</p></div>
+    <div class="arrow a5">→</div>
+    <div class="card a5" id="human" style="background:var(--gold);border-color:var(--gold)"><h3 style="color:#0c0b09">Human</h3><p style="color:#2a2410">Approves and sends.</p></div>
+  </div>
+</div>
+
+<!-- 6 REVIEWER FILE 43-51 -->
+<div class="clip scene" id="s6" data-start="43" data-duration="8">
+  <div class="tag a6">Inside the reviewer agent</div>
+  <h2 class="a6">A job description in <span class="hl">plain English.</span></h2>
+  <div class="file a6">
+    <div class="hd"># reviewer.md</div>
+    <div class="a6"><span class="sec">Duties</span> — check the preparer's work against the rules.</div>
+    <div class="a6"><span class="sec">Limits</span> — never sends anything to a client.</div>
+    <div class="a6"><span class="sec">Escalate</span> — hand to a human when unsure or off-pattern.</div>
+  </div>
+</div>
+
+<!-- 7 THE RULE 51-57 -->
+<div class="clip scene" id="s7" data-start="51" data-duration="6" style="align-items:center;text-align:center">
+  <div class="tag a7" style="justify-content:center">The rule</div>
+  <h1 class="a7" style="font-size:112px">Only a <span class="hl">person</span><br>sends work to the client.</h1>
+</div>
+
+<!-- 8 WEEKLY LOOP 57-66 -->
+<div class="clip scene" id="s8" data-start="57" data-duration="9">
+  <div class="row" style="align-items:center;gap:110px">
+    <div style="flex:1">
+      <div class="tag a8">The weekly loop</div>
+      <h2 class="a8">Corrections become <span class="hl">rules.</span></h2>
+      <p class="sub a8">Review the corrections log. Turn each fix into a rule every agent follows.</p>
+      <p class="a8" style="font-family:JBM;font-weight:800;font-size:56px;color:var(--gold);margin-top:44px">The rules are the asset.</p>
+    </div>
+    <div class="loop a8">
+      <div class="ring" id="ring"></div>
+      <div class="node" style="left:50%;top:-30px;transform:translateX(-50%)">Corrections log</div>
+      <div class="node" style="right:-90px;top:50%;transform:translateY(-50%);border-color:var(--gold)">New rule</div>
+      <div class="node" style="left:50%;bottom:-30px;transform:translateX(-50%)">Agents</div>
+      <div class="node" style="left:-90px;top:50%;transform:translateY(-50%)">Human review</div>
+    </div>
+  </div>
+</div>
+
+<!-- 9 CLOSE 66-75 -->
+<div class="clip scene" id="s9" data-start="66" data-duration="9">
+  <div class="tag a9">Every new business</div>
+  <h1 class="a9">Plugs into the same <span class="hl">agents,</span> <span class="cy">rules</span> and dashboards.</h1>
+  <p class="a9" style="font-family:JBM;font-size:26px;color:var(--mut);margin-top:60px;letter-spacing:1px">Based on Greg Isenberg, “$5T opportunity: AI Roll Ups”</p>
+  <div class="foot"><span>Organized<b>AI</b> · DealCon</span><span>Jev intake harness</span></div>
+</div>
+
+</div>
+<script src="assets/gsap.min.js"></script>
+<script>
+const tl = gsap.timeline({ paused: true });
+// Staggered entrance per scene: every element ends at opacity 1, y 0.
+const scenes = [[".a1",0.2],[".a2",7.2],[".a3",17.2],[".a4",25.2],[".a5",34.2],[".a6",43.2],[".a7",51.2],[".a8",57.2],[".a9",66.2]];
+scenes.forEach(([sel,t]) => {
+  document.querySelectorAll(sel).forEach((el,i) => {
+    tl.fromTo(el,{opacity:0,y:30},{opacity:1,y:0,duration:0.6,ease:"power2.out"},t+i*0.25);
+  });
+});
+// Hook counter: discrete steps, ends on $5.
+["$1","$2","$3","$4","$5"].forEach((v,i)=>tl.set("#count",{textContent:v},0.9+i*0.28));
+// Margin bars.
+tl.fromTo("#m1",{width:"0%"},{width:"20%",duration:1.2,ease:"power2.out"},9.2);
+tl.fromTo("#m2",{width:"0%"},{width:"85%",duration:1.6,ease:"power2.out"},10.0);
+// Human approval pulse.
+tl.fromTo("#human",{scale:1},{scale:1.06,duration:0.5,yoyo:true,repeat:3,ease:"sine.inOut"},38.5);
+// Loop ring rotation.
+tl.fromTo("#ring",{rotation:0},{rotation:180,duration:8,ease:"none"},57.5);
+tl.set("#root",{opacity:1},75);
+window.__timelines = window.__timelines || {};
+window.__timelines["root"] = tl;
+</script>
+</body>
+</html>
