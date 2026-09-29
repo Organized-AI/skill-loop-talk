@@ -134,12 +134,13 @@ td.g{color:var(--green)}td.c{color:var(--cyan)}
 <!-- 03 VIDEO -->
 <section class="slide" data-num="03 / 14">
   <div class="content">
-    <div class="tag reveal">Watch</div>
-    <h2 class="reveal">Worth <span class="hl">watching</span> with this room in mind.</h2>
+    <div class="tag reveal">The AI roll-up playbook</div>
+    <h2 class="reveal">Buy the firm. Run the <span class="hl">agents.</span> A human <span class="cy">signs off.</span></h2>
     <div class="video reveal">
-      <iframe src="https://www.youtube-nocookie.com/embed/ZT4mpjx0JnE" title="Recommended video" loading="lazy" allow="accelerometer; encrypted-media; picture-in-picture; fullscreen" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+      <video id="explainer" src="/dealcon/rollup-playbook.mp4" controls playsinline preload="metadata" style="position:absolute;inset:0;width:100%;height:100%;background:#000"></video>
+      <div id="explainer-fallback" style="position:absolute;inset:0;display:none;align-items:center;justify-content:center;flex-direction:column;gap:14px;font-family:var(--mono);color:var(--text2);text-align:center;padding:24px"><span style="color:var(--gold);letter-spacing:.2em;font-size:.7rem">EXPLAINER RENDERING</span><span>Intake → Preparer → Reviewer → <b style="color:var(--gold)">Human</b></span></div>
     </div>
-    <p class="links reveal"><a href="https://youtu.be/ZT4mpjx0JnE" target="_blank" rel="noopener">Open on YouTube ↗</a></p>
+    <p class="footnote reveal">Explainer based on Greg Isenberg, “$5T opportunity: AI Roll Ups.” <a href="https://youtu.be/ZT4mpjx0JnE" target="_blank" rel="noopener">Full episode ↗</a></p>
   </div>
 </section>
 
@@ -320,6 +321,7 @@ td.g{color:var(--green)}td.c{color:var(--cyan)}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
 <script>
 (function(){
+  var ex=document.getElementById('explainer');if(ex)ex.addEventListener('error',function(){ex.style.display='none';document.getElementById('explainer-fallback').style.display='flex'});
   var slides=[].slice.call(document.querySelectorAll('.slide')),dots=document.getElementById('dots'),counter=document.getElementById('counter'),bar=document.getElementById('progress');
   var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches,cur=0;
   slides.forEach(function(s,i){var d=document.createElement('button');d.className='dot'+(i?'':' active');d.setAttribute('aria-label','Go to slide '+(i+1));d.onclick=function(){go(i)};dots.appendChild(d)});
