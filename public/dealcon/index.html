@@ -6,406 +6,781 @@
 <title>Your Personal FDE · DealCon</title>
 <meta name="description" content="A personal forward deployed engineer for 7–9 figure acquirers: build, deploy and troubleshoot one toolkit across every business you buy.">
 <meta name="theme-color" content="#0c0b09">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0c0b09;--bg2:#141210;--card:#1a1814;--card-hover:#211e18;--border:#2a2520;--gold:#F5D623;--gold-dim:#8B7A12;--rust:#C4943D;--text:#f0ece4;--text2:#a09888;--muted:#8a8272;--red:#e05252;--cyan:#22d3ee;--green:#4ade80;--mono:'JetBrains Mono',ui-monospace,monospace;--body:'Inter',-apple-system,sans-serif}
 *{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--text2);font-family:var(--body);font-size:16px;-webkit-font-smoothing:antialiased}
-a{color:var(--cyan);text-decoration:none}a:hover{color:var(--gold)}
-.nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(12,11,9,.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:13px 36px}
-.nav-logo{font-family:var(--mono);font-weight:800;font-size:.82rem;color:var(--text);letter-spacing:.18em;text-transform:uppercase}.nav-logo span{color:var(--gold)}.nav-logo em{font-style:normal;color:var(--muted);font-weight:500;letter-spacing:.12em;margin-left:10px}
-.nav-right{display:flex;align-items:center;gap:24px}.nav-dots{display:flex;gap:6px}
-.dot{width:6px;height:6px;border-radius:50%;background:var(--border);cursor:pointer;transition:background .2s;border:0;padding:0}.dot.active{background:var(--gold)}
-.counter{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.1em;min-width:56px;text-align:right}
-.progress{position:fixed;top:0;left:0;height:2px;background:var(--gold);z-index:101;width:0}
-main{padding-top:56px}
-.slide{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:64px 72px;border-bottom:1px solid var(--border);position:relative;overflow:hidden}
-.slide::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.024) 2px,rgba(0,0,0,.024) 4px);pointer-events:none}
-.slide::before{content:attr(data-num);position:absolute;top:76px;right:72px;font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.1em}
-.alt{background:var(--bg2)}
-.content{position:relative;z-index:1;max-width:1020px;width:100%;margin:0 auto}
-.tag{font-family:var(--mono);font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:18px;display:flex;align-items:center;gap:12px}
-.tag::before{content:"";display:block;width:20px;height:1px;background:var(--gold-dim)}.tag.red{color:var(--red)}
-h1{font-family:var(--mono);font-size:clamp(36px,5.5vw,68px);font-weight:800;line-height:1.06;letter-spacing:-.02em;color:var(--text);margin-bottom:22px}
-h2{font-family:var(--mono);font-size:clamp(26px,3.8vw,48px);font-weight:800;line-height:1.1;letter-spacing:-.02em;color:var(--text);margin-bottom:28px}
-h3{font-family:var(--mono);font-size:.95rem;font-weight:700;color:var(--text);margin-bottom:10px;letter-spacing:.02em}
-.hl{color:var(--gold);font-style:italic}.cy{color:var(--cyan);font-style:italic}
-.sub{font-size:1.02rem;color:var(--text2);line-height:1.65;max-width:680px;margin-bottom:28px}
-.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:26px}
-.chip{font-family:var(--mono);font-size:.65rem;padding:5px 12px;border:1px solid var(--border);border-radius:2px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
-.chip.gold{border-color:var(--gold-dim);color:var(--gold)}.chip.rust{border-color:var(--rust);color:var(--rust)}.chip.cyan{border-color:var(--cyan);color:var(--cyan)}.chip.green{border-color:var(--green);color:var(--green)}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
-.card{background:var(--card);border:1px solid var(--border);border-radius:3px;padding:24px;transition:border-color .3s,background .3s}
-.card:hover{border-color:#3a3428;background:var(--card-hover)}
-.c-gold{border-top:2px solid var(--gold)}.c-rust{border-top:2px solid var(--rust)}.c-cyan{border-top:2px solid var(--cyan)}.c-green{border-top:2px solid var(--green)}.c-red{border-top:2px solid var(--red)}.c-dash{border-top:2px dashed var(--cyan)}
-.card p{font-size:.88rem;color:var(--text2);line-height:1.55}
-.card .num{font-family:var(--mono);font-size:.68rem;color:var(--gold);letter-spacing:.12em;margin-bottom:10px;display:block}
-.callout{margin-top:22px;background:rgba(196,148,61,.06);border:1px solid var(--rust);border-radius:3px;padding:18px 24px;display:flex;align-items:center;gap:22px}
-.callout .ic{font-family:var(--mono);font-size:22px;color:var(--rust)}
-.callout .t{font-family:var(--mono);font-weight:700;font-size:.95rem;color:var(--text);margin-bottom:4px}
-.callout .d{font-size:.88rem;color:var(--text2);line-height:1.55}
-.quote{border-left:3px solid var(--gold);background:var(--card);padding:28px 30px}
-.quote p{font-family:var(--mono);font-size:clamp(20px,2.6vw,30px);font-weight:600;color:var(--text);line-height:1.3}
-.quote small{display:block;margin-top:14px;font-size:.9rem;color:var(--text2)}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:26px;margin-top:8px}
-.stat{border-left:1px solid var(--gold-dim);padding-left:18px}
-.stat b{display:block;font-family:var(--mono);font-size:2.3rem;font-weight:800;color:var(--text);line-height:1}
-.stat span{display:block;font-size:.85rem;color:var(--text2);margin-top:6px;line-height:1.45}
-table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--border);margin-top:8px}
-th,td{text-align:left;padding:12px 16px;font-family:var(--mono);font-size:.78rem;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.55}
-th{background:rgba(245,214,35,.04);color:var(--gold);font-weight:700;letter-spacing:.04em;text-transform:uppercase;font-size:.68rem}
-td:first-child{color:var(--text);font-weight:600}td{color:var(--text2)}tr:last-child td{border-bottom:none}
-td.g{color:var(--green)}td.c{color:var(--cyan)}
-.formula{font-family:var(--mono);font-size:clamp(15px,2vw,22px);color:var(--text);background:var(--bg);border:1px solid var(--border);border-left:3px solid var(--gold);padding:20px 24px;margin-bottom:22px;overflow-x:auto;white-space:nowrap}
-.bands{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:22px}
-.band{font-family:var(--mono);font-size:.78rem;font-weight:700;padding:8px 14px;border-radius:2px;letter-spacing:.04em}
-.b-now{background:var(--gold);color:#0c0b09}.b-q{border:1px solid var(--cyan);color:var(--cyan)}.b-p{border:1px solid var(--muted);color:var(--text2)}
-.flow{display:flex;align-items:stretch;gap:12px}.flow .card{flex:1}.arrow{align-self:center;color:var(--gold-dim);font-family:var(--mono);font-size:1.4rem}
-.checks{display:flex;flex-direction:column;gap:12px}
-.check{display:flex;gap:18px;align-items:center;background:var(--card);border-left:3px solid var(--gold);padding:18px 22px;color:var(--text);font-size:1rem}
-.check i{font-style:normal;color:var(--gold);font-family:var(--mono);font-weight:800}
-.split{display:grid;grid-template-columns:1.05fr 1fr;gap:28px;align-items:center}
-.terminal{font-family:var(--mono);font-size:.82rem;line-height:1.95;background:rgba(0,0,0,.35);border:1px solid var(--border);border-radius:8px;padding:22px 24px;box-shadow:rgba(245,214,35,.06) 0 0 80px}
-.terminal .k{color:var(--muted);display:inline-block;min-width:64px}.terminal .cm{color:var(--gold)}
-.glow{position:absolute;top:40%;left:30%;width:600px;height:600px;background:radial-gradient(circle,rgba(245,214,35,.06) 0%,transparent 70%);pointer-events:none}
-.video{position:relative;width:100%;aspect-ratio:16/9;background:#000;border:1px solid var(--border);border-radius:6px;overflow:hidden;box-shadow:rgba(245,214,35,.06) 0 0 80px}
-.video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
-.links{margin-top:14px;font-family:var(--mono);font-size:.78rem;letter-spacing:.04em}
-.steps{display:flex;flex-direction:column;gap:14px;margin-top:6px}
-.step{display:flex;gap:22px;align-items:baseline;font-size:1.15rem;color:var(--text)}.step b{font-family:var(--mono);color:var(--gold-dim);font-weight:700}
-.footnote{font-family:var(--mono);font-size:.7rem;color:var(--muted);margin-top:18px;line-height:1.6}
-.sig{margin-top:36px;font-family:var(--mono);font-size:.78rem;color:var(--muted);letter-spacing:.08em}
-@media (max-width:900px){.slide{padding:48px 24px}.slide::before{top:60px;right:24px}.split{grid-template-columns:1fr}.grid2,.grid3,.grid4,.stats{grid-template-columns:1fr 1fr}.flow{flex-direction:column}.arrow{transform:rotate(90deg)}.nav{padding:13px 18px}.nav-logo em{display:none}.nav-dots{display:none}table{display:block;overflow-x:auto}}
-@media (max-width:560px){.grid2,.grid3,.grid4,.stats{grid-template-columns:1fr}}
-@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
-@media print{.nav,.progress{display:none}.slide{min-height:auto;page-break-after:always}}
+html,body{background:#0c0b09}
+body{color:#a09888;font-family:Inter,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+.bar{position:fixed;top:0;left:0;right:0;z-index:20;display:flex;align-items:center;justify-content:space-between;padding:10px 20px;background:rgba(12,11,9,.9);backdrop-filter:blur(10px);border-bottom:1px solid #2a2520;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#8a8272}
+.bar b{color:#f0ece4}.bar b i{color:#F5D623;font-style:normal}
+.bar a{color:#F5D623;text-decoration:none;margin-left:16px}
+.prog{position:fixed;top:0;left:0;height:2px;background:#F5D623;z-index:21;width:0}
+main{padding-top:40px}
+.stage{position:relative;width:100%;overflow:hidden;border-bottom:1px solid #1a1814}
+.fit{position:absolute;left:0;top:0;width:1920px;height:1080px;transform-origin:0 0}
+section.sl{position:relative;width:1920px;height:1080px;overflow:hidden}
+section.sl table{border-collapse:collapse;width:100%}
+section.sl th,section.sl td{padding:14px 18px;text-align:left;vertical-align:top;line-height:1.4}
+section.sl ul,section.sl ol{list-style:none}
+.xarrow{display:block;flex:none;background:transparent!important;position:relative}
+.xarrow::after{content:"→";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#8B7A12;font:800 40px 'JetBrains Mono',monospace}
+.xcheck{display:inline-block;flex:none;position:relative}
+.xcheck::after{content:"✓";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:currentColor;font:800 26px 'JetBrains Mono',monospace}
+.playbtn{position:absolute;right:128px;bottom:150px;display:flex;align-items:center;gap:14px;background:#F5D623;color:#0c0b09;border:0;border-radius:6px;padding:18px 26px;font:800 24px 'JetBrains Mono',monospace;letter-spacing:.04em;cursor:pointer}
+.playbtn span{font-size:22px}
+.vid{position:fixed;inset:0;z-index:50;background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center;padding:20px}
+.vid.on{display:flex}
+.vid video{width:min(1200px,100%);aspect-ratio:16/9;background:#000;border:1px solid #2a2520}
+.vid button{position:absolute;top:16px;right:20px;background:none;border:1px solid #605848;color:#f0ece4;font:600 13px 'JetBrains Mono',monospace;padding:8px 14px;cursor:pointer}
+.hint{position:fixed;right:16px;bottom:14px;z-index:20;font:600 10px 'JetBrains Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:#605848}
+@media (max-width:700px){.hint{display:none}.bar{font-size:10px}.bar .sec{display:none}}
 </style>
 </head>
 <body>
-<div class="progress" id="progress"></div>
-<nav class="nav">
-  <div class="nav-logo">Organized<span>AI</span><em>· DealCon · FDE for rollups</em></div>
-  <div class="nav-right"><div class="nav-dots" id="dots"></div><div class="counter" id="counter">01 / 17</div></div>
-</nav>
+<div class="prog" id="prog"></div>
+<div class="bar"><span><b>Organized<i>AI</i></b><span class="sec"> · DealCon · Your personal FDE</span></span><span><span id="count">01 / 21</span><a href="https://offer.organizedai.vip/dealcon/">Work with me</a></span></div>
+<main>
+<div class="stage" data-i="0"><div class="fit"><section class="sl" id="cover" data-transition="fade" style="background:radial-gradient(circle at 30% 62%, rgba(245,214,35,0.09), rgba(12,11,9,0) 60%), #0c0b09; color:#a09888; font-family:Inter, Arial, sans-serif; padding:128px 128px 160px; display:grid; grid-template-columns:1040px 1fr; gap:64px; align-items:center">
+<div style="display:flex; flex-direction:column; gap:28px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:4px; text-transform:uppercase; color:#F5D623">— DealCon 2026 · For 7–9 figure acquirers</p>
+<h1 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:80px; font-weight:800; line-height:1.08; letter-spacing:-0.02em; color:#f0ece4">Your personal <span style="color:#F5D623; font-style:italic">FDE</span> for every business you <span style="color:#22d3ee; font-style:italic">buy.</span></h1>
+<p style="font-size:30px; line-height:1.5; color:#a09888; width:940px">I build the tools, deploy them into each business you acquire, and keep them running. One toolkit, used again and again across your whole portfolio.</p>
+<div style="display:flex; gap:12px; flex-wrap:wrap">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; text-transform:uppercase; color:#F5D623; border:1px solid #F5D623; padding:8px 16px; border-radius:2px">Build</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; text-transform:uppercase; color:#22d3ee; border:1px solid #22d3ee; padding:8px 16px; border-radius:2px">Deploy</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; text-transform:uppercase; color:#C4943D; border:1px solid #C4943D; padding:8px 16px; border-radius:2px">Troubleshoot</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; text-transform:uppercase; color:#4ade80; border:1px solid #4ade80; padding:8px 16px; border-radius:2px">Reuse</p>
+</div>
+</div>
+<div style="background:#141210; border:1px solid #2a2520; border-radius:8px; padding:36px 32px; display:flex; flex-direction:column; gap:14px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; color:#F5D623">// example portfolio</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; color:#a09888">co_1   <span style="color:#f0ece4">HVAC service</span></p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; color:#a09888">co_2   <span style="color:#f0ece4">plumbing service</span></p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; color:#a09888">co_3   <span style="color:#f0ece4">med spa</span></p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; color:#a09888">shared <span style="color:#F5D623">lead → booking → follow-up</span></p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; color:#a09888">kit    <span style="color:#4ade80">built once, deployed 3×</span></p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; color:#a09888">fde    <span style="color:#22d3ee">1</span></p>
+</div>
+<p style="position:absolute; left:128px; bottom:64px; width:900px; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:3px; text-transform:uppercase; color:#a09888">Organized<span style="color:#F5D623">AI</span> · Your personal FDE</p>
+<p style="position:absolute; right:128px; bottom:64px; width:240px; text-align:right; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; color:#a09888">01 / 21</p>
 
-<main id="slides">
+</section>
+</div></div>
+<div class="stage" data-i="1"><div class="fit"><section class="sl" id="seat" data-transition="fade" style="background:#141210; color:#a09888; font-family:Inter, Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; justify-content:flex-start; gap:36px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:4px; text-transform:uppercase; color:#F5D623">— The missing seat on your deal team</p>
+<h2 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:56px; font-weight:800; line-height:1.1; letter-spacing:-0.02em; color:#f0ece4">You don&#39;t need a full integration team. <span style="color:#F5D623; font-style:italic">You still need someone to install the systems.</span></h2>
+<div style="display:flex; gap:20px; align-items:stretch">
+<div style="flex:1; background:#1a1814; border-top:3px solid #C4943D; padding:28px; display:flex; flex-direction:column; gap:12px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#C4943D">MONEY</p>
+<h3 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:30px; font-weight:800; line-height:1.15; color:#f0ece4">Fractional CFO</h3>
+<p style="font-size:26px; line-height:1.45; color:#a09888">Quality of earnings, the numbers behind the deal.</p>
+</div>
+<div style="flex:1; background:#1a1814; border-top:3px solid #C4943D; padding:28px; display:flex; flex-direction:column; gap:12px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#C4943D">PAPER</p>
+<h3 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:30px; font-weight:800; line-height:1.15; color:#f0ece4">M&amp;A attorney</h3>
+<p style="font-size:26px; line-height:1.45; color:#a09888">Structure, diligence, the close.</p>
+</div>
+<div style="flex:1; background:#1a1814; border-top:3px solid #C4943D; padding:28px; display:flex; flex-direction:column; gap:12px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#C4943D">CAPITAL</p>
+<h3 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:30px; font-weight:800; line-height:1.15; color:#f0ece4">Lender</h3>
+<p style="font-size:26px; line-height:1.45; color:#a09888">Seller note, SBA, third-party financing.</p>
+</div>
+<div style="flex:1; background:#211d10; border-top:3px solid #F5D623; padding:28px; display:flex; flex-direction:column; gap:12px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#F5D623">SYSTEMS</p>
+<h3 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:30px; font-weight:800; line-height:1.15; color:#f0ece4">Forward deployed engineer</h3>
+<p style="font-size:26px; line-height:1.45; color:#f0ece4">The tools, the data, the automation, in every business you buy.</p>
+</div>
+</div>
+<div style="background:#1a1814; border-left:4px solid #F5D623; padding:24px 32px; display:flex; flex-direction:column; gap:8px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:36px; font-weight:600; line-height:1.3; color:#f0ece4">“Time to value is the most important metric today.”</p>
+<p style="font-size:24px; color:#a09888">Steven Tran, CTO of Soundcheck Live</p>
+</div>
+<p style="position:absolute; left:128px; bottom:64px; width:900px; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:3px; text-transform:uppercase; color:#a09888">Organized<span style="color:#F5D623">AI</span> · Your personal FDE</p>
+<p style="position:absolute; right:128px; bottom:64px; width:240px; text-align:right; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; color:#a09888">02 / 21</p>
 
-<!-- COVER -->
-<section class="slide" data-num="01 / 17">
-  <div class="glow"></div>
-  <div class="content">
-    <div class="split">
-      <div>
-        <div class="tag reveal">DealCon 2026 · For 7–9 figure acquirers</div>
-        <h1 class="reveal" style="font-size:clamp(34px,4.6vw,58px)">Your personal <span class="hl">FDE</span> for every business you <span class="cy">buy.</span></h1>
-        <p class="sub reveal">I build the tools, deploy them into each business you acquire, and keep them running. One toolkit, used again and again across your whole portfolio.</p>
-        <div class="chips reveal"><span class="chip gold">Build</span><span class="chip cyan">Deploy</span><span class="chip rust">Troubleshoot</span><span class="chip green">Reuse</span><span class="chip gold">Jordaaan · OrganizedAI</span></div>
+</section>
+</div></div>
+<div class="stage" data-i="2"><div class="fit"><section class="sl" id="build" data-transition="fade" style="background:#0c0b09; color:#a09888; font-family:Inter, Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; justify-content:flex-start; gap:32px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:4px; text-transform:uppercase; color:#F5D623">— What AI changed, and what it didn’t</p>
+<h2 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:52px; font-weight:800; line-height:1.1; letter-spacing:-0.02em; color:#f0ece4">You can build almost anything with AI now. <span style="color:#F5D623; font-style:italic">You shouldn’t trust all of it.</span></h2>
+<div style="display:flex; gap:20px; align-items:stretch">
+<div style="flex:1; background:#1a1814; border-top:3px solid #22d3ee; padding:26px; display:flex; flex-direction:column; gap:12px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#22d3ee">WHAT CHANGED</p>
+<h3 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:28px; font-weight:800; line-height:1.15; color:#f0ece4">Anyone can build a tool fast</h3>
+<p style="font-size:24px; line-height:1.45; color:#a09888">A follow-up bot or a lead router can come together in an afternoon.</p>
+</div>
+<div style="flex:1; background:#1a1814; border-top:3px solid #e05252; padding:26px; display:flex; flex-direction:column; gap:12px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#e05252">WHAT DIDN’T</p>
+<h3 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:28px; font-weight:800; line-height:1.15; color:#f0ece4">Untested tools fail quietly</h3>
+<p style="font-size:24px; line-height:1.45; color:#a09888">A follow-up stops sending. A lead never reaches the CRM. Nobody notices until revenue does.</p>
+</div>
+<div style="flex:1; background:#1a1814; border-top:3px solid #C4943D; padding:26px; display:flex; flex-direction:column; gap:12px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#C4943D">WHAT NOT TO DO</p>
+<h3 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:28px; font-weight:800; line-height:1.15; color:#f0ece4">Wait until you’re an engineer</h3>
+<p style="font-size:24px; line-height:1.45; color:#a09888">You don’t need to master engineering best practices before you start using these systems.</p>
+</div>
+</div>
+<div style="background:#211d10; border:1px solid #8B7A12; border-left:4px solid #F5D623; padding:28px 32px; display:flex; flex-direction:column; gap:18px">
+<h3 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:32px; font-weight:800; line-height:1.25; color:#f0ece4"><span style="color:#F5D623">My job:</span> simple enough that I can explain it to you, solid enough to maintain, monitor and fix.</h3>
+<div style="display:flex; gap:16px">
+<div style="flex:1; display:flex; gap:20px; align-items:center; background:#1a1814; padding:16px 20px; border-left:4px solid #F5D623">
+<span class="xcheck" style="color:#F5D623; width:28px; height:28px"></span>
+<p style="font-size:26px; line-height:1.35; color:#f0ece4">Every tool is monitored while it runs</p>
+</div>
+<div style="flex:1; display:flex; gap:20px; align-items:center; background:#1a1814; padding:16px 20px; border-left:4px solid #F5D623">
+<span class="xcheck" style="color:#F5D623; width:28px; height:28px"></span>
+<p style="font-size:26px; line-height:1.35; color:#f0ece4">A failure alerts a person, not a log file</p>
+</div>
+<div style="flex:1; display:flex; gap:20px; align-items:center; background:#1a1814; padding:16px 20px; border-left:4px solid #F5D623">
+<span class="xcheck" style="color:#F5D623; width:28px; height:28px"></span>
+<p style="font-size:26px; line-height:1.35; color:#f0ece4">Every change is recorded and traceable</p>
+</div>
+</div>
+</div>
+<p style="position:absolute; left:128px; bottom:64px; width:900px; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:3px; text-transform:uppercase; color:#a09888">Organized<span style="color:#F5D623">AI</span> · Your personal FDE</p>
+<p style="position:absolute; right:128px; bottom:64px; width:240px; text-align:right; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; color:#a09888">03 / 21</p>
+
+</section>
+</div></div>
+<div class="stage" data-i="3"><div class="fit"><section class="sl" id="spoons" data-transition="fade" style="background:#0c0b09; color:#a09888; font-family:Inter, Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; justify-content:flex-start; gap:32px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:4px; text-transform:uppercase; color:#F5D623">— The Bending Spoons playbook</p>
+<h2 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:64px; font-weight:800; line-height:1.1; letter-spacing:-0.02em; color:#f0ece4">One shared stack. <span style="color:#F5D623; font-style:italic">Fifty-plus</span> acquisitions.</h2>
+<div style="display:flex; gap:24px">
+<div style="flex:1; border-left:1px solid #8B7A12; padding-left:20px; display:flex; flex-direction:column; gap:8px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:48px; font-weight:800; color:#f0ece4">50+</p>
+<p style="font-size:24px; line-height:1.4; color:#a09888">companies bought, incl. Evernote, Vimeo, WeTransfer, Eventbrite, AOL</p>
+</div>
+<div style="flex:1; border-left:1px solid #8B7A12; padding-left:20px; display:flex; flex-direction:column; gap:8px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:48px; font-weight:800; color:#f0ece4">$1.31B</p>
+<p style="font-size:24px; line-height:1.4; color:#a09888">2025 revenue, $278M operating profit</p>
+</div>
+<div style="flex:1; border-left:1px solid #8B7A12; padding-left:20px; display:flex; flex-direction:column; gap:8px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:48px; font-weight:800; color:#F5D623">$2.57M</p>
+<p style="font-size:24px; line-height:1.4; color:#a09888">revenue per employee in 2025, up from $1.12M in 2023</p>
+</div>
+<div style="flex:1; border-left:1px solid #8B7A12; padding-left:20px; display:flex; flex-direction:column; gap:8px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:48px; font-weight:800; color:#22d3ee">90%+</p>
+<p style="font-size:24px; line-height:1.4; color:#a09888">of code changes written or co-written by AI</p>
+</div>
+</div>
+<div style="display:flex; gap:20px; align-items:stretch">
+<div style="flex:1; background:#1a1814; border-top:3px solid #F5D623; padding:28px; display:flex; flex-direction:column; gap:12px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#F5D623">01</p>
+<h3 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:28px; font-weight:800; line-height:1.15; color:#f0ece4">Buy what works</h3>
+<p style="font-size:24px; line-height:1.45; color:#a09888">Products that already have users and revenue.</p>
+</div>
+<span class="xarrow" style="width:48px; height:36px; background:#8B7A12; align-self:center"></span>
+<div style="flex:1; background:#1a1814; border-top:3px solid #22d3ee; padding:28px; display:flex; flex-direction:column; gap:12px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#22d3ee">02</p>
+<h3 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:28px; font-weight:800; line-height:1.15; color:#f0ece4">Move to the shared stack</h3>
+<p style="font-size:24px; line-height:1.45; color:#a09888">Central tech, tooling and AI, the same for every company.</p>
+</div>
+<span class="xarrow" style="width:48px; height:36px; background:#8B7A12; align-self:center"></span>
+<div style="flex:1; background:#1a1814; border-top:3px solid #4ade80; padding:28px; display:flex; flex-direction:column; gap:12px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#4ade80">03</p>
+<h3 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:28px; font-weight:800; line-height:1.15; color:#f0ece4">Reuse everything</h3>
+<p style="font-size:24px; line-height:1.45; color:#a09888">Built once for support, hiring and analytics, then used across the portfolio.</p>
+</div>
+</div>
+<p style="position:absolute; left:128px; bottom:64px; width:900px; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:3px; text-transform:uppercase; color:#a09888">Organized<span style="color:#F5D623">AI</span> · Your personal FDE</p>
+<p style="position:absolute; right:128px; bottom:64px; width:240px; text-align:right; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; color:#a09888">04 / 21</p>
+
+</section>
+</div></div>
+<div class="stage" data-i="4"><div class="fit"><section class="sl" id="function" data-transition="fade" style="background:#141210; color:#a09888; font-family:Inter, Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; justify-content:flex-start; gap:32px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:4px; text-transform:uppercase; color:#F5D623">— Buy by function, not by industry</p>
+<h2 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:64px; font-weight:800; line-height:1.1; letter-spacing:-0.02em; color:#f0ece4">Different industries. <span style="color:#F5D623; font-style:italic">Same jobs</span> underneath.</h2>
+<table style="font-family:Inter, Arial, sans-serif; font-size:24px; color:#a09888">
+<tr style="background:#211e18"><th style="width:24%; color:#F5D623; text-align:left">If they run on…</th><th style="width:36%; color:#F5D623; text-align:left">For example</th><th style="width:40%; color:#F5D623; text-align:left">One kit fits all of them</th></tr>
+<tr style="background:#1a1814"><td style="color:#f0ece4; font-weight:600">Leads → booked jobs</td><td>HVAC, plumbing, roofing, med spa, law firm intake</td><td style="color:#22d3ee">Speed-to-lead, missed-call text-back, quote follow-up</td></tr>
+<tr style="background:#1a1814"><td style="color:#f0ece4; font-weight:600">Repeat purchases</td><td>DTC brands, subscriptions, online specialty retail</td><td style="color:#22d3ee">Win-back, review requests, pixel and Conversions API</td></tr>
+<tr style="background:#1a1814"><td style="color:#f0ece4; font-weight:600">Visits and bookings</td><td>Clinics, gyms, salons, restaurants</td><td style="color:#22d3ee">Reminders, no-show recovery, repeat-visit offers</td></tr>
+<tr style="background:#1a1814"><td style="color:#f0ece4; font-weight:600">Client delivery</td><td>Agencies, bookkeeping, staffing, IT services</td><td style="color:#22d3ee">Intake → preparer → reviewer → human sign-off</td></tr>
+</table>
+<p style="font-size:28px; line-height:1.5; color:#f0ece4; width:1500px">Buy two or three businesses that share a function, and every tool I build gets reused.</p>
+<p style="position:absolute; left:128px; bottom:64px; width:900px; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:3px; text-transform:uppercase; color:#a09888">Organized<span style="color:#F5D623">AI</span> · Your personal FDE</p>
+<p style="position:absolute; right:128px; bottom:64px; width:240px; text-align:right; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; color:#a09888">05 / 21</p>
+
+</section>
+</div></div>
+<div class="stage" data-i="5"><div class="fit"><section class="sl" id="playbook" data-transition="fade" style="background:#0c0b09; color:#a09888; font-family:Inter, Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; justify-content:flex-start; gap:40px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:4px; text-transform:uppercase; color:#F5D623">— The same playbook, for small deals</p>
+<h2 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:64px; font-weight:800; line-height:1.1; letter-spacing:-0.02em; color:#f0ece4">Buy the firm. Run the <span style="color:#F5D623; font-style:italic">agents.</span> A human <span style="color:#22d3ee; font-style:italic">signs off.</span></h2>
+<div style="display:flex; gap:16px; align-items:stretch">
+<div style="flex:1; background:#1a1814; border-top:3px solid #22d3ee; padding:28px; display:flex; flex-direction:column; gap:12px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#22d3ee">AGENT</p>
+<h3 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:32px; font-weight:800; line-height:1.15; color:#f0ece4">Intake</h3>
+<p style="font-size:26px; line-height:1.45; color:#a09888">Gathers the inputs.</p>
+</div>
+<span class="xarrow" style="width:48px; height:36px; background:#8B7A12; align-self:center"></span>
+<div style="flex:1; background:#1a1814; border-top:3px solid #22d3ee; padding:28px; display:flex; flex-direction:column; gap:12px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#22d3ee">AGENT</p>
+<h3 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:32px; font-weight:800; line-height:1.15; color:#f0ece4">Preparer</h3>
+<p style="font-size:26px; line-height:1.45; color:#a09888">Does the work.</p>
+</div>
+<span class="xarrow" style="width:48px; height:36px; background:#8B7A12; align-self:center"></span>
+<div style="flex:1; background:#1a1814; border-top:3px solid #22d3ee; padding:28px; display:flex; flex-direction:column; gap:12px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#22d3ee">AGENT</p>
+<h3 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:32px; font-weight:800; line-height:1.15; color:#f0ece4">Reviewer</h3>
+<p style="font-size:26px; line-height:1.45; color:#a09888">Checks the work.</p>
+</div>
+<span class="xarrow" style="width:48px; height:36px; background:#8B7A12; align-self:center"></span>
+<div style="flex:1; background:#F5D623; border-top:3px solid #F5D623; padding:28px; display:flex; flex-direction:column; gap:12px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#0c0b09">HUMAN</p>
+<h3 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:30px; font-weight:800; line-height:1.15; color:#0c0b09">Approves and sends</h3>
+<p style="font-size:26px; line-height:1.45; color:#2a2410">Only a person sends work to the client.</p>
+</div>
+</div>
+<p style="font-size:28px; line-height:1.5; color:#a09888; width:1500px">One shared layer of rules, test examples and runbooks. One folder per business, each with its own corrections log. Every week, corrections become new rules. The rules are the asset.</p>
+<p style="position:absolute; left:128px; bottom:64px; width:900px; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:3px; text-transform:uppercase; color:#a09888">Organized<span style="color:#F5D623">AI</span> · Your personal FDE</p>
+<p style="position:absolute; right:128px; bottom:64px; width:240px; text-align:right; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; color:#a09888">06 / 21</p>
+
+<button class="playbtn" type="button" onclick="openVid()" aria-label="Play the 75-second explainer"><span>▶</span> Watch the 75-second explainer</button></section>
+</div></div>
+<div class="stage" data-i="6"><div class="fit"><section class="sl" id="stall" data-transition="fade" style="background:#141210; color:#a09888; font-family:Inter, Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; justify-content:flex-start; gap:32px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:4px; text-transform:uppercase; color:#F5D623">— Why the toolkit alone is not enough</p>
+<h2 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:64px; font-weight:800; line-height:1.1; letter-spacing:-0.02em; color:#f0ece4">The model is rarely the problem. <span style="color:#F5D623; font-style:italic">The process is.</span></h2>
+<div style="display:flex; gap:24px">
+<div style="flex:1; border-left:1px solid #8B7A12; padding-left:20px; display:flex; flex-direction:column; gap:8px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:48px; font-weight:800; color:#e05252">95%</p>
+<p style="font-size:24px; line-height:1.4; color:#a09888">of AI projects show no measurable return (MIT study)</p>
+</div>
+<div style="flex:1; border-left:1px solid #8B7A12; padding-left:20px; display:flex; flex-direction:column; gap:8px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:48px; font-weight:800; color:#f0ece4">6–8 wk</p>
+<p style="font-size:24px; line-height:1.4; color:#a09888">to build an AI workflow at one bank</p>
+</div>
+<div style="flex:1; border-left:1px solid #8B7A12; padding-left:20px; display:flex; flex-direction:column; gap:8px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:48px; font-weight:800; color:#F5D623">+4 mo</p>
+<p style="font-size:24px; line-height:1.4; color:#a09888">of pilots before people trusted it</p>
+</div>
+<div style="flex:1; border-left:1px solid #8B7A12; padding-left:20px; display:flex; flex-direction:column; gap:8px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:48px; font-weight:800; color:#22d3ee">98%</p>
+<p style="font-size:24px; line-height:1.4; color:#a09888">adoption when built into steps people already used</p>
+</div>
+</div>
+<div style="background:rgba(196,148,61,0.06); border:1px solid #C4943D; padding:24px 32px; display:flex; flex-direction:column; gap:8px">
+<h3 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:30px; font-weight:800; color:#f0ece4">That gap needs an owner</h3>
+<p style="font-size:26px; line-height:1.45; color:#a09888">A forward deployed engineer sits with the team, watches the real work, and builds AI into the systems the business already runs on. Bending Spoons supplies the what. The FDE supplies the how and the when.</p>
+</div>
+<p style="position:absolute; left:128px; bottom:64px; width:900px; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:3px; text-transform:uppercase; color:#a09888">Organized<span style="color:#F5D623">AI</span> · Your personal FDE</p>
+<p style="position:absolute; right:128px; bottom:64px; width:240px; text-align:right; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; color:#a09888">07 / 21</p>
+
+</section>
+</div></div>
+<div class="stage" data-i="7"><div class="fit"><section class="sl" id="lifecycle" data-transition="fade" style="background:#0c0b09; color:#a09888; font-family:Inter, Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; justify-content:flex-start; gap:40px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:4px; text-transform:uppercase; color:#F5D623">— What your FDE does, deal by deal</p>
+<h2 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:64px; font-weight:800; line-height:1.1; letter-spacing:-0.02em; color:#f0ece4">Build once. Deploy on every close. <span style="color:#F5D623; font-style:italic">Keep it running.</span></h2>
+<div style="display:flex; gap:14px; align-items:stretch">
+<div style="flex:1; background:#1a1814; border-top:3px solid #F5D623; padding:28px; display:flex; flex-direction:column; gap:12px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#F5D623">BEFORE CLOSE</p>
+<h3 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:28px; font-weight:800; line-height:1.15; color:#f0ece4">Scan and score</h3>
+<p style="font-size:24px; line-height:1.45; color:#a09888">Read the target&#39;s site and stack in diligence. Show what pays back first and what could hurt the exit.</p>
+</div>
+<span class="xarrow" style="width:48px; height:36px; background:#8B7A12; align-self:center"></span>
+<div style="flex:1; background:#1a1814; border-top:3px solid #22d3ee; padding:28px; display:flex; flex-direction:column; gap:12px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#22d3ee">AT CLOSE</p>
+<h3 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:28px; font-weight:800; line-height:1.15; color:#f0ece4">Baseline</h3>
+<p style="font-size:24px; line-height:1.45; color:#a09888">Track the one conversion that matters, so every change has a before and after.</p>
+</div>
+<span class="xarrow" style="width:48px; height:36px; background:#8B7A12; align-self:center"></span>
+<div style="flex:1; background:#1a1814; border-top:3px solid #C4943D; padding:28px; display:flex; flex-direction:column; gap:12px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#C4943D">INTEGRATION</p>
+<h3 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:28px; font-weight:800; line-height:1.15; color:#f0ece4">Deploy the kit</h3>
+<p style="font-size:24px; line-height:1.45; color:#a09888">Install on the systems they already use. A human signs off on anything a customer sees.</p>
+</div>
+<span class="xarrow" style="width:48px; height:36px; background:#8B7A12; align-self:center"></span>
+<div style="flex:1; background:#1a1814; border-top:3px solid #4ade80; padding:28px; display:flex; flex-direction:column; gap:12px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#4ade80">ONGOING</p>
+<h3 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:28px; font-weight:800; line-height:1.15; color:#f0ece4">Troubleshoot and reuse</h3>
+<p style="font-size:24px; line-height:1.45; color:#a09888">Fix what breaks, log every correction, carry the fixes into the next business.</p>
+</div>
+</div>
+<p style="font-size:30px; line-height:1.5; color:#f0ece4; width:1500px">Business two starts where business one finished. That compounding is the point of a rollup.</p>
+<p style="position:absolute; left:128px; bottom:64px; width:900px; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:3px; text-transform:uppercase; color:#a09888">Organized<span style="color:#F5D623">AI</span> · Your personal FDE</p>
+<p style="position:absolute; right:128px; bottom:64px; width:240px; text-align:right; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; color:#a09888">08 / 21</p>
+
+</section>
+</div></div>
+<div class="stage" data-i="8"><div class="fit"><section class="sl" id="roadmap" data-transition="fade" style="background:#141210; color:#a09888; font-family:Inter, Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; justify-content:flex-start; gap:32px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:4px; text-transform:uppercase; color:#F5D623">— The FDE roadmap, applied to a target</p>
+<h2 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:60px; font-weight:800; line-height:1.1; letter-spacing:-0.02em; color:#f0ece4">Five steps. The harness <span style="color:#F5D623; font-style:italic">already</span> does the first pass.</h2>
+<table style="font-family:Inter, Arial, sans-serif; font-size:24px; color:#a09888">
+<tr style="background:#211e18"><th style="width:22%; color:#F5D623; text-align:left">FDE step</th><th style="width:44%; color:#F5D623; text-align:left">What it means</th><th style="width:34%; color:#F5D623; text-align:left">Where it shows up here</th></tr>
+<tr style="background:#1a1814"><td style="color:#f0ece4; font-weight:600">1 · Observe</td><td>Document the real job, and why each step exists</td><td style="color:#22d3ee">Site scan, intake ledger, step zero</td></tr>
+<tr style="background:#1a1814"><td style="color:#f0ece4; font-weight:600">2 · Split</td><td>Rules to software, judgment to a model, costly calls to a human</td><td style="color:#22d3ee">Fixed rules pick the plan</td></tr>
+<tr style="background:#1a1814"><td style="color:#f0ece4; font-weight:600">3 · Design for failure</td><td>Plan for where the model is unsure but answers anyway</td><td style="color:#22d3ee">Exit-safety score, “Rework first”</td></tr>
+<tr style="background:#1a1814"><td style="color:#f0ece4; font-weight:600">4 · Test</td><td>Real examples with known answers; study the misses</td><td style="color:#22d3ee">Sample businesses with known answers</td></tr>
+<tr style="background:#1a1814"><td style="color:#f0ece4; font-weight:600">5 · Quantify</td><td>Cost saved, revenue made or risk reduced</td><td style="color:#22d3ee">Baseline first, then the Jev score</td></tr>
+</table>
+<p style="position:absolute; left:128px; bottom:64px; width:900px; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:3px; text-transform:uppercase; color:#a09888">Organized<span style="color:#F5D623">AI</span> · Your personal FDE</p>
+<p style="position:absolute; right:128px; bottom:64px; width:240px; text-align:right; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; color:#a09888">09 / 21</p>
+
+</section>
+</div></div>
+<div class="stage" data-i="9"><div class="fit"><section class="sl" id="toolkit" data-transition="fade" style="background:#0c0b09; color:#a09888; font-family:Inter, Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; justify-content:flex-start; gap:40px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:4px; text-transform:uppercase; color:#F5D623">— What I supply</p>
+<h2 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:64px; font-weight:800; line-height:1.1; letter-spacing:-0.02em; color:#f0ece4">Four kits. <span style="color:#F5D623; font-style:italic">One stack</span> across your portfolio.</h2>
+<div style="display:flex; gap:24px">
+<div style="flex:1; background:#1a1814; border-top:3px solid #F5D623; padding:32px; display:flex; flex-direction:column; gap:14px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#F5D623">01 · SOURCE</p>
+<h3 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:32px; font-weight:800; line-height:1.15; color:#f0ece4">Target Scanner</h3>
+<p style="font-size:26px; line-height:1.5; color:#a09888">Sourcing and market research</p>
+</div>
+<div style="flex:1; background:#1a1814; border-top:3px solid #C4943D; padding:32px; display:flex; flex-direction:column; gap:14px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#C4943D">02 · OPERATE</p>
+<h3 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:32px; font-weight:800; line-height:1.15; color:#f0ece4">Process Auditor</h3>
+<p style="font-size:26px; line-height:1.5; color:#a09888">Back-office operations and handoffs</p>
+</div>
+<div style="flex:1; background:#1a1814; border-top:3px solid #22d3ee; padding:32px; display:flex; flex-direction:column; gap:14px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#22d3ee">03 · RECORD</p>
+<h3 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:32px; font-weight:800; line-height:1.15; color:#f0ece4">CRM Kit</h3>
+<p style="font-size:26px; line-height:1.5; color:#a09888">Pipeline and customer records, one schema</p>
+</div>
+<div style="flex:1; background:#1a1814; border-top:3px solid #4ade80; padding:32px; display:flex; flex-direction:column; gap:14px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#4ade80">04 · REACH</p>
+<h3 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:32px; font-weight:800; line-height:1.15; color:#f0ece4">Outreach Kit</h3>
+<p style="font-size:26px; line-height:1.5; color:#a09888">Follow-up, reactivation, voice outreach</p>
+</div>
+</div>
+<p style="font-size:28px; line-height:1.5; color:#a09888; width:1400px">Every fix lands in one of these four kits, so what I build for business one is ready for business two.</p>
+<p style="position:absolute; left:128px; bottom:64px; width:900px; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:3px; text-transform:uppercase; color:#a09888">Organized<span style="color:#F5D623">AI</span> · Your personal FDE</p>
+<p style="position:absolute; right:128px; bottom:64px; width:240px; text-align:right; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; color:#a09888">10 / 21</p>
+
+</section>
+</div></div>
+<div class="stage" data-i="10"><div class="fit"><section class="sl" id="stepzero" data-transition="fade" style="display:flex; flex-direction:column; gap:36px; padding:128px 128px 160px; background:#0c0b09">
+  <p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:4px; text-transform:uppercase; color:#f5d623">— How · step zero</p>
+  <h2 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:64px; font-weight:800; line-height:1.1; letter-spacing:-1.3px; color:#f0ece4">Measurement <span style="color:#f5d623"><i>before</i></span> you install anything.</h2>
+  <div style="display:flex; flex-direction:row; gap:48px">
+    <div style="width:620px; display:flex; flex-direction:column; gap:22px">
+      <p style="font-family:Inter, Arial, sans-serif; font-size:32px; line-height:1.45; color:#f0ece4">I'm a measurement marketer by trade. Ten years in tracking and attribution, and a mentor at MeasureU, the team behind Measure Summit.</p>
+      <p style="font-family:Inter, Arial, sans-serif; font-size:26px; line-height:1.5; color:#a09888">Measuring first isn't a step I add. It's how I work. Every kit gets a before and after number, or it doesn't go in.</p>
+      <div style="display:flex; flex-direction:row; flex-wrap:wrap; gap:12px">
+        <p style="padding:8px 16px; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#c4943d; border:1px solid #c4943d; border-radius:2px">GTM · GA4</p>
+        <p style="padding:8px 16px; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#c4943d; border:1px solid #c4943d; border-radius:2px">CONVERSIONS API</p>
+        <p style="padding:8px 16px; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#c4943d; border:1px solid #c4943d; border-radius:2px">GOOGLE · META ADS</p>
       </div>
-      <div class="terminal reveal" aria-label="Example portfolio">
-        <div class="cm">// example portfolio, one toolkit</div>
-        <div><span class="k">co_1</span><span style="color:var(--text)">HVAC service</span></div>
-        <div><span class="k">co_2</span><span style="color:var(--text)">plumbing service</span></div>
-        <div><span class="k">co_3</span><span style="color:var(--text)">med spa</span></div>
-        <div><span class="k">shared</span><span style="color:var(--gold)">lead → booking → follow-up</span></div>
-        <div><span class="k">kit</span><span style="color:var(--green)">built once, deployed 3×</span></div>
-        <div><span class="k">fde</span><span style="color:var(--cyan)">1</span></div>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:20px; flex:1">
+      <div style="display:flex; flex-direction:column; gap:10px; padding:26px 30px; background:#1a1814; border-top:3px solid #c4943d">
+        <p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#c4943d">LAYER 1 · YOUR FUNNEL</p>
+        <h3 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:30px; font-weight:800; line-height:1.2; color:#f0ece4">Pixels and conversions</h3>
+        <p style="font-family:Inter, Arial, sans-serif; font-size:24px; line-height:1.45; color:#a09888">Lead source to booked job, tagged and reconciled between your CRM and your ad platforms.</p>
       </div>
-    </div>
-  </div>
-</section>
-
-<!-- SEAT -->
-<section class="slide alt" data-num="02 / 17">
-  <div class="content">
-    <div class="tag reveal">The missing seat on your deal team</div>
-    <h2 class="reveal">You don't need a full integration team. <span class="hl">You still need someone to install the systems.</span></h2>
-    <div class="grid4">
-      <div class="card c-rust reveal"><span class="num" style="color:var(--rust)">MONEY</span><h3>Fractional CFO</h3><p>Quality of earnings, the numbers behind the deal.</p></div>
-      <div class="card c-rust reveal"><span class="num" style="color:var(--rust)">PAPER</span><h3>M&amp;A attorney</h3><p>Structure, diligence, the close.</p></div>
-      <div class="card c-rust reveal"><span class="num" style="color:var(--rust)">CAPITAL</span><h3>Lender</h3><p>Seller note, SBA, third-party financing.</p></div>
-      <div class="card c-gold reveal" style="background:rgba(245,214,35,.06);border-color:var(--gold-dim)"><span class="num">SYSTEMS</span><h3>Forward deployed engineer</h3><p style="color:var(--text)">The tools, the data, the automation. Installed in every business you buy.</p></div>
-    </div>
-    <div class="quote reveal" style="margin-top:24px"><p>“Time to value is the most important metric today.”</p><small>Steven Tran, CTO of Soundcheck Live</small></div>
-  </div>
-</section>
-
-<!-- BENDING SPOONS -->
-<section class="slide" data-num="03 / 17">
-  <div class="content">
-    <div class="tag reveal">The Bending Spoons playbook</div>
-    <h2 class="reveal">One shared stack. <span class="hl">Fifty-plus</span> acquisitions.</h2>
-    <div class="stats">
-      <div class="stat reveal"><b>50+</b><span>companies bought, incl. Evernote, Vimeo, WeTransfer, Eventbrite, AOL</span></div>
-      <div class="stat reveal"><b>$1.31B</b><span>2025 revenue, $278M operating profit</span></div>
-      <div class="stat reveal"><b style="color:var(--gold)">$2.57M</b><span>revenue per employee in 2025, up from $1.12M in 2023</span></div>
-      <div class="stat reveal"><b style="color:var(--cyan)">90%+</b><span>of code changes now written or co-written by AI</span></div>
-    </div>
-    <div class="flow" style="margin-top:30px">
-      <div class="card c-gold reveal"><span class="num">01</span><h3>Buy what works</h3><p>Products that already have users and revenue.</p></div><div class="arrow">→</div>
-      <div class="card c-cyan reveal"><span class="num" style="color:var(--cyan)">02</span><h3>Move to the shared stack</h3><p>Central tech, tooling and AI, the same for every company.</p></div><div class="arrow">→</div>
-      <div class="card c-green reveal"><span class="num" style="color:var(--green)">03</span><h3>Reuse everything</h3><p>Built once for support, hiring, analytics, then used across the portfolio.</p></div>
-    </div>
-    <p class="footnote reveal">Sources: Bending Spoons IPO filing coverage, Fortune (June 2026) and TechCrunch (July 2026). They also cut staff and raised prices after deals; this deck borrows the shared-stack part, not the layoffs.</p>
-  </div>
-</section>
-
-<!-- FUNCTION -->
-<section class="slide alt" data-num="04 / 17">
-  <div class="content">
-    <div class="tag reveal">Buy by function, not by industry</div>
-    <h2 class="reveal">Different industries. <span class="hl">Same jobs</span> underneath.</h2>
-    <table class="reveal">
-      <tr><th>If your businesses run on…</th><th>For example</th><th>The kit that fits all of them</th></tr>
-      <tr><td>Leads → booked jobs</td><td>HVAC, plumbing, roofing, med spa, law firm intake</td><td class="c">Speed-to-lead, missed-call text-back, quote follow-up, call tracking</td></tr>
-      <tr><td>Repeat purchases</td><td>DTC brands, subscription boxes, online specialty retail</td><td class="c">Win-back, review requests, pixel and Conversions API, reorder flows</td></tr>
-      <tr><td>Visits and bookings</td><td>Clinics, gyms, salons, restaurants, local retail</td><td class="c">Booking reminders, no-show recovery, repeat-visit offers, review capture</td></tr>
-      <tr><td>Client delivery</td><td>Agencies, bookkeeping, staffing, IT services</td><td class="c">Intake → preparer → reviewer → human sign-off, invoicing, reporting</td></tr>
-    </table>
-    <p class="sub reveal" style="margin-top:22px;color:var(--text)">Evernote, Vimeo and WeTransfer are different products. Bending Spoons runs them on one stack because the jobs underneath are alike. Buy two or three businesses that share a function, and every tool I build gets reused.</p>
-  </div>
-</section>
-
-<!-- 03 VIDEO -->
-<section class="slide" data-num="05 / 17">
-  <div class="content">
-    <div class="tag reveal">The same playbook, for small deals</div>
-    <h2 class="reveal">Buy the firm. Run the <span class="hl">agents.</span> A human <span class="cy">signs off.</span></h2>
-    <div class="video reveal">
-      <video id="explainer" src="/dealcon/rollup-playbook.mp4" controls playsinline preload="metadata" style="position:absolute;inset:0;width:100%;height:100%;background:#000"></video>
-      <div id="explainer-fallback" style="position:absolute;inset:0;display:none;align-items:center;justify-content:center;flex-direction:column;gap:14px;font-family:var(--mono);color:var(--text2);text-align:center;padding:24px"><span style="color:var(--gold);letter-spacing:.2em;font-size:.7rem">EXPLAINER RENDERING</span><span>Intake → Preparer → Reviewer → <b style="color:var(--gold)">Human</b></span></div>
-    </div>
-    <p class="footnote reveal">Explainer based on Greg Isenberg, “$5T opportunity: AI Roll Ups.” <a href="https://youtu.be/ZT4mpjx0JnE" target="_blank" rel="noopener">Full episode ↗</a></p>
-  </div>
-</section>
-
-<!-- FDE 1 -->
-<section class="slide" data-num="06 / 17">
-  <div class="content">
-    <div class="tag reveal">Why the toolkit alone is not enough</div>
-    <h2 class="reveal">The model is rarely the problem. <span class="hl">The process is.</span></h2>
-    <div class="stats">
-      <div class="stat reveal"><b style="color:var(--red)">95%</b><span>of AI projects show no measurable return (MIT study)</span></div>
-      <div class="stat reveal"><b>6–8 wk</b><span>to build an AI workflow at one bank</span></div>
-      <div class="stat reveal"><b style="color:var(--gold)">+4 mo</b><span>of pilots before people trusted it</span></div>
-      <div class="stat reveal"><b style="color:var(--cyan)">98%</b><span>adoption when it was built into the steps people already used</span></div>
-    </div>
-    <div class="callout reveal"><div class="ic">!</div><div><div class="t">That gap needs an owner</div><div class="d">A forward deployed engineer sits with the team, watches the real work, and builds AI into the systems the business already runs on. Bending Spoons supplies the what. The FDE supplies the how and the when. The role started at Palantir; OpenAI, Anthropic and Cursor now run their own FDE teams.</div></div></div>
-    <p class="footnote reveal">Figures as cited in AI LABS, “This Is How Forward Deployed Engineering Is Actually Done.”</p>
-  </div>
-</section>
-
-<!-- LIFECYCLE -->
-<section class="slide" data-num="07 / 17">
-  <div class="content">
-    <div class="tag reveal">What your FDE does, deal by deal</div>
-    <h2 class="reveal">Build once. Deploy on every close. <span class="hl">Keep it running.</span></h2>
-    <div class="flow">
-      <div class="card c-gold reveal"><span class="num">BEFORE CLOSE</span><h3>Scan and score</h3><p>Read the target's site and stack during diligence. Show which fixes pay back first and what could hurt the exit.</p></div><div class="arrow">→</div>
-      <div class="card c-cyan reveal"><span class="num" style="color:var(--cyan)">AT CLOSE</span><h3>Baseline</h3><p>Track the one conversion that matters, so every change has a before and after.</p></div><div class="arrow">→</div>
-      <div class="card c-rust reveal"><span class="num" style="color:var(--rust)">INTEGRATION</span><h3>Deploy the kit</h3><p>Install the tools on the systems they already use. A human signs off on anything that reaches a customer.</p></div><div class="arrow">→</div>
-      <div class="card c-green reveal"><span class="num" style="color:var(--green)">ONGOING</span><h3>Troubleshoot and reuse</h3><p>Fix what breaks, log every correction, and carry the fixes into the next business.</p></div>
-    </div>
-    <p class="sub reveal" style="margin-top:24px">Business two starts where business one finished. That compounding is the point of a rollup.</p>
-  </div>
-</section>
-
-<!-- FDE 2 -->
-<section class="slide alt" data-num="08 / 17">
-  <div class="content">
-    <div class="tag reveal">The FDE roadmap, applied to a target</div>
-    <h2 class="reveal">Five steps. The harness already <span class="hl">does</span> the first pass.</h2>
-    <table class="reveal">
-      <tr><th>FDE step</th><th>What it means</th><th>Where it shows up here</th></tr>
-      <tr><td>1 · Observe</td><td>Document the real job, and ask why each step exists</td><td class="c">Site scan, intake ledger, step zero</td></tr>
-      <tr><td>2 · Split</td><td>Fixed rules to software, judgment to a model, costly calls to a human</td><td class="c">Fixed rules pick the plan, not an AI guess</td></tr>
-      <tr><td>3 · Design for failure</td><td>Plan for where the model is unsure but answers anyway</td><td class="c">Exit-safety score, “Rework first”</td></tr>
-      <tr><td>4 · Test</td><td>Run real examples with known answers, study the misses</td><td class="c">Tested on sample businesses with known answers</td></tr>
-      <tr><td>5 · Quantify</td><td>Measure cost saved, revenue made or risk reduced</td><td class="c">Baseline first, then Jev score and outcomes loop</td></tr>
-    </table>
-    <p class="sub reveal" style="margin-top:22px">Build on the systems the business already paid for. Keep the steps people can see. A human signs off on anything that leaves the building.</p>
-  </div>
-</section>
-
-<!-- 04 -->
-<section class="slide alt" data-num="09 / 17">
-  <div class="content">
-    <div class="tag reveal">What I supply</div>
-    <h2 class="reveal">Four kits. <span class="hl">One stack,</span> the way Bending Spoons runs theirs.</h2>
-    <div class="grid4">
-      <div class="card c-gold reveal"><span class="num">01 · SOURCE</span><h3>Target Scanner</h3><p>Sourcing and market research</p></div>
-      <div class="card c-rust reveal"><span class="num" style="color:var(--rust)">02 · OPERATE</span><h3>Process Auditor</h3><p>Back-office operations and handoffs</p></div>
-      <div class="card c-cyan reveal"><span class="num" style="color:var(--cyan)">03 · RECORD</span><h3>CRM Kit</h3><p>Pipeline and customer records, one schema</p></div>
-      <div class="card c-green reveal"><span class="num" style="color:var(--green)">04 · REACH</span><h3>Outreach Kit</h3><p>Follow-up, reactivation, voice outreach</p></div>
-    </div>
-    <p class="sub reveal" style="margin-top:24px">Every process in the ledger maps to exactly one kit. The playbook you build on target one is the starting point for target two.</p>
-  </div>
-</section>
-
-<!-- 06 -->
-<section class="slide alt" data-num="10 / 17">
-  <div class="content">
-    <div class="tag reveal">How · step zero</div>
-    <h2 class="reveal">Measure <span class="hl">before</span> you install anything.</h2>
-    <div class="split">
-      <div class="reveal"><p class="sub" style="color:var(--text);font-size:1.15rem">Track the one conversion that matters before any kit goes in, so every kit has a before and after number.</p><p class="sub">For a lead-gen target the conversion is a qualified lead, then a booked job.</p></div>
-      <div class="checks">
-        <div class="check reveal"><i>✓</i>Funnel mapped from lead source to booked job</div>
-        <div class="check reveal"><i>✓</i>Form fills and calls tagged as conversions</div>
-        <div class="check reveal"><i>✓</i>Lead counts reconcile between CRM and ad platforms</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- 07 -->
-<section class="slide" data-num="11 / 17">
-  <div class="content">
-    <div class="tag reveal">When · the Jev score</div>
-    <h2 class="reveal">Knowing <span class="hl">when</span> to install is the job.</h2>
-    <div class="formula reveal">score = round(20 × (0.35T + 0.25A + 0.20D + 0.20E))</div>
-    <div class="stats">
-      <div class="stat reveal"><b>35%</b><span>T · Time-to-value</span></div>
-      <div class="stat reveal"><b>25%</b><span>A · Automation fit</span></div>
-      <div class="stat reveal"><b>20%</b><span>D · Data readiness</span></div>
-      <div class="stat reveal"><b>20%</b><span>E · Exit-safety</span></div>
-    </div>
-    <div class="bands reveal"><span class="band b-now">75+ · INSTALL NOW</span><span class="band b-q">55–74 · QUEUE NEXT</span><span class="band b-p">UNDER 55 · PARK</span><span style="color:var(--red);font-size:.9rem;padding-left:8px">Exit-safety of 2 or less flags “Rework first.”</span></div>
-    <p class="footnote reveal">Each dimension is scored 1 to 5.</p>
-  </div>
-</section>
-
-<!-- 08 -->
-<section class="slide alt" data-num="12 / 17">
-  <div class="content">
-    <div class="tag reveal">Live scan</div>
-    <h2 class="reveal">Paste a URL. <span class="cy">Context.dev</span> reads the page.</h2>
-    <div class="flow">
-      <div class="card c-gold reveal"><span class="num">01</span><h3>A website</h3><p>The buyer pastes the target's address.</p></div><div class="arrow">→</div>
-      <div class="card c-cyan reveal"><span class="num" style="color:var(--cyan)">02</span><h3>One scan</h3><p>Scripts, links, forms and schema from the homepage.</p></div><div class="arrow">→</div>
-      <div class="card c-rust reveal"><span class="num" style="color:var(--rust)">03</span><h3>Signals</h3><p>Platform, booking, email and tracking, each with its evidence.</p></div><div class="arrow">→</div>
-      <div class="card c-green reveal"><span class="num" style="color:var(--green)">04</span><h3>A route</h3><p>Business type, questions to ask, ranked processes.</p></div>
-    </div>
-    <p class="sub reveal" style="margin-top:24px">Every detected signal has a “Not right” button. Dismiss one and the route re-runs on the rest.</p>
-  </div>
-</section>
-
-<!-- 11 -->
-<section class="slide" data-num="13 / 17">
-  <div class="content">
-    <div class="tag reveal">Worked example</div>
-    <h2 class="reveal">A local HVAC company, <span class="hl">routed.</span></h2>
-    <table class="reveal">
-      <tr><th>Process</th><th>Kit</th><th>Score</th><th>Found on the site</th></tr>
-      <tr><td>Missed-call follow-up</td><td>Outreach</td><td class="g">100 · Install now</td><td>Click-to-call number</td></tr>
-      <tr><td>Speed-to-lead response</td><td>Outreach</td><td class="g">100 · Install now</td><td>Inquiry form</td></tr>
-      <tr><td>Quote follow-up</td><td>Outreach</td><td class="g">84 · Install now</td><td>Quote and estimate language</td></tr>
-      <tr><td>Web form routing</td><td>CRM</td><td class="g">76 · Install now</td><td>Inquiry form</td></tr>
-      <tr><td>Lead source attribution</td><td>Auditor</td><td class="c">68 · Queue next</td><td>CallRail call tracking</td></tr>
-    </table>
-    <p class="footnote reveal">Synthetic example site. Routed as lead gen with high confidence from 12 signals, including Google Tag Manager, a Meta pixel and CallRail.</p>
-  </div>
-</section>
-
-<!-- EXIT -->
-<section class="slide alt" data-num="14 / 17">
-  <div class="content">
-    <div class="tag reveal">Why this shows up in your exit</div>
-    <h2 class="reveal">Shared tools are how you <span class="hl">prove</span> you can roll up.</h2>
-    <div class="grid2">
-      <div class="card c-gold reveal"><span class="num">WHAT BUYERS PAY FOR</span><h3>Rollup capability they can see</h3><p>DealCon's own numbers: pre-exit acquisitions that lift EBITDA 30%+ and show rollup capability can add 1–2x to the exit multiple. One toolkit running the same way in every business is that capability, in the data.</p></div>
-      <div class="card c-cyan reveal"><span class="num" style="color:var(--cyan)">WHAT IT REMOVES</span><h3>Owner-held know-how</h3><p>Leads in a rep's phone, pixels in an agency's account, a process only one person understands. The Jev exit-safety score flags these before they cost you at the table.</p></div>
-    </div>
-  </div>
-</section>
-
-<!-- OFFER -->
-<section class="slide" data-num="15 / 17">
-  <div class="glow"></div>
-  <div class="content">
-    <div class="tag reveal">Work with me</div>
-    <h2 class="reveal">One engineer across <span class="hl">your whole portfolio.</span></h2>
-    <p class="sub reveal">Not a new vendor for every business. A fractional FDE on your deal team who knows your stack, your playbook and every company you own.</p>
-    <div class="grid4">
-      <div class="card c-gold reveal"><span class="num">01 · BUILD</span><h3>The toolkit</h3><p>Built for your functions, owned by you, on Cloudflare.</p></div>
-      <div class="card c-cyan reveal"><span class="num" style="color:var(--cyan)">02 · DEPLOY</span><h3>Every close</h3><p>Installed into each new business on the systems it already runs.</p></div>
-      <div class="card c-rust reveal"><span class="num" style="color:var(--rust)">03 · TROUBLESHOOT</span><h3>When it breaks</h3><p>One person who already knows how it was built.</p></div>
-      <div class="card c-green reveal"><span class="num" style="color:var(--green)">04 · PROVE</span><h3>The numbers</h3><p>Before and after for every kit, ready for your next buyer.</p></div>
-    </div>
-    <div class="chips reveal"><span class="chip gold">~10 yrs measurement infrastructure</span><span class="chip rust">GTM · GA4 · Conversions API · Ads</span><span class="chip cyan">Agentic systems</span><span class="chip green">Cloudflare-first</span></div>
-  </div>
-</section>
-
-<!-- HONEST -->
-<section class="slide alt" data-num="16 / 17">
-  <div class="content">
-    <div class="tag red reveal">The honest part</div>
-    <h2 class="reveal">What tools <span class="hl">can't</span> do on their own.</h2>
-    <div class="grid2">
-      <div class="card c-red reveal"><h3>They don't fix a broken process</h3><p>Most AI projects fail because the process underneath was never mapped. That work comes first.</p></div>
-      <div class="card c-red reveal"><h3>Trust takes longer than the build</h3><p>People adopt tools that fit the steps they already know. Plan for pilots, not a switch-flip.</p></div>
-      <div class="card c-rust reveal"><h3>A tag in the code is not proof</h3><p>A pixel on the site doesn't mean the conversion fires. Step zero confirms it before anything is counted.</p></div>
-      <div class="card c-rust reveal"><h3>Today's intake is a working demo</h3><p>The scan and scoring you saw run today. Each portfolio gets its own build on its own accounts.</p></div>
-    </div>
-  </div>
-</section>
-
-<!-- 14 -->
-<section class="slide alt" data-num="17 / 17">
-  <div class="glow"></div>
-  <div class="content">
-    <div class="split" style="grid-template-columns:1.4fr .8fr">
-      <div>
-    <div class="tag reveal">Next</div>
-    <h1 class="reveal">Bring me <span class="hl">one target.</span> I&rsquo;ll show you what to install first.</h1>
-    <div class="steps">
-      <div class="step reveal"><b>01</b>Before you close: I scan it and score what to fix first.</div>
-      <div class="step reveal"><b>02</b>At close: we baseline the numbers that matter.</div>
-      <div class="step reveal"><b>03</b>After: the kit goes in, and carries into the next business you buy.</div>
-    </div>
-    <p class="sig reveal">ORGANIZEDAI · WITH JORDAAAN</p>
+      <div style="display:flex; flex-direction:column; gap:14px; padding:26px 30px; background:#211d10; border:1px solid #8b7a12">
+        <p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#f5d623">LAYER 2 · YOUR AGENTS</p>
+        <div style="display:flex; flex-direction:row; gap:16px">
+          <div style="display:flex; flex-direction:column; gap:6px; flex:1">
+            <h3 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:28px; font-weight:800; color:#f0ece4">Traces</h3>
+            <p style="font-family:Inter, Arial, sans-serif; font-size:24px; line-height:1.4; color:#a09888">Every run, step by step.</p>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:6px; flex:1">
+            <h3 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:28px; font-weight:800; color:#f0ece4">Tool calls</h3>
+            <p style="font-family:Inter, Arial, sans-serif; font-size:24px; line-height:1.4; color:#a09888">What each agent did in your systems.</p>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:6px; flex:1">
+            <h3 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:28px; font-weight:800; color:#f0ece4">Tokens</h3>
+            <p style="font-family:Inter, Arial, sans-serif; font-size:24px; line-height:1.4; color:#a09888">What each run cost you.</p>
+          </div>
         </div>
-      <div class="card c-gold reveal" style="text-align:center;display:flex;flex-direction:column;align-items:center;gap:14px">
-        <span class="num">TRY IT NOW</span>
-        <img src="/dealcon/intake-qr.png" alt="QR code to the Jev intake" width="260" height="260" style="width:100%;max-width:260px;height:auto;display:block">
-        <p style="color:var(--text)">Scan, pick a business like yours, and see what to automate first.</p>
-        <a href="/dealcon/intake/" style="font-family:var(--mono);font-size:.8rem">talk.organizedai.vip/dealcon/intake →</a>
       </div>
     </div>
   </div>
+  <p style="position:absolute; bottom:64px; left:128px; width:900px; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:3px; text-transform:uppercase; color:#a09888">Organized<span style="color:#f5d623">AI</span> · Your personal FDE</p>
+  <p style="position:absolute; right:128px; bottom:64px; width:240px; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; text-align:right; color:#a09888">11 / 21</p>
+  
 </section>
+</div></div>
+<div class="stage" data-i="11"><div class="fit"><section class="sl" id="score" data-transition="fade" style="display:flex; flex-direction:column; gap:30px; padding:128px 128px 160px; background:#141210">
+  <p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:4px; text-transform:uppercase; color:#f5d623">— When · from by hand to automated</p>
+  <h2 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:64px; font-weight:800; line-height:1.1; letter-spacing:-1.3px; color:#f0ece4">Knowing <span style="color:#f5d623"><i>when</i></span> to install is the job.</h2>
+  <div style="display:flex; flex-direction:row; gap:14px">
+    <div style="display:flex; flex-direction:column; gap:10px; flex:1; padding:24px; background:#1a1814; border-top:3px solid #a09888">
+      <p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#a09888">1 · BY HAND</p>
+      <h3 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:28px; font-weight:800; line-height:1.15; color:#f0ece4">A person does it</h3>
+      <p style="font-family:Inter, Arial, sans-serif; font-size:24px; line-height:1.4; color:#a09888"><b>Move on when</b> it repeats every week and the steps can be written down.</p>
+    </div>
+    <span class="xarrow" style="width:36px; height:28px; align-self:center; background:#8b7a12"></span>
+    <div style="display:flex; flex-direction:column; gap:10px; flex:1; padding:24px; background:#1a1814; border-top:3px solid #c4943d">
+      <p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#c4943d">2 · RULES</p>
+      <h3 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:28px; font-weight:800; line-height:1.15; color:#f0ece4">Plain software</h3>
+      <p style="font-family:Inter, Arial, sans-serif; font-size:24px; line-height:1.4; color:#a09888"><b>Move on when</b> the fixed steps run clean and what's left needs judgment.</p>
+    </div>
+    <span class="xarrow" style="width:36px; height:28px; align-self:center; background:#8b7a12"></span>
+    <div style="display:flex; flex-direction:column; gap:10px; flex:1; padding:24px; background:#1a1814; border-top:3px solid #22d3ee">
+      <p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#22d3ee">3 · AI + REVIEW</p>
+      <h3 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:28px; font-weight:800; line-height:1.15; color:#f0ece4">AI drafts, a person approves</h3>
+      <p style="font-family:Inter, Arial, sans-serif; font-size:24px; line-height:1.4; color:#a09888"><b>Move on when</b> it matches a person on real cases with known answers.</p>
+    </div>
+    <span class="xarrow" style="width:36px; height:28px; align-self:center; background:#8b7a12"></span>
+    <div style="display:flex; flex-direction:column; gap:10px; flex:1; padding:24px; background:#211d10; border:1px solid #8b7a12">
+      <p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#f5d623">4 · AI ON ITS OWN</p>
+      <h3 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:28px; font-weight:800; line-height:1.15; color:#f0ece4">Monitored, not supervised</h3>
+      <p style="font-family:Inter, Arial, sans-serif; font-size:24px; line-height:1.4; color:#a09888"><b>Only when</b> a mistake is cheap and gets caught. Costly calls stay human.</p>
+    </div>
+  </div>
+  <div style="display:flex; flex-direction:row; gap:36px; align-items:center; padding:26px 30px; background:#211d10; border:1px solid #8b7a12">
+    <div style="width:300px; display:flex; flex-direction:column; gap:6px">
+      <p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:56px; font-weight:800; line-height:1; color:#f0ece4"><span style="color:#f5d623">80/</span>20</p>
+      <p style="font-family:Inter, Arial, sans-serif; font-size:24px; line-height:1.35; color:#f0ece4">The build is 20%. <b>Trust is 80%.</b></p>
+    </div>
+    <div style="display:flex; flex-direction:row; gap:20px; flex:1">
+      <div style="display:flex; flex-direction:column; gap:6px; flex:1; padding:0 0 0 18px; border-left:2px solid #8b7a12">
+        <h3 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:26px; font-weight:800; line-height:1.2; color:#f0ece4">Fit their steps</h3>
+        <p style="font-family:Inter, Arial, sans-serif; font-size:24px; line-height:1.4; color:#a09888">Built into the way the team already works.</p>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:6px; flex:1; padding:0 0 0 18px; border-left:2px solid #8b7a12">
+        <h3 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:26px; font-weight:800; line-height:1.2; color:#f0ece4">Show the work</h3>
+        <p style="font-family:Inter, Arial, sans-serif; font-size:24px; line-height:1.4; color:#a09888">Every step visible before anything goes out.</p>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:6px; flex:1; padding:0 0 0 18px; border-left:2px solid #8b7a12">
+        <h3 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:26px; font-weight:800; line-height:1.2; color:#f0ece4">Run side by side</h3>
+        <p style="font-family:Inter, Arial, sans-serif; font-size:24px; line-height:1.4; color:#a09888">Next to the person until it matches.</p>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:6px; flex:1; padding:0 0 0 18px; border-left:2px solid #8b7a12">
+        <h3 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:26px; font-weight:800; line-height:1.2; color:#f0ece4">One person to call</h3>
+        <p style="font-family:Inter, Arial, sans-serif; font-size:24px; line-height:1.4; color:#a09888">I train the team and own the fixes.</p>
+      </div>
+    </div>
+  </div>
+  <p style="position:absolute; bottom:64px; left:128px; width:900px; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:3px; text-transform:uppercase; color:#a09888">Organized<span style="color:#f5d623">AI</span> · Your personal FDE</p>
+  <p style="position:absolute; right:128px; bottom:64px; width:240px; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; text-align:right; color:#a09888">12 / 21</p>
+  
+</section>
+</div></div>
+<div class="stage" data-i="12"><div class="fit"><section class="sl" id="rank" data-transition="fade" style="background:#0c0b09; color:#a09888; font-family:Inter, Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; justify-content:flex-start; gap:34px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:4px; text-transform:uppercase; color:#F5D623">— Which process moves first</p>
+<h2 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:64px; font-weight:800; line-height:1.1; letter-spacing:-0.02em; color:#f0ece4">The Jev score <span style="color:#F5D623; font-style:italic">ranks</span> every process.</h2>
+<div style="display:flex; gap:24px">
+<div style="flex:1; border-left:1px solid #8B7A12; padding-left:20px; display:flex; flex-direction:column; gap:8px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:48px; font-weight:800; color:#f0ece4">35%</p>
+<p style="font-size:24px; line-height:1.4; color:#a09888">Time-to-value: how fast it pays back</p>
+</div>
+<div style="flex:1; border-left:1px solid #8B7A12; padding-left:20px; display:flex; flex-direction:column; gap:8px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:48px; font-weight:800; color:#f0ece4">25%</p>
+<p style="font-size:24px; line-height:1.4; color:#a09888">Automation fit: how rule-like the work is</p>
+</div>
+<div style="flex:1; border-left:1px solid #8B7A12; padding-left:20px; display:flex; flex-direction:column; gap:8px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:48px; font-weight:800; color:#f0ece4">20%</p>
+<p style="font-size:24px; line-height:1.4; color:#a09888">Data readiness: is the data clean and reachable</p>
+</div>
+<div style="flex:1; border-left:1px solid #8B7A12; padding-left:20px; display:flex; flex-direction:column; gap:8px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:48px; font-weight:800; color:#f0ece4">20%</p>
+<p style="font-size:24px; line-height:1.4; color:#a09888">Exit-safety: can a buyer inherit it</p>
+</div>
+</div>
+<div style="display:flex; gap:20px; align-items:stretch">
+<div style="flex:1; background:#F5D623; border:1px solid #F5D623; padding:28px; display:flex; flex-direction:column; gap:12px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:26px; font-weight:800; letter-spacing:1px; color:#0c0b09">75+ · INSTALL NOW</p>
+<h3 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:30px; font-weight:800; line-height:1.15; color:#0c0b09">Clear payback, ready data</h3>
+<p style="font-size:24px; line-height:1.45; color:#2a2410">Goes into the next build.</p>
+</div>
+<div style="flex:1; background:#1a1814; border:1px solid #22d3ee; padding:28px; display:flex; flex-direction:column; gap:12px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:26px; font-weight:800; letter-spacing:1px; color:#22d3ee">55–74 · QUEUE NEXT</p>
+<h3 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:30px; font-weight:800; line-height:1.15; color:#f0ece4">Worth it once the data is ready</h3>
+<p style="font-size:24px; line-height:1.45; color:#a09888">Fix the gap, then it moves up.</p>
+</div>
+<div style="flex:1; background:#1a1814; border:1px solid #605848; padding:28px; display:flex; flex-direction:column; gap:12px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:26px; font-weight:800; letter-spacing:1px; color:#a09888">UNDER 55 · KEEP IT BY HAND</p>
+<h3 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:30px; font-weight:800; line-height:1.15; color:#f0ece4">Not worth automating yet</h3>
+<p style="font-size:24px; line-height:1.45; color:#a09888">Revisit after the baseline.</p>
+</div>
+<div style="flex:1; background:#1a1814; border:1px solid #e05252; padding:28px; display:flex; flex-direction:column; gap:12px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:26px; font-weight:800; letter-spacing:1px; color:#e05252">EXIT-SAFETY 2 OR LESS</p>
+<h3 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:30px; font-weight:800; line-height:1.15; color:#f0ece4">Rework first</h3>
+<p style="font-size:24px; line-height:1.45; color:#a09888">Fix the process before any score counts.</p>
+</div>
+</div>
+<p style="position:absolute; left:128px; bottom:64px; width:900px; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:3px; text-transform:uppercase; color:#a09888">Organized<span style="color:#F5D623">AI</span> · Your personal FDE</p>
+<p style="position:absolute; right:128px; bottom:64px; width:240px; text-align:right; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; color:#a09888">13 / 21</p>
 
+</section>
+</div></div>
+<div class="stage" data-i="13"><div class="fit"><section class="sl" id="scan" data-transition="fade" style="background:#0c0b09; color:#a09888; font-family:Inter, Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; justify-content:flex-start; gap:40px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:4px; text-transform:uppercase; color:#F5D623">— Live scan</p>
+<h2 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:64px; font-weight:800; line-height:1.1; letter-spacing:-0.02em; color:#f0ece4">Paste a URL. <span style="color:#22d3ee; font-style:italic">Context.dev</span> reads the page.</h2>
+<div style="display:flex; gap:20px; align-items:stretch">
+<div style="flex:1; background:#1a1814; border-top:3px solid #F5D623; padding:28px; display:flex; flex-direction:column; gap:12px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#F5D623">01</p>
+<h3 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:30px; font-weight:800; line-height:1.15; color:#f0ece4">A website</h3>
+<p style="font-size:26px; line-height:1.45; color:#a09888">The buyer pastes the target's address.</p>
+</div>
+<span class="xarrow" style="width:56px; height:40px; background:#8B7A12; align-self:center"></span>
+<div style="flex:1; background:#1a1814; border-top:3px solid #22d3ee; padding:28px; display:flex; flex-direction:column; gap:12px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#22d3ee">02</p>
+<h3 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:30px; font-weight:800; line-height:1.15; color:#f0ece4">One scan</h3>
+<p style="font-size:26px; line-height:1.45; color:#a09888">Scripts, links, forms and schema from the homepage.</p>
+</div>
+<span class="xarrow" style="width:56px; height:40px; background:#8B7A12; align-self:center"></span>
+<div style="flex:1; background:#1a1814; border-top:3px solid #C4943D; padding:28px; display:flex; flex-direction:column; gap:12px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#C4943D">03</p>
+<h3 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:30px; font-weight:800; line-height:1.15; color:#f0ece4">Signals</h3>
+<p style="font-size:26px; line-height:1.45; color:#a09888">Platform, booking, email and tracking, each with its evidence.</p>
+</div>
+<span class="xarrow" style="width:56px; height:40px; background:#8B7A12; align-self:center"></span>
+<div style="flex:1; background:#1a1814; border-top:3px solid #4ade80; padding:28px; display:flex; flex-direction:column; gap:12px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#4ade80">04</p>
+<h3 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:30px; font-weight:800; line-height:1.15; color:#f0ece4">A route</h3>
+<p style="font-size:26px; line-height:1.45; color:#a09888">Business type, questions to ask, ranked processes.</p>
+</div>
+</div>
+<p style="font-size:28px; line-height:1.5; color:#a09888; width:1500px">Every detected signal has a “Not right” button. Dismiss one and the route re-runs on the rest.</p>
+<p style="position:absolute; left:128px; bottom:64px; width:900px; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:3px; text-transform:uppercase; color:#a09888">Organized<span style="color:#F5D623">AI</span> · Your personal FDE</p>
+<p style="position:absolute; right:128px; bottom:64px; width:240px; text-align:right; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; color:#a09888">14 / 21</p>
+
+</section>
+</div></div>
+<div class="stage" data-i="14"><div class="fit"><section class="sl" id="example" data-transition="fade" style="background:#141210; color:#a09888; font-family:Inter, Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; justify-content:flex-start; gap:32px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:4px; text-transform:uppercase; color:#F5D623">— Worked example</p>
+<h2 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:64px; font-weight:800; line-height:1.1; letter-spacing:-0.02em; color:#f0ece4">A local HVAC company, <span style="color:#F5D623; font-style:italic">routed.</span></h2>
+<table style="font-family:Inter, Arial, sans-serif; font-size:26px; color:#a09888">
+<tr style="background:#211e18"><th style="width:31%; color:#F5D623; text-align:left">Process</th><th style="width:18%; color:#F5D623; text-align:left">Kit</th><th style="width:22%; color:#F5D623; text-align:left">Score</th><th style="width:29%; color:#F5D623; text-align:left">Found on the site</th></tr>
+<tr style="background:#1a1814"><td style="color:#f0ece4; font-weight:600">Missed-call follow-up</td><td>Outreach</td><td style="color:#4ade80">100 · Install now</td><td>Click-to-call number</td></tr>
+<tr style="background:#1a1814"><td style="color:#f0ece4; font-weight:600">Speed-to-lead response</td><td>Outreach</td><td style="color:#4ade80">100 · Install now</td><td>Inquiry form</td></tr>
+<tr style="background:#1a1814"><td style="color:#f0ece4; font-weight:600">Quote follow-up</td><td>Outreach</td><td style="color:#4ade80">84 · Install now</td><td>Quote and estimate language</td></tr>
+<tr style="background:#1a1814"><td style="color:#f0ece4; font-weight:600">Web form routing</td><td>CRM</td><td style="color:#4ade80">76 · Install now</td><td>Inquiry form</td></tr>
+<tr style="background:#1a1814"><td style="color:#f0ece4; font-weight:600">Lead source attribution</td><td>Auditor</td><td style="color:#22d3ee">68 · Queue next</td><td>CallRail call tracking</td></tr>
+</table>
+<p style="font-size:26px; line-height:1.5; color:#a09888; width:1500px">Synthetic example site. Routed as lead gen with high confidence from 12 signals, including Google Tag Manager, a Meta pixel and CallRail.</p>
+<p style="position:absolute; left:128px; bottom:64px; width:900px; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:3px; text-transform:uppercase; color:#a09888">Organized<span style="color:#F5D623">AI</span> · Your personal FDE</p>
+<p style="position:absolute; right:128px; bottom:64px; width:240px; text-align:right; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; color:#a09888">15 / 21</p>
+
+</section>
+</div></div>
+<div class="stage" data-i="15"><div class="fit"><section class="sl" id="exit" data-transition="fade" style="background:#141210; color:#a09888; font-family:Inter, Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; justify-content:flex-start; gap:40px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:4px; text-transform:uppercase; color:#F5D623">— Why this shows up in your exit</p>
+<h2 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:64px; font-weight:800; line-height:1.1; letter-spacing:-0.02em; color:#f0ece4">Shared tools are how you <span style="color:#F5D623; font-style:italic">prove</span> you can roll up.</h2>
+<div style="display:flex; gap:24px; align-items:stretch">
+<div style="flex:1; background:#1a1814; border-top:3px solid #F5D623; padding:36px; display:flex; flex-direction:column; gap:12px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#F5D623">WHAT BUYERS PAY FOR</p>
+<h3 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:30px; font-weight:800; line-height:1.15; color:#f0ece4">Rollup capability they can see</h3>
+<p style="font-size:26px; line-height:1.45; color:#a09888">DealCon&#39;s own numbers: pre-exit acquisitions that lift EBITDA 30%+ and show rollup capability can add 1–2x to the exit multiple. One toolkit running the same way in every business is that capability, in the data.</p>
+</div>
+<div style="flex:1; background:#1a1814; border-top:3px solid #22d3ee; padding:36px; display:flex; flex-direction:column; gap:12px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#22d3ee">WHAT IT REMOVES</p>
+<h3 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:30px; font-weight:800; line-height:1.15; color:#f0ece4">Owner-held know-how</h3>
+<p style="font-size:26px; line-height:1.45; color:#a09888">Leads in a rep&#39;s phone, pixels in an agency&#39;s account, a process only one person understands. The exit-safety score flags these before they cost you at the table.</p>
+</div>
+</div>
+<p style="position:absolute; left:128px; bottom:64px; width:900px; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:3px; text-transform:uppercase; color:#a09888">Organized<span style="color:#F5D623">AI</span> · Your personal FDE</p>
+<p style="position:absolute; right:128px; bottom:64px; width:240px; text-align:right; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; color:#a09888">16 / 21</p>
+
+</section>
+</div></div>
+<div class="stage" data-i="16"><div class="fit"><section class="sl" id="offer" data-transition="fade" style="background:#0c0b09; color:#a09888; font-family:Inter, Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; justify-content:flex-start; gap:32px; justify-content:flex-start">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:4px; text-transform:uppercase; color:#F5D623">— Work with me</p>
+<h2 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:64px; font-weight:800; line-height:1.1; letter-spacing:-0.02em; color:#f0ece4">One engineer across <span style="color:#F5D623; font-style:italic">your whole portfolio.</span></h2>
+<p style="font-size:28px; line-height:1.5; color:#a09888; width:1400px">Not a new vendor for every business. A fractional FDE on your deal team who knows your stack, your playbook and every company you own.</p>
+<div style="display:flex; gap:20px; align-items:stretch">
+<div style="flex:1; background:#1a1814; border-top:3px solid #F5D623; padding:28px; display:flex; flex-direction:column; gap:12px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#F5D623">01 · BUILD</p>
+<h3 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:28px; font-weight:800; line-height:1.15; color:#f0ece4">The toolkit</h3>
+<p style="font-size:24px; line-height:1.45; color:#a09888">Built for your functions, owned by you, on Cloudflare.</p>
+</div>
+<div style="flex:1; background:#1a1814; border-top:3px solid #22d3ee; padding:28px; display:flex; flex-direction:column; gap:12px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#22d3ee">02 · DEPLOY</p>
+<h3 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:28px; font-weight:800; line-height:1.15; color:#f0ece4">Every close</h3>
+<p style="font-size:24px; line-height:1.45; color:#a09888">Installed into each new business on the systems it already runs.</p>
+</div>
+<div style="flex:1; background:#1a1814; border-top:3px solid #C4943D; padding:28px; display:flex; flex-direction:column; gap:12px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#C4943D">03 · TROUBLESHOOT</p>
+<h3 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:28px; font-weight:800; line-height:1.15; color:#f0ece4">When it breaks</h3>
+<p style="font-size:24px; line-height:1.45; color:#a09888">One person who already knows how it was built.</p>
+</div>
+<div style="flex:1; background:#1a1814; border-top:3px solid #4ade80; padding:28px; display:flex; flex-direction:column; gap:12px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#4ade80">04 · PROVE</p>
+<h3 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:28px; font-weight:800; line-height:1.15; color:#f0ece4">The numbers</h3>
+<p style="font-size:24px; line-height:1.45; color:#a09888">Before and after for every kit, ready for your next buyer.</p>
+</div>
+</div>
+<div style="display:flex; gap:12px; flex-wrap:wrap">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; text-transform:uppercase; color:#F5D623; border:1px solid #F5D623; padding:8px 16px; border-radius:2px">~10 yrs measurement</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; text-transform:uppercase; color:#C4943D; border:1px solid #C4943D; padding:8px 16px; border-radius:2px">GTM · GA4 · CAPI · Ads</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; text-transform:uppercase; color:#22d3ee; border:1px solid #22d3ee; padding:8px 16px; border-radius:2px">Agentic systems</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; text-transform:uppercase; color:#4ade80; border:1px solid #4ade80; padding:8px 16px; border-radius:2px">Cloudflare-first</p>
+</div>
+<p style="position:absolute; left:128px; bottom:64px; width:900px; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:3px; text-transform:uppercase; color:#a09888">Organized<span style="color:#F5D623">AI</span> · Your personal FDE</p>
+<p style="position:absolute; right:128px; bottom:64px; width:240px; text-align:right; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; color:#a09888">17 / 21</p>
+
+</section>
+</div></div>
+<div class="stage" data-i="17"><div class="fit"><section class="sl" id="honest" data-transition="fade" style="background:#141210; color:#a09888; font-family:Inter, Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; justify-content:flex-start; gap:32px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:4px; text-transform:uppercase; color:#e05252">— The honest part</p>
+<h2 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:64px; font-weight:800; line-height:1.1; letter-spacing:-0.02em; color:#f0ece4">What tools <span style="color:#F5D623; font-style:italic">can&#39;t</span> do on their own.</h2>
+<div style="display:flex; gap:24px; align-items:stretch">
+<div style="flex:1; background:#1a1814; border-top:3px solid #e05252; padding:30px; display:flex; flex-direction:column; gap:12px">
+<h3 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:30px; font-weight:800; line-height:1.15; color:#f0ece4">They don&#39;t fix a broken process</h3>
+<p style="font-size:26px; line-height:1.45; color:#a09888">Most AI projects fail because the process underneath was never mapped. That work comes first.</p>
+</div>
+<div style="flex:1; background:#1a1814; border-top:3px solid #e05252; padding:30px; display:flex; flex-direction:column; gap:12px">
+<h3 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:30px; font-weight:800; line-height:1.15; color:#f0ece4">Trust takes longer than the build</h3>
+<p style="font-size:26px; line-height:1.45; color:#a09888">People adopt tools that fit the steps they already know. Plan for pilots, not a switch-flip.</p>
+</div>
+</div>
+<div style="display:flex; gap:24px; align-items:stretch">
+<div style="flex:1; background:#1a1814; border-top:3px solid #C4943D; padding:30px; display:flex; flex-direction:column; gap:12px">
+<h3 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:30px; font-weight:800; line-height:1.15; color:#f0ece4">A tag in the code is not proof</h3>
+<p style="font-size:26px; line-height:1.45; color:#a09888">A pixel on the site doesn&#39;t mean the conversion fires. Step zero confirms it first.</p>
+</div>
+<div style="flex:1; background:#1a1814; border-top:3px solid #C4943D; padding:30px; display:flex; flex-direction:column; gap:12px">
+<h3 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:30px; font-weight:800; line-height:1.15; color:#f0ece4">Today&#39;s intake is a working demo</h3>
+<p style="font-size:26px; line-height:1.45; color:#a09888">The scan and scoring you saw run today. Each portfolio gets its own build on its own accounts.</p>
+</div>
+</div>
+<p style="position:absolute; left:128px; bottom:64px; width:900px; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:3px; text-transform:uppercase; color:#a09888">Organized<span style="color:#F5D623">AI</span> · Your personal FDE</p>
+<p style="position:absolute; right:128px; bottom:64px; width:240px; text-align:right; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; color:#a09888">18 / 21</p>
+
+</section>
+</div></div>
+<div class="stage" data-i="18"><div class="fit"><section class="sl" id="stack" data-transition="fade" style="background:#0c0b09; color:#a09888; font-family:Inter, Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; justify-content:flex-start; gap:28px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:4px; text-transform:uppercase; color:#F5D623">— What built this talk</p>
+<h2 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:56px; font-weight:800; line-height:1.1; letter-spacing:-0.02em; color:#f0ece4">Every tool behind this deck. <span style="color:#a09888">Anyone can pick them up.</span></h2>
+<div style="display:flex; flex-direction:column; gap:14px">
+<div style="display:flex; gap:12px; align-items:center">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#F5D623; width:180px">BUILD</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; color:#f0ece4; background:#1a1814; border:1px solid #F5D623; padding:8px 16px; border-radius:2px">Claude</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; color:#f0ece4; background:#1a1814; border:1px solid #F5D623; padding:8px 16px; border-radius:2px">Claude Code</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; color:#f0ece4; background:#1a1814; border:1px solid #F5D623; padding:8px 16px; border-radius:2px">Claude Slides · this deck</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; color:#f0ece4; background:#1a1814; border:1px solid #F5D623; padding:8px 16px; border-radius:2px">Claude Artifacts</p>
+</div>
+<div style="display:flex; gap:12px; align-items:center">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#22d3ee; width:180px">RESEARCH</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; color:#f0ece4; background:#1a1814; border:1px solid #22d3ee; padding:8px 16px; border-radius:2px">Context.dev</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; color:#f0ece4; background:#1a1814; border:1px solid #22d3ee; padding:8px 16px; border-radius:2px">Firecrawl</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; color:#f0ece4; background:#1a1814; border:1px solid #22d3ee; padding:8px 16px; border-radius:2px">Web search</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; color:#f0ece4; background:#1a1814; border:1px solid #22d3ee; padding:8px 16px; border-radius:2px">YouTube</p>
+</div>
+<div style="display:flex; gap:12px; align-items:center">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#4ade80; width:180px">SHIP</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; color:#f0ece4; background:#1a1814; border:1px solid #4ade80; padding:8px 16px; border-radius:2px">Cloudflare Workers</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; color:#f0ece4; background:#1a1814; border:1px solid #4ade80; padding:8px 16px; border-radius:2px">Worker Assets</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; color:#f0ece4; background:#1a1814; border:1px solid #4ade80; padding:8px 16px; border-radius:2px">Wrangler</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; color:#f0ece4; background:#1a1814; border:1px solid #4ade80; padding:8px 16px; border-radius:2px">GitHub</p>
+</div>
+<div style="display:flex; gap:12px; align-items:center">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#C4943D; width:180px">MEDIA</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; color:#f0ece4; background:#1a1814; border:1px solid #C4943D; padding:8px 16px; border-radius:2px">HyperFrames</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; color:#f0ece4; background:#1a1814; border:1px solid #C4943D; padding:8px 16px; border-radius:2px">GSAP</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; color:#f0ece4; background:#1a1814; border:1px solid #C4943D; padding:8px 16px; border-radius:2px">ffmpeg</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; color:#f0ece4; background:#1a1814; border:1px solid #C4943D; padding:8px 16px; border-radius:2px">Google Fonts</p>
+</div>
+<div style="display:flex; gap:12px; align-items:center">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#e05252; width:180px">PROVE</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; color:#f0ece4; background:#1a1814; border:1px solid #e05252; padding:8px 16px; border-radius:2px">Jev score + router</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; color:#f0ece4; background:#1a1814; border:1px solid #e05252; padding:8px 16px; border-radius:2px">102 automated tests</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; color:#f0ece4; background:#1a1814; border:1px solid #e05252; padding:8px 16px; border-radius:2px">Playwright + Chromium</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; color:#f0ece4; background:#1a1814; border:1px solid #e05252; padding:8px 16px; border-radius:2px">Frame-by-frame QA</p>
+</div>
+<div style="display:flex; gap:12px; align-items:center">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#a09888; width:180px">RUN ON</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; color:#f0ece4; background:#1a1814; border:1px solid #a09888; padding:8px 16px; border-radius:2px">Mac Mini</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; color:#f0ece4; background:#1a1814; border:1px solid #a09888; padding:8px 16px; border-radius:2px">MacBook Pro</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; color:#f0ece4; background:#1a1814; border:1px solid #a09888; padding:8px 16px; border-radius:2px">Claude desktop app</p>
+</div>
+</div>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:44px; font-weight:800; line-height:1.2; color:#f0ece4">It&#39;s not the tools. <span style="color:#F5D623; font-style:italic">It&#39;s how you use them.</span></p>
+<p style="position:absolute; left:128px; bottom:64px; width:900px; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:3px; text-transform:uppercase; color:#a09888">Organized<span style="color:#F5D623">AI</span> · Your personal FDE</p>
+<p style="position:absolute; right:128px; bottom:64px; width:240px; text-align:right; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; color:#a09888">19 / 21</p>
+
+</section>
+</div></div>
+<div class="stage" data-i="19"><div class="fit"><section class="sl" id="close" data-transition="fade" style="background:radial-gradient(circle at 70% 40%, rgba(245,214,35,0.09), rgba(12,11,9,0) 60%), #0c0b09; color:#a09888; font-family:Inter, Arial, sans-serif; padding:128px 128px 160px; display:grid; grid-template-columns:1120px 1fr; gap:64px; align-items:center">
+<div style="display:flex; flex-direction:column; gap:36px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:4px; text-transform:uppercase; color:#F5D623">— Next</p>
+<h2 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:72px; font-weight:800; line-height:1.08; letter-spacing:-0.02em; color:#f0ece4">Bring me <span style="color:#F5D623; font-style:italic">one target.</span> I&#39;ll show you what to install first.</h2>
+<div style="display:flex; flex-direction:column; gap:16px">
+<div style="display:flex; gap:24px; align-items:baseline">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:30px; color:#8B7A12">01</p>
+<p style="font-size:32px; line-height:1.4; color:#f0ece4">Before you close: I scan it and score what to fix first.</p>
+</div>
+<div style="display:flex; gap:24px; align-items:baseline">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:30px; color:#8B7A12">02</p>
+<p style="font-size:32px; line-height:1.4; color:#f0ece4">At close: we baseline the numbers that matter.</p>
+</div>
+<div style="display:flex; gap:24px; align-items:baseline">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:30px; color:#8B7A12">03</p>
+<p style="font-size:32px; line-height:1.4; color:#f0ece4">After: the kit goes in, and carries into the next business you buy.</p>
+</div>
+</div>
+</div>
+<div style="background:#141210; border:1px solid #8B7A12; border-top:4px solid #F5D623; padding:32px; display:flex; flex-direction:column; gap:20px; align-items:center">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:3px; text-transform:uppercase; color:#F5D623">Try it now</p>
+<img src="/dealcon/intake-qr.png" alt="QR code to the Jev intake at talk.organizedai.vip/dealcon/intake" style="width:340px; height:340px; object-fit:contain">
+<p style="font-size:26px; line-height:1.35; color:#f0ece4; text-align:center; width:380px">Scan, pick a business like yours, and see what to automate first.</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; color:#a09888; text-align:center; width:380px">talk.organizedai.vip<br>/dealcon/intake</p>
+</div>
+<p style="position:absolute; left:128px; bottom:64px; width:900px; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:3px; text-transform:uppercase; color:#a09888">Organized<span style="color:#F5D623">AI</span> · Your personal FDE</p>
+<p style="position:absolute; right:128px; bottom:64px; width:240px; text-align:right; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; color:#a09888">20 / 21</p>
+
+</section>
+</div></div>
+<div class="stage" data-i="20"><div class="fit"><section class="sl" id="hire" data-transition="fade" style="background:radial-gradient(circle at 50% 40%, rgba(245,214,35,0.08), rgba(12,11,9,0) 60%), #0c0b09; color:#a09888; font-family:Inter, Arial, sans-serif; padding:128px 128px 160px; display:grid; grid-template-columns:400px 1fr 420px; gap:56px; align-items:center">
+<div style="display:flex; flex-direction:column; gap:18px; align-items:flex-start">
+<img src="/dealcon/jordan.jpg" alt="Jordan Hill, side profile" style="width:400px; height:400px; object-fit:cover; border-radius:8px; border:1px solid #8B7A12; background:#1a1814">
+<h3 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:36px; font-weight:800; color:#f0ece4">Jordan Hill</h3>
+<p style="font-size:26px; line-height:1.35; color:#a09888">Founder, Organized<span style="color:#F5D623">AI</span> · Austin</p>
+<div style="display:flex; gap:10px; flex-wrap:wrap">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:1px; color:#C4943D; border:1px solid #C4943D; padding:6px 14px; border-radius:2px">10 yrs measurement</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:1px; color:#22d3ee; border:1px solid #22d3ee; padding:6px 14px; border-radius:2px">MeasureU mentor</p>
+</div>
+</div>
+<div style="display:flex; flex-direction:column; gap:28px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:4px; text-transform:uppercase; color:#F5D623">— Work with me</p>
+<h2 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:60px; font-weight:800; line-height:1.1; letter-spacing:-0.02em; color:#f0ece4">Start with an <span style="color:#F5D623; font-style:italic">AI readiness audit.</span></h2>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:72px; font-weight:800; line-height:1; color:#F5D623">$5,000</p>
+<div style="display:flex; flex-direction:column; gap:14px">
+<div style="display:flex; gap:16px; align-items:center">
+<span class="xcheck" style="color:#F5D623; width:28px; height:28px"></span>
+<p style="font-size:26px; line-height:1.35; color:#f0ece4">A scan of one business&#39;s site and stack</p>
+</div>
+<div style="display:flex; gap:16px; align-items:center">
+<span class="xcheck" style="color:#F5D623; width:28px; height:28px"></span>
+<p style="font-size:26px; line-height:1.35; color:#f0ece4">A measurement check, before anything is installed</p>
+</div>
+<div style="display:flex; gap:16px; align-items:center">
+<span class="xcheck" style="color:#F5D623; width:28px; height:28px"></span>
+<p style="font-size:26px; line-height:1.35; color:#f0ece4">A ranked plan: what to automate first, what stays by hand</p>
+</div>
+</div>
+<p style="font-size:26px; line-height:1.45; color:#a09888">The kickoff for a fractional FDE across your portfolio.</p>
+</div>
+<div style="background:#141210; border:1px solid #8B7A12; border-top:4px solid #F5D623; padding:32px; display:flex; flex-direction:column; gap:18px; align-items:center">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:3px; text-transform:uppercase; color:#F5D623">Scan to book</p>
+<img src="/dealcon/audit-qr.png" alt="QR code to book the AI readiness audit on Stripe" style="width:340px; height:340px; object-fit:contain">
+<p style="font-size:24px; line-height:1.35; color:#f0ece4; text-align:center; width:356px">Secure checkout on Stripe. I follow up by email to schedule.</p>
+</div>
+<p style="position:absolute; left:128px; bottom:64px; width:900px; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:3px; text-transform:uppercase; color:#a09888">Organized<span style="color:#F5D623">AI</span> · Your personal FDE</p>
+<p style="position:absolute; right:128px; bottom:64px; width:240px; text-align:right; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; color:#a09888">21 / 21</p>
+
+</section>
+</div></div>
 </main>
-
+<div class="vid" id="vid"><button type="button" onclick="closeVid()">Close ✕</button><video id="v" src="/dealcon/rollup-playbook.mp4" controls playsinline preload="none"></video></div>
+<div class="hint">← → to move</div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
 <script>
 (function(){
-  var ex=document.getElementById('explainer');if(ex)ex.addEventListener('error',function(){ex.style.display='none';document.getElementById('explainer-fallback').style.display='flex'});
-  var slides=[].slice.call(document.querySelectorAll('.slide')),dots=document.getElementById('dots'),counter=document.getElementById('counter'),bar=document.getElementById('progress');
-  var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches,cur=0;
-  slides.forEach(function(s,i){var d=document.createElement('button');d.className='dot'+(i?'':' active');d.setAttribute('aria-label','Go to slide '+(i+1));d.onclick=function(){go(i)};dots.appendChild(d)});
-  function pad(n){return (n<10?'0':'')+n}
-  function go(i){i=Math.max(0,Math.min(slides.length-1,i));slides[i].scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'})}
-  function set(i){cur=i;[].forEach.call(dots.children,function(d,j){d.classList.toggle('active',j===i)});counter.textContent=pad(i+1)+' / '+pad(slides.length)}
-  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){set(slides.indexOf(e.target));reveal(e.target)}})},{threshold:.55});
-  slides.forEach(function(s){io.observe(s)});
-  var done=new WeakSet();
-  function reveal(s){if(done.has(s))return;done.add(s);var els=s.querySelectorAll('.reveal');if(!els.length)return;
-    if(reduce||!window.gsap){[].forEach.call(els,function(e){e.style.opacity=1});return}
-    gsap.fromTo(els,{y:14,opacity:0},{y:0,opacity:1,duration:.55,stagger:.07,ease:'power2.out',clearProps:'transform'})}
-  // Content stays visible if GSAP is slow or blocked.
-  function hideForAnim(){if(reduce||!window.gsap)return;slides.forEach(function(s,i){if(i>0)[].forEach.call(s.querySelectorAll('.reveal'),function(e){e.style.opacity=0})})}
-  window.addEventListener('load',function(){hideForAnim();reveal(slides[0])});
-  setTimeout(function(){if(!window.gsap)[].forEach.call(document.querySelectorAll('.reveal'),function(e){e.style.opacity=1})},2500);
-  window.addEventListener('scroll',function(){var h=document.documentElement;bar.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%'},{passive:true});
-  window.addEventListener('keydown',function(e){if(e.target&&/INPUT|TEXTAREA|IFRAME/.test(e.target.tagName))return;
-    if(['ArrowDown','ArrowRight','PageDown',' '].indexOf(e.key)>-1){e.preventDefault();go(cur+1)}
-    if(['ArrowUp','ArrowLeft','PageUp'].indexOf(e.key)>-1){e.preventDefault();go(cur-1)}
-    if(e.key==='Home'){e.preventDefault();go(0)}if(e.key==='End'){e.preventDefault();go(slides.length-1)}});
+  var stages=[].slice.call(document.querySelectorAll('.stage')),n=stages.length,cur=0;
+  function fit(){var w=document.documentElement.clientWidth,s=w/1920;
+    stages.forEach(function(st){st.style.height=(1080*s)+'px';st.firstElementChild.style.transform='scale('+s+')';});}
+  fit();addEventListener('resize',fit);
+  var cnt=document.getElementById('count'),prog=document.getElementById('prog');
+  function pad(x){return(x<10?'0':'')+x}
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){cur=+e.target.dataset.i;cnt.textContent=pad(cur+1)+' / '+pad(n);reveal(e.target);}})},{threshold:.5});
+  stages.forEach(function(s){io.observe(s)});
+  var seen=new WeakSet();
+  function reveal(st){if(seen.has(st)||!window.gsap||matchMedia('(prefers-reduced-motion: reduce)').matches)return;seen.add(st);
+    var kids=st.querySelectorAll('section.sl > *:not([style*="position:absolute"])');
+    gsap.from(kids,{y:18,opacity:0,duration:.5,stagger:.06,ease:'power2.out',clearProps:'all'});}
+  addEventListener('scroll',function(){var h=document.documentElement;prog.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%'},{passive:true});
+  function go(i){i=Math.max(0,Math.min(n-1,i));stages[i].scrollIntoView({behavior:'smooth',block:'start'})}
+  addEventListener('keydown',function(e){if(document.getElementById('vid').classList.contains('on')){if(e.key==='Escape')closeVid();return}
+    if(['ArrowRight','ArrowDown','PageDown',' '].indexOf(e.key)>-1){e.preventDefault();go(cur+1)}
+    if(['ArrowLeft','ArrowUp','PageUp'].indexOf(e.key)>-1){e.preventDefault();go(cur-1)}
+    if(e.key==='Home'){e.preventDefault();go(0)}if(e.key==='End'){e.preventDefault();go(n-1)}});
+  window.openVid=function(){document.getElementById('vid').classList.add('on');var v=document.getElementById('v');v.play&&v.play().catch(function(){})};
+  window.closeVid=function(){var v=document.getElementById('v');v.pause();document.getElementById('vid').classList.remove('on')};
 })();
 </script>
 </body>
