@@ -1,0 +1,1632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Jev intake: pick an example business, answer a few taps, and see which processes to automate first.">
+<meta name="theme-color" content="#0c0b09">
+<title>Jev Intake · DealCon</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto:wght@400;500;700;900&display=swap">
+<style>
+/* Layout: DealCon workshop shell — fixed navy sidebar, gold top bar, main column with hero + stamp, journey strip, then archetype, ledger and map panels. Deliberately single light theme to match the workshop site. */
+:root {
+  --ink: #121b46;
+  --muted: #565a7c;
+  --line: #cad5e2;
+  --gold: #c6a24c;
+  --gold-light: #f9d88c;
+  --pale: #e2e8f0;
+  --white: #ffffff;
+  --cream: #fff8df;
+  --flag: #c65d4c;
+  --flag-ink: #7a261c;
+  --flag-bg: #fff0e9;
+  --side-2: #1d2958;
+  --side-line: #344477;
+  --display: "Bebas Neue", Impact, "Arial Narrow", sans-serif;
+  --body: Roboto, Arial, system-ui, sans-serif;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+body { margin: 0; font-family: var(--body); color: var(--ink); background: var(--pale); background-image: linear-gradient(135deg, #eef3f8, #e2e8f0 55%, #d6e0ec); font-size: 15px; line-height: 1.55; }
+h1, h2, h3 { font-family: var(--display); font-weight: 400; margin: 0; color: var(--ink); }
+button, input, select { font: inherit; color: inherit; }
+button { cursor: pointer; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
+
+/* Sidebar */
+.sidebar { position: fixed; inset: 0 auto 0 0; width: 246px; background: var(--ink); color: var(--white); padding: 34px 20px 22px; display: flex; flex-direction: column; z-index: 20; }
+.brand { display: flex; align-items: center; gap: 12px; padding: 0 12px 40px; font-family: var(--display); font-size: 25px; letter-spacing: .06em; line-height: 1; text-decoration: none; }
+.brand small { display: block; font-family: var(--body); font-size: 9px; font-weight: 700; letter-spacing: .15em; color: var(--gold-light); margin-top: 5px; }
+.brandmark { width: 35px; height: 39px; background: var(--gold); color: var(--ink); display: grid; place-items: center; font-family: var(--display); font-size: 28px; flex: none; }
+.side-label { font-size: 10px; font-weight: 700; letter-spacing: .15em; color: var(--gold-light); padding: 0 12px; margin: 4px 0 10px; text-transform: uppercase; }
+.side-label.second { margin-top: 28px; }
+.nav { display: flex; align-items: center; gap: 12px; padding: 12px; margin: 2px 0; font-size: 14px; color: var(--line); text-decoration: none; }
+.nav:hover { background: var(--side-2); color: var(--white); }
+.nav.active { background: var(--gold); color: var(--ink); font-weight: 700; }
+.nav .n { margin-left: auto; font-size: 11px; opacity: .8; }
+.sidebar-bottom { margin-top: auto; padding-top: 28px; }
+.session-card { background: var(--side-2); border: 1px solid var(--side-line); padding: 16px 14px; font-size: 9px; font-weight: 700; letter-spacing: .1em; color: var(--gold-light); text-transform: uppercase; }
+.session-card p { margin: 10px 0 0; font-size: 14px; font-weight: 500; letter-spacing: 0; text-transform: none; color: var(--white); line-height: 1.45; }
+.live-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--gold); margin-right: 8px; vertical-align: middle; }
+
+/* Top bar + main */
+.main-shell { margin-left: 246px; min-width: 0; }
+.topbar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 10; height: 64px; background: var(--gold-light); border-bottom: 1px solid var(--gold); padding: 0 40px; display: flex; align-items: center; justify-content: space-between; gap: 12px; font-size: 12px; font-weight: 700; letter-spacing: .04em; }
+.topbar .slash { color: var(--gold); margin: 0 10px; }
+.topbar .who { display: flex; align-items: center; gap: 10px; font-weight: 500; }
+.avatar { width: 28px; height: 28px; background: var(--ink); color: var(--gold-light); display: grid; place-items: center; font-weight: 700; }
+main { max-width: 1320px; margin: 0 auto; padding-inline: 40px; padding-block: 40px 0; }
+
+.eyebrow { display: flex; align-items: center; gap: 10px; font-size: 11px; font-weight: 900; letter-spacing: .17em; text-transform: uppercase; color: var(--ink); }
+.eyebrow::before { content: ""; width: 7px; height: 7px; background: var(--gold); }
+.hero { display: flex; justify-content: space-between; align-items: center; gap: 28px; }
+.hero h1 { font-size: clamp(40px, 5vw, 64px); line-height: 1; letter-spacing: .02em; margin: 14px 0 18px; text-wrap: balance; }
+.hero h1 span { color: var(--gold); display: block; }
+.hero p { color: var(--muted); max-width: 56ch; margin: 0 0 22px; font-size: 16px; }
+.hero-actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.target { display: grid; gap: 6px; margin-top: 22px; max-width: 420px; }
+.target label { font-size: 10px; font-weight: 900; letter-spacing: .15em; text-transform: uppercase; color: var(--muted); }
+.target input { border: 1px solid var(--line); background: #fbfcfd; padding: 11px 12px; font-size: 15px; width: 100%; }
+.target input:focus { outline: 2px solid var(--gold); outline-offset: 1px; }
+.stamp { width: 190px; flex: none; background: var(--ink); color: var(--white); padding: 18px 20px; transform: rotate(-2deg); box-shadow: 0 3px 0 rgba(18,27,70,.12); }
+.stamp > span { font-size: 9px; font-weight: 700; letter-spacing: .12em; color: var(--gold-light); text-transform: uppercase; }
+.stamp strong { display: block; font-family: var(--display); font-weight: 400; font-size: 72px; line-height: 1; color: var(--gold-light); margin: 8px 0 4px; font-variant-numeric: tabular-nums; }
+.stamp p { margin: 0; font-size: 13px; color: var(--pale); line-height: 1.45; }
+
+.primary, .secondary { display: inline-flex; align-items: center; justify-content: center; gap: 9px; padding: 12px 16px; font-size: 13px; line-height: 1.3; border-radius: 0; }
+.primary { background: var(--gold); border: 1px solid var(--gold); color: var(--ink); font-weight: 900; text-transform: uppercase; letter-spacing: .035em; }
+.primary:hover { background: var(--gold-light); }
+.secondary { background: var(--white); border: 1px solid var(--ink); color: var(--ink); font-weight: 700; }
+.secondary:hover { background: var(--pale); }
+
+.journey { display: flex; align-items: center; gap: 18px; background: var(--white); border: 1px solid var(--line); padding: 16px 22px; margin: 30px 0 30px; overflow-x: auto; }
+.journey > a { display: flex; align-items: center; gap: 9px; font-size: 12px; white-space: nowrap; color: var(--muted); text-decoration: none; }
+.journey b { width: 23px; height: 23px; display: grid; place-items: center; border: 1px solid var(--line); font-size: 11px; font-weight: 500; }
+.journey > a.done b { background: var(--gold); border-color: var(--gold); color: var(--ink); }
+.journey > a.done { color: var(--ink); font-weight: 700; }
+.journey i { flex: 1; min-width: 16px; height: 1px; background: var(--line); }
+
+.section-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin: 0 0 14px; flex-wrap: wrap; }
+.section-head h2 { font-size: 26px; letter-spacing: .04em; }
+.section-head > span { font-size: 12px; color: var(--muted); }
+section.block { margin-bottom: 34px; scroll-margin-top: 80px; }
+
+.panel { background: var(--white); border: 1px solid var(--line); box-shadow: 0 3px 0 rgba(18,27,70,.06); padding: 22px; min-width: 0; }
+.panel h3 { font-size: 20px; letter-spacing: .04em; margin-bottom: 12px; }
+.pill { display: inline-block; font-size: 9px; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; white-space: nowrap; padding: 5px 7px; border: 1px solid var(--line); background: var(--pale); color: var(--ink); }
+.pill.now { background: var(--gold-light); border-color: var(--gold); }
+.pill.queue { background: var(--white); border-color: var(--ink); }
+.pill.park { background: var(--pale); color: var(--muted); }
+.pill.flag { background: var(--flag-bg); border-color: var(--flag); color: var(--flag-ink); }
+
+/* Archetype */
+.arch-grid { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 18px; }
+.opt-label { font-size: 10px; font-weight: 900; letter-spacing: .15em; text-transform: uppercase; color: var(--muted); margin: 0 0 8px; }
+.opt-label.second { margin-top: 18px; }
+.options { display: grid; gap: 8px; }
+.options.row { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+.option { display: grid; grid-template-columns: 23px minmax(0, 1fr); gap: 12px; align-items: center; text-align: left; padding: 13px 14px; background: var(--white); border: 1px solid var(--line); transition: border-color .15s; }
+.option:hover { border-color: var(--ink); }
+.option[aria-pressed="true"] { border-color: var(--gold); background: var(--cream); box-shadow: inset 4px 0 var(--gold); }
+.option .chk { width: 23px; height: 23px; border: 1px solid var(--muted); display: grid; place-items: center; font-size: 13px; font-weight: 900; color: transparent; }
+.option[aria-pressed="true"] .chk { background: var(--gold); border-color: var(--gold); color: var(--ink); }
+.option strong { display: block; font-family: var(--display); font-weight: 400; font-size: 19px; letter-spacing: .04em; line-height: 1.1; }
+.option small { display: block; font-size: 12px; color: var(--muted); margin-top: 2px; }
+.arch-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--line); }
+.arch-actions p { margin: 0; font-size: 12px; color: var(--muted); flex: 1 1 220px; }
+.profile { background: var(--ink); color: var(--white); border-color: var(--ink); }
+.profile .opt-label { color: var(--gold-light); }
+.profile dl { margin: 0; display: grid; gap: 16px; }
+.profile dt { font-size: 10px; font-weight: 900; letter-spacing: .15em; text-transform: uppercase; color: var(--gold-light); }
+.profile dd { margin: 4px 0 0; font-size: 14.5px; color: var(--pale); }
+.profile dd .plus { display: block; color: var(--line); opacity: .8; font-size: 13px; margin-top: 2px; }
+.profile .risk dd { color: #ffd2c6; }
+
+.foundation { margin-top: 18px; display: grid; grid-template-columns: minmax(0, 250px) minmax(0, 1fr); gap: 14px 24px; align-items: start; }
+.foundation p { margin: 0; font-size: 13px; color: var(--muted); }
+.checks { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.checks label { display: flex; gap: 10px; align-items: flex-start; font-size: 13.5px; line-height: 1.45; padding: 12px; border: 1px solid var(--line); cursor: pointer; }
+.checks input { width: 16px; height: 16px; margin-top: 2px; accent-color: var(--ink); flex: none; }
+.checks label.done { border-color: var(--gold); background: var(--cream); }
+
+/* Stats */
+.stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); background: var(--white); border: 1px solid var(--line); margin-bottom: 18px; }
+.stat { padding: 14px 18px; border-left: 1px solid var(--line); min-width: 0; }
+.stat:first-child { border-left: 0; }
+.stat .k { font-size: 10px; font-weight: 900; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+.stat .v { font-family: var(--display); font-size: 40px; line-height: 1.05; font-variant-numeric: tabular-nums; }
+.stat .v small { font-family: var(--body); font-size: 13px; color: var(--muted); }
+.stat.now .v { color: var(--gold); }
+.stat.flag .v { color: var(--flag); }
+
+/* Ledger cards + map */
+.work { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 18px; align-items: start; }
+.flow { padding: 0; overflow: hidden; }
+.flow-head { padding: 16px 20px 14px; border-bottom: 1px solid var(--line); display: grid; gap: 10px; }
+.flow-kicker { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; font-size: 10px; font-weight: 900; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+.flow-kicker strong { color: var(--ink); }
+.meter { height: 5px; background: var(--line); }
+.meter span { display: block; height: 100%; background: var(--gold); transition: width .25s ease; }
+.trail { display: grid; gap: 0; }
+.trail:empty { display: none; }
+.trail button { display: grid; grid-template-columns: minmax(0, 150px) minmax(0, 1fr) auto; gap: 12px; align-items: center; text-align: left; border: 0; border-bottom: 1px solid var(--line); background: #fbfcfd; padding: 10px 20px; font-size: 13px; }
+.trail button:hover { background: var(--cream); }
+.trail .q { color: var(--muted); font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+.trail .a { font-weight: 700; overflow-wrap: anywhere; }
+.trail .ch { font-size: 11px; font-weight: 700; color: var(--muted); text-decoration: underline; }
+.question { padding: 22px 20px 20px; }
+.question h3 { font-size: 30px; letter-spacing: .03em; line-height: 1.05; margin-bottom: 6px; }
+.question > p { margin: 0 0 16px; color: var(--muted); font-size: 14px; }
+.answers { display: grid; gap: 8px; }
+.answers.two { grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); }
+.ans { display: grid; grid-template-columns: 30px minmax(0, 1fr); gap: 12px; align-items: center; text-align: left; padding: 12px 14px; background: var(--white); border: 1px solid var(--line); transition: border-color .15s, background .15s; }
+.ans:hover { border-color: var(--ink); }
+.ans .badge { width: 30px; height: 30px; display: grid; place-items: center; border: 1px solid var(--muted); font-family: var(--display); font-size: 18px; }
+.ans strong { display: block; font-size: 14.5px; }
+.ans small { display: block; font-size: 12px; color: var(--muted); margin-top: 1px; }
+.ans.typical { border-style: dashed; border-color: var(--gold); }
+.ans.typical small::after { content: " · typical"; color: var(--gold); font-weight: 700; }
+.ans[aria-pressed="true"] { border-color: var(--gold); background: var(--cream); box-shadow: inset 4px 0 var(--gold); }
+.ans[aria-pressed="true"] .badge { background: var(--gold); border-color: var(--gold); }
+.ans.low[aria-pressed="true"] { border-color: var(--flag); background: var(--flag-bg); box-shadow: inset 4px 0 var(--flag); }
+.ans.low[aria-pressed="true"] .badge { background: var(--flag); border-color: var(--flag); color: var(--white); }
+.other { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+.other input { flex: 1 1 200px; min-width: 0; border: 1px solid var(--line); background: #fbfcfd; padding: 11px 12px; font-size: 14px; }
+.other input:focus { outline: 2px solid var(--gold); outline-offset: 0; }
+.result { padding: 24px 20px; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 6px 20px; align-items: center; }
+.result .num { font-family: var(--display); font-size: 72px; line-height: .9; grid-row: span 2; font-variant-numeric: tabular-nums; }
+.result .num.flag { color: var(--flag); }
+.result h3 { font-size: 26px; }
+.result .next { grid-column: 1 / -1; margin-top: 14px; display: flex; flex-wrap: wrap; gap: 10px; }
+.flow-foot { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; padding: 12px 20px; border-top: 1px solid var(--line); background: #fbfcfd; }
+.link-btn { border: 0; background: none; padding: 4px 0; font-size: 12px; font-weight: 700; color: var(--muted); text-decoration: underline; }
+.link-btn:hover { color: var(--ink); }
+.scored { margin-top: 14px; }
+.scored h3 { font-size: 20px; margin-bottom: 8px; }
+.srow { display: grid; grid-template-columns: minmax(0, 1fr) auto auto auto; gap: 10px; align-items: center; padding: 10px 0; border-top: 1px solid var(--line); font-size: 14px; }
+.srow .n { font-weight: 700; overflow-wrap: anywhere; }
+.srow .n small { display: block; font-weight: 400; font-size: 12px; color: var(--muted); }
+.srow .pf { color: #7a5d10; font-weight: 700; }
+.seen { border-style: dashed !important; }
+.seen-tag { display: block; font-style: normal; font-size: 12px; color: #7a5d10; margin-top: 3px; }
+.srow .sc { font-family: var(--display); font-size: 26px; font-variant-numeric: tabular-nums; }
+.srow .sc.flag { color: var(--flag); }
+.srow.active { background: var(--cream); box-shadow: inset 4px 0 var(--gold); padding-left: 10px; }
+.ledger-foot { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+.checks button { display: flex; gap: 10px; align-items: flex-start; text-align: left; font-size: 13.5px; line-height: 1.45; padding: 12px; border: 1px solid var(--line); background: var(--white); }
+.checks button .box { width: 18px; height: 18px; flex: none; border: 1px solid var(--muted); display: grid; place-items: center; font-size: 12px; font-weight: 900; color: transparent; margin-top: 1px; }
+.checks button[aria-pressed="true"] { border-color: var(--gold); background: var(--cream); }
+.checks button[aria-pressed="true"] .box { background: var(--gold); border-color: var(--gold); color: var(--ink); }
+
+.map { display: grid; gap: 8px; }
+.item { background: var(--white); border: 1px solid var(--line); box-shadow: 0 3px 0 rgba(18,27,70,.06); padding: 12px 14px; display: grid; grid-template-columns: 34px minmax(0, 1fr) auto; gap: 6px 12px; align-items: center; }
+.item[data-band="now"] { border-color: var(--gold); }
+.item.flag { border-color: var(--flag); background: var(--flag-bg); }
+.item .rank { font-family: var(--display); font-size: 24px; color: var(--muted); line-height: 1; }
+.item .name { font-weight: 700; font-size: 14.5px; overflow-wrap: anywhere; }
+.item .pts { font-family: var(--display); font-size: 32px; line-height: 1; font-variant-numeric: tabular-nums; }
+.item .bar { grid-column: 2 / 4; height: 5px; background: var(--pale); }
+.item .bar i { display: block; height: 100%; background: var(--line); }
+.item[data-band="now"] .bar i { background: var(--gold); }
+.item[data-band="queue"] .bar i { background: var(--ink); }
+.item.flag .bar i { background: var(--flag); }
+.item .meta { grid-column: 2 / 4; display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: center; font-size: 12px; color: var(--muted); }
+.empty { padding: 20px; border: 1px dashed var(--line); background: var(--white); color: var(--muted); font-size: 14px; }
+
+.kits { margin-top: 14px; }
+.kits h3 { font-size: 18px; }
+.kit-row { display: grid; grid-template-columns: 120px minmax(0, 1fr) 40px; gap: 10px; align-items: center; font-size: 13px; padding: 5px 0; }
+.kit-row .track { height: 8px; background: var(--pale); }
+.kit-row .track i { display: block; height: 100%; background: var(--gold); }
+.kit-row .n { text-align: right; font-weight: 700; font-variant-numeric: tabular-nums; }
+
+/* Rubric */
+.dark { background: var(--ink); color: var(--white); border-color: var(--ink); }
+.dark h3 { color: var(--white); }
+.rubric-wrap { overflow-x: auto; }
+.rubric-wrap table { border-collapse: collapse; width: 100%; min-width: 620px; font-size: 13.5px; }
+.rubric-wrap th, .rubric-wrap td { text-align: left; vertical-align: top; padding: 10px 12px; border-bottom: 1px solid var(--side-line); }
+.rubric-wrap th { font-size: 10px; font-weight: 900; letter-spacing: .14em; text-transform: uppercase; color: var(--gold-light); }
+.rubric-wrap td { color: var(--pale); }
+.rubric-wrap td:first-child { color: var(--white); font-weight: 700; }
+.formula { margin: 16px 0 10px; padding: 12px 14px; background: var(--side-2); border-left: 3px solid var(--gold); font-size: 14px; color: var(--gold-light); overflow-x: auto; white-space: nowrap; }
+.dark p { margin: 8px 0 0; font-size: 13.5px; color: var(--line); max-width: 75ch; }
+
+footer { border-top: 1px solid var(--line); margin-top: 34px; padding: 20px 0 26px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; color: var(--muted); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; }
+
+.toast { position: fixed; left: 50%; bottom: calc(20px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); background: var(--gold-light); border: 1px solid var(--gold); color: var(--ink); padding: 12px 16px; font-size: 13px; font-weight: 700; opacity: 0; pointer-events: none; transition: opacity .2s; z-index: 50; }
+.toast.show { opacity: 1; }
+
+/* Website scan */
+.site-grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 18px; align-items: start; }
+.site-input { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 8px; }
+.site-input input { flex: 1 1 240px; min-width: 0; border: 1px solid var(--line); background: #fbfcfd; padding: 13px 14px; font-size: 15px; }
+.site-input input:focus { outline: 2px solid var(--gold); outline-offset: 0; }
+.scan-status { display: grid; gap: 8px; margin-top: 12px; }
+.scan-status:empty { display: none; }
+.scan-line { display: flex; align-items: center; gap: 10px; font-size: 13.5px; color: var(--muted); }
+.scan-line .dot { width: 9px; height: 9px; border: 1px solid var(--muted); flex: none; }
+.scan-line.run { color: var(--ink); }
+.scan-line.run .dot { background: var(--gold); border-color: var(--gold); animation: pulse 1s ease-in-out infinite; }
+.scan-line.ok .dot { background: var(--ink); border-color: var(--ink); }
+.scan-line.bad { color: var(--flag-ink); }
+.scan-line.bad .dot { background: var(--flag); border-color: var(--flag); }
+@keyframes pulse { 50% { opacity: .35; } }
+.notice { padding: 12px 14px; border: 1px solid var(--flag); background: var(--flag-bg); color: var(--flag-ink); font-size: 13.5px; }
+.hint { margin: 10px 0 0; font-size: 12.5px; color: var(--muted); }
+.examples { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 8px; }
+.ex { text-align: left; padding: 11px 12px; border: 1px solid var(--line); background: var(--white); }
+.ex:hover { border-color: var(--ink); }
+.ex[aria-pressed="true"] { border-color: var(--gold); background: var(--cream); box-shadow: inset 4px 0 var(--gold); }
+.ex strong { display: block; font-family: var(--display); font-weight: 400; font-size: 18px; letter-spacing: .04em; line-height: 1.1; }
+.ex small { display: block; font-size: 11.5px; color: var(--muted); margin-top: 3px; line-height: 1.35; }
+.found .biz { font-size: 26px; color: var(--white); margin: 2px 0 4px; }
+.found .blurb { margin: 0 0 8px; font-size: 13px; color: var(--line); }
+.found-list { max-height: 400px; overflow: auto; margin-right: -6px; padding-right: 6px; }
+.sig-group h4 { font-family: var(--body); font-size: 10px; font-weight: 900; letter-spacing: .15em; text-transform: uppercase; color: var(--gold-light); margin: 14px 0 2px; }
+.sig { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; align-items: start; padding: 7px 0; border-top: 1px solid var(--side-line); font-size: 13.5px; color: var(--pale); }
+.sig strong { display: block; color: var(--white); font-weight: 700; }
+.sig .ev { display: block; font-size: 12px; color: var(--line); overflow-wrap: anywhere; }
+.sig.ignored strong, .sig.ignored .ev { text-decoration: line-through; opacity: .55; }
+.found .link-btn { color: var(--gold-light); }
+.empty-dark { margin: 0; font-size: 14px; color: var(--line); }
+.found-foot { margin-top: 12px; }
+.route { margin-top: 18px; padding: 0; }
+.route summary { cursor: pointer; padding: 14px 20px; font-family: var(--display); font-size: 20px; letter-spacing: .04em; }
+.route-body { padding: 0 20px 18px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 20px; }
+.route h4 { font-family: var(--body); font-size: 10px; font-weight: 900; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); margin: 0 0 8px; }
+.vote-row { display: grid; grid-template-columns: 130px minmax(0, 1fr) 34px; gap: 10px; align-items: center; font-size: 13px; padding: 4px 0; }
+.vote-row .track { height: 8px; background: var(--pale); }
+.vote-row .track i { display: block; height: 100%; background: var(--line); }
+.vote-row.top .track i { background: var(--gold); }
+.vote-row .n { text-align: right; font-weight: 700; font-variant-numeric: tabular-nums; }
+.route ul { margin: 0; padding-left: 18px; font-size: 13px; }
+.route li { margin: 3px 0; }
+.route li span { color: var(--muted); }
+.route .pid { grid-column: 1 / -1; margin: 0; font-size: 12px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 10px; }
+.why { display: block; margin-top: 6px; font-size: 12.5px; color: var(--muted); }
+.src-note { margin: 0 0 12px; font-size: 13px; color: var(--muted); }
+#f-detect { margin-top: 8px; color: var(--ink); }
+
+@media (max-width: 1100px) {
+  .sidebar { width: 210px; padding-inline: 13px; } .main-shell { margin-left: 210px; }
+  main { padding-inline: 26px; } .topbar { padding: 0 26px; }
+  .work { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 850px) {
+  .sidebar { position: static; width: 100%; padding: 16px 20px; display: block; }
+  .sidebar .side-label, .sidebar .nav, .sidebar-bottom { display: none; }
+  .brand { padding: 0; font-size: 20px; }
+  .main-shell { margin-left: 0; }
+  .topbar { height: 52px; padding: 0 20px; position: static; }
+  main { padding-inline: 20px; padding-block: 28px 0; }
+  .arch-grid, .foundation, .site-grid, .route-body { grid-template-columns: minmax(0, 1fr); }
+  .checks { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 720px) {
+  .stamp { display: none; }
+  .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .stat:nth-child(3) { border-left: 0; }
+  .stat:nth-child(n+3) { border-top: 1px solid var(--line); }
+  .trail button { grid-template-columns: minmax(0, 1fr) auto; }
+  .trail .q { grid-column: 1 / -1; }
+  .srow { grid-template-columns: minmax(0, 1fr) auto; }
+  .topbar .who span:last-child { display: none; }
+  .journey i { display: none; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div class="shell">
+  <aside class="sidebar">
+    <a class="brand" href="#top"><span class="brandmark" aria-hidden="true">D</span><span>DealCon<small>Agent workshop</small></span></a>
+    <p class="side-label">Rollup playbook</p>
+    <a class="nav" href="#website" data-nav="website">Your website <span class="n">01</span></a>
+    <a class="nav" href="#archetype" data-nav="archetype">Business archetype <span class="n">02</span></a>
+    <a class="nav" href="#step-zero" data-nav="step-zero">Step zero <span class="n">03</span></a>
+    <a class="nav" href="#ledger" data-nav="ledger">Intake ledger <span class="n">04</span></a>
+    <a class="nav" href="#map" data-nav="map">Opportunity map <span class="n">05</span></a>
+    <p class="side-label second">Reference</p>
+    <a class="nav" href="#rubric" data-nav="rubric">Scoring rubric</a>
+    <div class="sidebar-bottom">
+      <div class="session-card"><span class="live-dot"></span>Score one. Take it home.<p>A ranked install order for your next acquisition.</p></div>
+    </div>
+  </aside>
+
+  <div class="main-shell">
+    <div class="topbar">
+      <div>AI TRACK<span class="slash">/</span>Jev intake harness</div>
+      <div class="who"><span class="avatar" aria-hidden="true">J</span><span>Rollup playbook · Stage 2 diligence</span></div>
+    </div>
+
+    <main id="top">
+      <div class="hero">
+        <div>
+          <div class="eyebrow">The Jev intake harness</div>
+          <h1>Score the target.<span>Install in order.</span></h1>
+          <p>Pick the example closest to a business you own or want to buy, answer a few taps, and see which processes to automate first. Live website scans run with Jordan after the session.</p>
+          <div class="hero-actions">
+            <a class="primary" href="#website">Start from your website →</a>
+            <a class="secondary" href="#map">Jump to the map</a>
+          </div>
+          <div class="target">
+            <label for="target">Business being scored</label>
+            <input id="target" value="Example: residential HVAC services co." autocomplete="off">
+          </div>
+        </div>
+        <div class="stamp" aria-live="polite">
+          <span>Your first install</span>
+          <strong id="stamp-score">0</strong>
+          <p id="stamp-name">top opportunity score</p>
+        </div>
+      </div>
+
+      <nav class="journey" aria-label="Progress">
+        <a href="#website" id="j0"><b>1</b>Your website</a><i></i>
+        <a href="#archetype" id="j1"><b>2</b>Business model</a><i></i>
+        <a href="#step-zero" id="j2"><b>3</b>Step zero</a><i></i>
+        <a href="#ledger" id="j3"><b>4</b>Score processes</a><i></i>
+        <a href="#map" id="j4"><b>5</b>Read the map</a>
+      </nav>
+
+      <section class="block" id="website" aria-labelledby="h-site">
+        <div class="section-head"><h2 id="h-site">Start from your website</h2><span>Pick an example below. Scanning your own site runs live with Jordan after the session.</span></div>
+        <div class="site-grid">
+          <div class="panel">
+            <label class="opt-label" for="site-url">Website address</label>
+            <div class="site-input">
+              <input id="site-url" type="url" inputmode="url" placeholder="yourcompany.com" autocomplete="url" spellcheck="false">
+              <button class="primary" id="scan-btn" type="button">Scan my site</button>
+            </div>
+            <div class="scan-status" id="scan-status" aria-live="polite"></div>
+            <p class="opt-label second">Or try an example site</p>
+            <div class="examples" id="examples"></div>
+            <p class="hint" id="live-note">Example sites use made-up data.</p>
+          </div>
+          <div class="panel profile found" id="found" aria-live="polite"></div>
+        </div>
+        <details class="panel route" id="route-panel" hidden>
+          <summary>How we routed you</summary>
+          <div class="route-body" id="route-body"></div>
+        </details>
+      </section>
+
+      <section class="block" id="archetype" aria-labelledby="h-arch">
+        <div class="section-head"><h2 id="h-arch">Business archetype</h2><span>Same four kits on every target. The archetype sets where they start.</span></div>
+        <p class="src-note" id="arch-src"></p>
+        <div class="arch-grid">
+          <div class="panel">
+            <p class="opt-label" id="l-primary">Primary</p>
+            <div class="options" id="primary" role="group" aria-labelledby="l-primary"></div>
+            <p class="opt-label second" id="l-secondary">Secondary, for hybrids</p>
+            <div class="options row" id="secondary" role="group" aria-labelledby="l-secondary"></div>
+            <div class="arch-actions">
+              <button class="primary" id="load-lib" type="button">Pre-fill with typical scores</button>
+              <p>Skips the questions and fills the map with typical scores. Use it to demo the map, then edit each process.</p>
+            </div>
+          </div>
+          <div class="panel profile" aria-live="polite">
+            <p class="opt-label">Archetype profile</p>
+            <dl id="profile"></dl>
+          </div>
+        </div>
+        <div class="panel foundation" id="step-zero">
+          <div>
+            <h3>Step zero: measurement</h3>
+            <p id="f-sub">Done before any kit is installed.</p>
+            <p id="f-detect"></p>
+          </div>
+          <div class="checks" id="checks"></div>
+        </div>
+      </section>
+
+      <div class="stats" aria-label="Summary">
+        <div class="stat"><div class="k">Processes scored</div><div class="v" id="s-count">0</div></div>
+        <div class="stat now"><div class="k">Install now</div><div class="v" id="s-now">0</div></div>
+        <div class="stat flag"><div class="k">Exit-safety flags</div><div class="v" id="s-flag">0</div></div>
+        <div class="stat"><div class="k">Average score</div><div class="v" id="s-avg">0<small> /100</small></div></div>
+      </div>
+
+      <div class="work">
+        <section class="block" id="ledger" aria-labelledby="h-ledger">
+          <div class="section-head"><h2 id="h-ledger">Intake ledger</h2><span>One question at a time. Tap an answer to move on.</span></div>
+          <div class="panel flow" id="flow" aria-live="polite">
+            <div class="flow-head">
+              <div class="flow-kicker"><span id="flow-label">Process 1</span><strong id="flow-count">Question 1 of 7</strong></div>
+              <div class="meter"><span id="flow-meter" style="width:0%"></span></div>
+            </div>
+            <div class="trail" id="trail"></div>
+            <div id="stage"></div>
+            <div class="flow-foot">
+              <button class="link-btn" id="flow-back" type="button">Back</button>
+              <button class="link-btn" id="flow-new" type="button">Start a new process</button>
+            </div>
+          </div>
+          <div class="panel scored">
+            <h3>Scored processes</h3>
+            <div id="rows"></div>
+          </div>
+          <div class="ledger-foot">
+            <button class="secondary" id="copy" type="button">Copy results as table</button>
+            <button class="secondary" id="clear" type="button">Start blank</button>
+          </div>
+        </section>
+
+        <section class="block" id="map" aria-labelledby="h-map">
+          <div class="section-head"><h2 id="h-map">Opportunity map</h2><span>Install order, highest first</span></div>
+          <div class="map" id="map-list"></div>
+          <div class="panel kits">
+            <h3>Score by kit</h3>
+            <div id="kits"></div>
+          </div>
+        </section>
+      </div>
+
+      <section class="block" id="rubric" aria-labelledby="h-rubric">
+        <div class="panel dark">
+          <h3 id="h-rubric">Scoring rubric</h3>
+          <div class="rubric-wrap">
+            <table>
+              <thead><tr><th>Dimension</th><th>Weight</th><th>5 looks like</th><th>1 looks like</th></tr></thead>
+              <tbody>
+                <tr><td>Time-to-value (T)</td><td>35%</td><td>First win from data and tools already in place</td><td>Needs a new system, migration, and behavior change first</td></tr>
+                <tr><td>Automation fit (A)</td><td>25%</td><td>High volume, repetitive, rules-based</td><td>Rare, judgment-heavy, relationship-driven</td></tr>
+                <tr><td>Data readiness (D)</td><td>20%</td><td>Structured data in an accessible system (CRM, database, API)</td><td>Lives in someone's head, paper, or scattered inboxes</td></tr>
+                <tr><td>Exit-safety (E)</td><td>20%</td><td>Layer on mainstream tools, documented, transferable</td><td>Custom platform, or one person the process can't run without</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="formula">Score = 20 × (0.35·T + 0.25·A + 0.20·D + 0.20·E)  →  20 to 100</div>
+          <p>75 and above: install now. 55 to 74: queue next. Below 55: park. Any process with exit-safety of 1 or 2 is flagged for rework before install, whatever its total.</p>
+          <p>In this workshop version you score each dimension yourself. The full harness adds calibrated probabilities from Jev decision models.</p>
+        </div>
+      </section>
+
+      <footer><span>DealCon × AI workshop</span><span>Built to be understood. Designed to be yours.</span></footer>
+    </main>
+  </div>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/Flip.min.js"></script>
+<script>
+/*
+ * jev-router.js — deterministic website-to-intake router for the Jev intake harness.
+ *
+ * Pure functions, no network, no clock, no randomness. The same scan, the same
+ * dismissed signals and the same answers always produce the same plan.
+ *
+ * Flow:  Context.dev scan  ->  normalize()  ->  detect() signals
+ *        ->  route(): archetype votes, tailored process list, context questions
+ *
+ * The LLM-free contract matters: Context.dev only reads the page. Every routing
+ * decision below is a rule you can read, test and change.
+ */
+(function (root, factory) {
+  if (typeof module === "object" && module.exports) module.exports = factory();
+  else root.JevRouter = factory();
+})(typeof self !== "undefined" ? self : this, function () {
+  "use strict";
+
+  var VERSION = "1.0.0";
+  var TIE_ORDER = ["ec", "lg", "bm"]; // fixed tie-break when votes are equal
+
+  /* ---------- 1. What we ask Context.dev to read (web-scrape parseParams.rules) ---------- */
+  var SCAN_RULES = {
+    title: "title",
+    metaDescription: { selector: "meta[name=description]", type: "item", output: "@content" },
+    ogSiteName: { selector: "meta[property='og:site_name']", type: "item", output: "@content" },
+    generator: { selector: "meta[name=generator]", type: "item", output: "@content" },
+    headings: { selector: "h1, h2, h3", type: "list" },
+    ctas: { selector: "a, button", type: "list" },
+    scriptSrc: { selector: "script[src]", type: "list", output: "@src" },
+    linkHref: { selector: "link[href]", type: "list", output: "@href" },
+    anchors: { selector: "a[href]", type: "list", output: "@href" },
+    iframes: { selector: "iframe[src]", type: "list", output: "@src" },
+    formActions: { selector: "form", type: "list", output: "@action" },
+    formFields: { selector: "form input, form textarea, form select", type: "list", output: "@name" },
+    jsonld: { selector: "script[type='application/ld+json']", type: "list" }
+  };
+
+  /* ---------- helpers ---------- */
+  function lc(s) { return String(s == null ? "" : s).toLowerCase(); }
+  function arr(x) { return Array.isArray(x) ? x.filter(function (v) { return typeof v === "string"; }) : []; }
+  function uniq(a) { var seen = {}, out = []; a.forEach(function (x) { if (x && !seen[x]) { seen[x] = 1; out.push(x); } }); return out; }
+  function clamp(n) { return Math.max(1, Math.min(5, n)); }
+  function short(s, n) { s = String(s); return s.length > n ? s.slice(0, n - 1) + "…" : s; }
+  function hostOf(u) { try { return new URL(u).hostname.replace(/^www\./, ""); } catch (e) { return ""; } }
+  function hash(str) { var h = 5381; for (var i = 0; i < str.length; i++) h = ((h << 5) + h + str.charCodeAt(i)) | 0; return (h >>> 0).toString(36); }
+
+  /* ---------- 2. Normalize a Context.dev response into one scan shape ---------- */
+  // page: payload of web-scrape (formats.parse). map: payload of web-map (optional).
+  function normalize(page, map, url) {
+    page = page || {};
+    var parsed = (page.parsed && page.parsed.data) || {};
+    var meta = page.metadata || {};
+    var og = meta.openGraph || {};
+    var pages = [];
+    if (map && Array.isArray(map.urls)) pages = map.urls.map(function (u) { return typeof u === "string" ? u : u && u.url; });
+    var finalUrl = url || page.url || "";
+    return {
+      url: finalUrl,
+      host: hostOf(finalUrl),
+      title: String(parsed.title || meta.title || og.title || ""),
+      description: String(parsed.metaDescription || meta.description || og.description || ""),
+      siteName: String(parsed.ogSiteName || ""),
+      generator: String(parsed.generator || ""),
+      headings: arr(parsed.headings).slice(0, 80),
+      ctas: uniq(arr(parsed.ctas).map(function (s) { return s.replace(/\s+/g, " ").trim(); })).slice(0, 150),
+      scripts: arr(parsed.scriptSrc).slice(0, 200),
+      links: arr(parsed.linkHref).slice(0, 200),
+      anchors: arr(parsed.anchors).slice(0, 400),
+      iframes: arr(parsed.iframes).slice(0, 40),
+      formActions: arr(parsed.formActions).slice(0, 20),
+      formFields: arr(parsed.formFields).slice(0, 80),
+      jsonld: arr(parsed.jsonld).slice(0, 10).map(function (s) { return s.slice(0, 20000); }),
+      pages: uniq(arr(pages)).slice(0, 500)
+    };
+  }
+
+  /* ---------- 3. Detectors ---------- */
+  // Vendor names for booking and ordering tools, matched from the URL that fired.
+  var VENDORS = [
+    [/vagaro/, "Vagaro"], [/booksy/, "Booksy"], [/fresha/, "Fresha"], [/mindbody/, "Mindbody"], [/glossgenius/, "GlossGenius"],
+    [/schedulicity/, "Schedulicity"], [/setmore/, "Setmore"], [/square\.site|squareup|square\.online/, "Square"], [/zenoti/, "Zenoti"],
+    [/boulevard|joinblvd/, "Boulevard"], [/opentable/, "OpenTable"], [/resy/, "Resy"], [/tock/, "Tock"], [/toasttab/, "Toast"], [/thanx/, "Thanx"], [/punchh/, "Punchh"], [/paytronix/, "Paytronix"],
+    [/sevenrooms/, "SevenRooms"], [/chownow/, "ChowNow"], [/clover/, "Clover"], [/doordash/, "DoorDash"], [/ubereats/, "Uber Eats"],
+    [/grubhub/, "Grubhub"], [/zocdoc/, "Zocdoc"], [/servicetitan/, "ServiceTitan"], [/housecallpro/, "Housecall Pro"], [/jobber/, "Jobber"],
+    [/workiz/, "Workiz"], [/fieldedge/, "FieldEdge"], [/servicem8/, "ServiceM8"], [/callrail/, "CallRail"], [/calltrackingmetrics/, "CallTrackingMetrics"],
+    [/invoca/, "Invoca"], [/whatconverts/, "WhatConverts"], [/yotpo/, "Yotpo"], [/judge\.me/, "Judge.me"], [/loox/, "Loox"], [/okendo/, "Okendo"],
+    [/stamped/, "Stamped"], [/birdeye/, "Birdeye"], [/podium/, "Podium"], [/trustpilot/, "Trustpilot"], [/intercom/, "Intercom"], [/drift/, "Drift"],
+    [/tawk/, "Tawk.to"], [/livechat/, "LiveChat"], [/crisp/, "Crisp"], [/tidio/, "Tidio"], [/gorgias/, "Gorgias"], [/zdassets|zopim/, "Zendesk"],
+    [/recharge/, "Recharge"], [/skio/, "Skio"], [/stripe/, "Stripe"], [/paypal/, "PayPal"], [/afterpay/, "Afterpay"], [/klarna/, "Klarna"]
+  ];
+  function vendorName(m) { var s = lc(m); for (var i = 0; i < VENDORS.length; i++) if (VENDORS[i][0].test(s)) return VENDORS[i][1]; return ""; }
+
+  // [id, group, label, regex over every URL on the page, votes, fixed system name or null to use vendorName]
+  var URL_RULES = [
+    ["shopify", "Platform", "Shopify store", /cdn\.shopify\.com|myshopify\.com|shopifycdn\.com/, { ec: 4 }, "Shopify"],
+    ["woocommerce", "Platform", "WooCommerce store", /woocommerce|wc-ajax|wc-blocks/, { ec: 4 }, "WooCommerce"],
+    ["bigcommerce", "Platform", "BigCommerce store", /bigcommerce\.com/, { ec: 4 }, "BigCommerce"],
+    ["squarespace", "Platform", "Squarespace site", /squarespace\.com|squarespace-cdn\.com|sqspcdn\.com/, {}, "Squarespace"],
+    ["wix", "Platform", "Wix site", /wixstatic\.com|parastorage\.com|\.wixsite\.com/, {}, "Wix"],
+    ["wordpress", "Platform", "WordPress site", /wp-content|wp-includes|wp-json/, {}, "WordPress"],
+    ["webflow", "Platform", "Webflow site", /webflow\.(com|io)|website-files\.com/, {}, "Webflow"],
+    ["highlevel", "Platform", "HighLevel funnel", /leadconnectorhq\.com|msgsndr\.com|gohighlevel\.com|filesafe\.space/, { lg: 2 }, "HighLevel"],
+    ["custombuilt", "Platform", "Custom-built site", /\/_next\/static|\/_nuxt\/|\/static\/js\/main\.[0-9a-f]{6,}\.js|\/assets\/index-[\w-]{6,}\.(js|css)/, {}, ""],
+
+    ["localbooking", "Booking and ordering", "Appointment booking tool", /vagaro\.com|booksy\.com|fresha\.com|mindbodyonline\.com|mindbody\.io|glossgenius\.com|schedulicity\.com|setmore\.com|zenoti\.com|joinblvd\.com|boulevard\.io|zocdoc\.com/, { bm: 3 }, null],
+    ["reservations", "Booking and ordering", "Table reservations", /opentable\.com|resy\.com|exploretock\.com|sevenrooms\.com/, { bm: 3 }, null],
+    ["ordering", "Booking and ordering", "Online ordering", /toasttab\.com|chownow\.com|order\.online|thanx\.com|punchh\.com|paytronix\.com|doordash\.com|ubereats\.com|grubhub\.com/, { bm: 3 }, null],
+    ["pos", "Booking and ordering", "Point-of-sale storefront", /square\.site|square\.online|squareup\.com\/(store|appointments)|book\.squareup\.com|clover\.com/, { bm: 3 }, null],
+    ["fieldservice", "Booking and ordering", "Field-service software", /servicetitan\.com|housecallpro\.com|jobber\.com|getjobber\.com|workiz\.com|fieldedge\.com|servicem8\.com/, { lg: 4 }, null],
+    ["calendly", "Booking and ordering", "Calendly scheduling", /calendly\.com/, { lg: 2 }, "Calendly"],
+    ["acuity", "Booking and ordering", "Acuity scheduling", /acuityscheduling\.com|squarespacescheduling\.com/, { lg: 1, bm: 1 }, "Acuity"],
+
+    ["klaviyo", "Marketing and reviews", "Klaviyo email and SMS", /klaviyo\.com|_learnq/, { ec: 1 }, "Klaviyo"],
+    ["mailchimp", "Marketing and reviews", "Mailchimp", /chimpstatic\.com|list-manage\.com|mailchimp\.com/, {}, "Mailchimp"],
+    ["hubspot", "Marketing and reviews", "HubSpot forms and tracking", /hs-scripts\.com|hsforms\.(net|com)|hs-analytics\.net|js\.hs-banner|hubspot\.com/, { lg: 2 }, "HubSpot"],
+    ["activecampaign", "Marketing and reviews", "ActiveCampaign", /activecampaign\.com|trackcmp\.net/, {}, "ActiveCampaign"],
+    ["textmarketing", "Marketing and reviews", "SMS marketing app", /attn\.tv|attentivemobile\.com|postscript\.io|omnisend\.com/, { ec: 1 }, null],
+    ["reviewtool", "Marketing and reviews", "Reviews app", /yotpo\.com|judge\.me|stamped\.io|loox\.io|okendo\.io|junip\.co|reviews\.io|birdeye\.com|podium\.com|trustpilot\.com|grade\.us|nicejob\.com/, { ec: 1 }, null],
+    ["subscriptions", "Commerce", "Subscriptions app", /rechargeapps\.com|rechargepayments\.com|skio\.com|loopwork\.co|boldcommerce\.com/, { ec: 2 }, "Recharge"],
+    ["payments", "Commerce", "Online checkout and payments", /js\.stripe\.com|paypalobjects\.com|paypal\.com\/sdk|shop\.app|afterpay\.com|klarna\.com|affirm\.com/, { ec: 1 }, null],
+    ["chat", "Support", "Website chat", /intercom(cdn)?\.com|widget\.intercom\.io|drift\.com|tawk\.to|livechatinc\.com|crisp\.chat|tidio\.co|gorgias\.chat|zdassets\.com|zopim|widget\.podium\.com/, {}, null],
+    ["calltrack", "Tracking", "Call tracking", /callrail\.com|calltrackingmetrics\.com|calltrk\.com|invoca\.net|whatconverts\.com/, { lg: 3 }, null]
+  ];
+
+  // Tracking IDs are captured so step zero can show what is already installed.
+  var TRACKING = [
+    ["gtm", "Google Tag Manager", /googletagmanager\.com\/gtm\.js\?id=(gtm-[a-z0-9]+)/i],
+    ["ga4", "Google Analytics 4 or Ads tag", /googletagmanager\.com\/gtag\/js\?id=((?:g|aw)-[a-z0-9]+)/i],
+    ["metapixel", "Meta pixel", /connect\.facebook\.net\/[^"\s]*\/fbevents\.js/],
+    ["tiktokpixel", "TikTok pixel", /analytics\.tiktok\.com/],
+    ["linkedininsight", "LinkedIn Insight tag", /snap\.licdn\.com/],
+    ["pinterestpixel", "Pinterest tag", /s\.pinimg\.com\/ct\/core/],
+    ["heatmap", "Session recording", /static\.hotjar\.com|clarity\.ms/]
+  ];
+  var AD_PIXELS = ["metapixel", "tiktokpixel", "linkedininsight", "pinterestpixel"];
+
+  // [id, group, label, regex over headings + CTAs + title + description, votes]
+  var TEXT_RULES = [
+    ["ecomlang", "Content", "Shopping language", /\b(add to cart|shop (now|all)|buy now|free shipping|best sellers?|new arrivals)\b/, { ec: 2 }],
+    ["booklang", "Content", "Booking language", /\b(book (now|online|an? (appointment|table|call|visit|tour|class))|schedule (an? |your )?(appointment|visit|service|call|consultation)|make a reservation|reserve (a |your )?(table|spot)|reservations?)\b/, { bm: 1, lg: 1 }],
+    ["quotelang", "Content", "Quote and estimate language", /\b(get (a )?(free )?(quote|estimate)|free (estimate|quote|consultation|inspection)|request (a )?(quote|estimate|service|callback|proposal)|schedule service)\b/, { lg: 3 }],
+    ["storefrontlang", "Content", "Storefront language", /\b(visit us|our (store|shop|restaurant|studio|clinic|salon|location)s?|walk[- ]?ins? welcome|dine[- ]in|carry[- ]?out|curbside|find us|get directions)\b/, { bm: 3 }],
+    ["hourslang", "Content", "Opening hours", /\b(hours|open (daily|today|now|mon|tue|wed|thu|fri|sat|sun))\b/, { bm: 1 }],
+    ["menulang", "Content", "Menu and ordering language", /\b(menu|catering|order online|happy hour)\b/, { bm: 2 }],
+    ["arealang", "Content", "Service-area language", /\b(serving|service areas?|we serve|licensed(,| and|&) (bonded )?(and )?insured|24\/?7|emergency service|same[- ]day service|residential (and|&) commercial|hvac|plumbing|roofing|electrician|landscaping|pest control|garage door|remodel(ing)?|restoration|junk removal|cleaning services?)\b/, { lg: 2 }],
+    ["b2blang", "Content", "B2B sales language", /\b(request a demo|book a demo|schedule a demo|talk to (sales|an expert)|contact sales|pricing|enterprise|integrations|case studies|solutions|for teams)\b/, { lg: 2 }]
+  ];
+
+  // [id, group, label, regex over internal page paths, votes]
+  var PATH_RULES = [
+    ["pathshop", "Structure", "Shop or product pages", /\/(products?|collections?|shop|store|cart|checkout)\//, { ec: 3 }],
+    ["pathbook", "Structure", "Booking page", /\/(book|booking|book-now|book-online|appointments?|schedule|reserve|reservations?)\//, { bm: 1, lg: 1 }],
+    ["pathquote", "Structure", "Quote or estimate page", /\/(quote|get-a-quote|estimate|free-estimate|request-service|request-a-quote|request-an-estimate|get-started)\//, { lg: 2 }],
+    ["pathservices", "Structure", "Services pages", /\/(services?|what-we-do|service-areas?|areas-served)\//, { lg: 2 }],
+    ["pathlocations", "Structure", "Location pages", /\/(locations?|find-us|visit|visit-us|stores)\//, { bm: 2 }],
+    ["pathmenu", "Structure", "Menu page", /\/(menu|order)\//, { bm: 3 }],
+    ["pathdemo", "Structure", "Demo or pricing pages", /\/(demo|pricing|customers|case-stud\w*)\//, { lg: 2 }]
+  ];
+
+  var LOCAL_TYPES = /(localbusiness|restaurant|cafeorcoffeeshop|barorpub|bakery|store|healthandbeautybusiness|beautysalon|hairsalon|daysspa|gym|healthclub|sportsactivitylocation|dentist|medicalbusiness|physician|autorepair|automotivebusiness|lodgingbusiness|hotel|foodestablishment)/i;
+  var SERVICE_TYPES = /(professionalservice|homeandconstructionbusiness|plumber|electrician|hvacbusiness|roofingcontractor|generalcontractor|housepainter|locksmith|movingcompany|legalservice|attorney|accountingservice|financialservice|realestateagent|pestcontrol)/i;
+  var PRODUCT_TYPES = /(product|productgroup|offer|onlinestore)/i;
+
+  function jsonldTypes(scan) {
+    var types = [];
+    function walk(node) {
+      if (!node || typeof node !== "object") return;
+      if (Array.isArray(node)) { node.forEach(walk); return; }
+      var t = node["@type"];
+      if (typeof t === "string") types.push(t); else if (Array.isArray(t)) t.forEach(function (x) { if (typeof x === "string") types.push(x); });
+      if (node["@graph"]) walk(node["@graph"]);
+    }
+    scan.jsonld.forEach(function (s) { try { walk(JSON.parse(s)); } catch (e) { /* ignore malformed JSON-LD */ } });
+    return uniq(types).sort();
+  }
+
+  function internalPaths(scan) {
+    var host = scan.host, out = [];
+    scan.anchors.concat(scan.pages).forEach(function (a) {
+      try {
+        var u = new URL(a, "https://" + (host || "example.invalid") + "/");
+        if (host && u.hostname.replace(/^www\./, "") !== host) return;
+        var p = lc(u.pathname); if (p === "/" || !p) return;
+        out.push(p.replace(/\/?$/, "/"));
+      } catch (e) { /* skip */ }
+    });
+    return uniq(out).sort();
+  }
+
+  function detect(scan) {
+    var urls = [].concat(scan.scripts, scan.links, scan.iframes, scan.formActions, scan.anchors, [scan.generator]);
+    var assets = urls.map(lc).join("\n");
+    var text = lc([scan.title, scan.description, scan.siteName].concat(scan.headings, scan.ctas).join("\n"));
+    var paths = internalPaths(scan);
+    var out = [];
+    function add(id, group, label, evidence, votes, system) {
+      out.push({ id: id, group: group, label: label, evidence: uniq(evidence).sort().slice(0, 3), votes: votes || {}, system: system || "" });
+    }
+
+    URL_RULES.forEach(function (r) {
+      var m = r[3].exec(assets);
+      if (!m) return;
+      var system = r[5] === null ? vendorName(m[0]) : r[5];
+      var label = r[5] === null && system ? system + " (" + r[2].toLowerCase() + ")" : r[2];
+      add(r[0], r[1], label, [short(m[0], 60)], r[4], system);
+    });
+    if (/wordpress/i.test(scan.generator) && !out.some(function (s) { return s.id === "wordpress"; })) add("wordpress", "Platform", "WordPress site", ["generator: " + scan.generator], {}, "WordPress");
+
+    var trackingIds = [];
+    TRACKING.forEach(function (t) {
+      var m = t[2].exec(assets); if (!m) return;
+      add(t[0], "Tracking", t[1], [m[1] ? m[1].toUpperCase() : short(m[0], 50)], {}, t[1]);
+      trackingIds.push(t[0]);
+    });
+    if (AD_PIXELS.some(function (id) { return trackingIds.indexOf(id) > -1; }) || /googletagmanager\.com\/gtag\/js\?id=aw-/.test(assets)) {
+      var pixelNames = TRACKING.filter(function (t) { return AD_PIXELS.indexOf(t[0]) > -1 && trackingIds.indexOf(t[0]) > -1; }).map(function (t) { return t[1]; });
+      if (/googletagmanager\.com\/gtag\/js\?id=aw-/.test(assets)) pixelNames.push("Google Ads tag");
+      add("adpixels", "Tracking", "Ad pixels installed", pixelNames, {}, "");
+    }
+    // Shopify, Squarespace, Wix and similar platforms inject analytics outside the page source, so silence is not proof.
+    var injectsTags = ["shopify", "woocommerce", "bigcommerce", "squarespace", "wix"].some(function (id) { return out.some(function (s) { return s.id === id; }); });
+    if (!trackingIds.length && !injectsTags) add("notracking", "Tracking", "No analytics or ad tags visible in the page source", ["no GTM, GA4 or pixel scripts in the HTML"], {}, "");
+
+    TEXT_RULES.forEach(function (r) { var m = r[4] && r[3].exec(text); if (m) add(r[0], r[1], r[2], [m[0]], r[4]); });
+    PATH_RULES.forEach(function (r) {
+      var hits = paths.filter(function (p) { return r[3].test(p); });
+      if (hits.length) add(r[0], r[1], r[2], hits.slice(0, 2), r[4]);
+    });
+
+    var tel = uniq(scan.anchors.filter(function (a) { return /^tel:/i.test(a); }).map(function (a) { return a.replace(/^tel:/i, ""); })).sort();
+    if (tel.length) add("phone", "Contact", "Click-to-call phone number", tel, { lg: 1 });
+    var maps = scan.anchors.filter(function (a) { return /google\.[a-z.]+\/maps|goo\.gl\/maps|maps\.app\.goo\.gl|maps\.apple\.com|g\.page\//i.test(a); });
+    if (maps.length) add("maplink", "Contact", "Map or directions link", [short(maps[0], 60)], { bm: 2 });
+    var rev = scan.anchors.filter(function (a) { return /search\.google\.com\/local\/writereview|g\.page\/[^\s]*\/review/i.test(a); });
+    if (rev.length) add("googlereview", "Marketing and reviews", "Google review link", [short(rev[0], 60)], { bm: 1 });
+
+    var fields = uniq(scan.formFields.map(lc)).sort();
+    if (fields.length) {
+      var hasEmail = fields.some(function (f) { return /email/.test(f); });
+      var hasDetail = fields.some(function (f) { return /phone|tel|message|comment|detail|service|address|zip|how/.test(f); });
+      if (hasEmail && hasDetail) add("inquiryform", "Contact", "Inquiry form", fields.slice(0, 3), { lg: 2 });
+      else if (hasEmail) add("emailsignup", "Contact", "Email signup form", fields.slice(0, 3), {});
+      else add("form", "Contact", "Web form", fields.slice(0, 3), { lg: 1 });
+    }
+
+    var types = jsonldTypes(scan);
+    var local = types.filter(function (t) { return LOCAL_TYPES.test(t); });
+    var service = types.filter(function (t) { return SERVICE_TYPES.test(t); });
+    var product = types.filter(function (t) { return PRODUCT_TYPES.test(t); });
+    if (local.length) add("schemalocal", "Structured data", "Schema.org local business", local, { bm: 3 });
+    if (service.length) add("schemaservice", "Structured data", "Schema.org service business", service, { lg: 3 });
+    if (product.length) add("schemaproduct", "Structured data", "Schema.org products", product, { ec: 3 });
+
+    out.sort(function (a, b) { return a.id < b.id ? -1 : a.id > b.id ? 1 : 0; });
+    return out;
+  }
+
+  /* ---------- 4. Process catalog (typical scores, before site evidence) ---------- */
+  // arch: archetypes whose starter list includes it. triggers: signals that pull it in for any archetype.
+  var CATALOG = [
+    { key: "reviews", name: "Review requests after visit", names: { ec: "Review requests after purchase", lg: "Review requests after each job" }, kit: "Outreach Kit", sys: "POS customer list", arch: ["bm"], t: 5, a: 5, d: 4, e: 5, triggers: ["reviewtool", "googlereview"] },
+    { key: "missed-call", name: "Missed-call follow-up", names: { bm: "Missed-call text-back" }, kit: "Outreach Kit", sys: "Call tracking", syses: { bm: "Phone system" }, arch: ["bm", "lg"], t: 5, a: 5, d: 4, e: 5, triggers: ["phone", "calltrack"] },
+    { key: "winback", name: "Rebooking and win-back", kit: "Outreach Kit", sys: "POS / booking tool", arch: ["bm"], t: 4, a: 4, d: 4, e: 5, triggers: ["pos", "ordering", "localbooking"] },
+    { key: "appointments", name: "Appointment scheduling", kit: "Process Auditor", sys: "Booking tool or paper", arch: ["bm"], t: 3, a: 4, d: 3, e: 3, triggers: ["localbooking"] },
+    { key: "inventory", name: "Inventory reorder", kit: "Process Auditor", sys: "POS inventory", arch: ["bm"], t: 3, a: 4, d: 3, e: 4, triggers: ["pos", "ordering"] },
+    { key: "staff", name: "Staff scheduling", kit: "Process Auditor", sys: "Spreadsheet or paper", arch: ["bm"], t: 2, a: 3, d: 2, e: 3, triggers: [] },
+
+    { key: "abandoned", name: "Abandoned checkout recovery", kit: "Outreach Kit", sys: "Shopify + Klaviyo", sysFrom: ["shopify", "woocommerce", "bigcommerce", "klaviyo"], arch: ["ec"], t: 5, a: 5, d: 5, e: 5, web: true, triggers: ["shopify", "woocommerce", "bigcommerce"] },
+    { key: "post-purchase", name: "Post-purchase and replenishment flows", kit: "Outreach Kit", sys: "Klaviyo", sysFrom: ["klaviyo", "textmarketing"], arch: ["ec"], t: 4, a: 5, d: 5, e: 5, triggers: ["klaviyo"] },
+    { key: "inventory-alerts", name: "Inventory and stockout alerts", kit: "Process Auditor", sys: "Shopify", sysFrom: ["shopify", "woocommerce", "bigcommerce"], arch: ["ec"], t: 4, a: 4, d: 4, e: 4, triggers: ["shopify", "woocommerce", "bigcommerce"] },
+    { key: "tickets", name: "Support ticket triage", kit: "Process Auditor", sys: "Help desk inbox", sysFrom: ["chat"], arch: ["ec"], t: 4, a: 4, d: 3, e: 4, triggers: ["chat"] },
+    { key: "segments", name: "Customer segments and LTV", kit: "CRM Kit", sys: "Shopify customers", sysFrom: ["shopify", "woocommerce", "bigcommerce", "klaviyo"], arch: ["ec"], t: 3, a: 3, d: 4, e: 4, triggers: ["klaviyo"] },
+    { key: "ad-ownership", name: "Ad account and pixel ownership", kit: "Process Auditor", sys: "Agency-held accounts", arch: ["ec"], t: 2, a: 2, d: 3, e: 1, triggers: ["adpixels"] },
+
+    { key: "speed-to-lead", name: "Speed-to-lead response", kit: "Outreach Kit", sys: "Web forms + CRM", arch: ["lg"], t: 5, a: 5, d: 4, e: 5, web: true, triggers: ["inquiryform", "quotelang"] },
+    { key: "quote", name: "Quote follow-up", kit: "Outreach Kit", sys: "CRM or email", sysFrom: ["fieldservice", "hubspot"], arch: ["lg"], t: 4, a: 4, d: 4, e: 5, triggers: ["quotelang", "pathquote"] },
+    { key: "pipeline", name: "Lead pipeline tracking", kit: "CRM Kit", sys: "Spreadsheet or CRM", sysFrom: ["fieldservice", "hubspot"], arch: ["lg"], t: 3, a: 3, d: 3, e: 4, triggers: ["hubspot", "fieldservice"] },
+    { key: "attribution", name: "Lead source attribution", kit: "Process Auditor", sys: "Call tracking + GA4", sysFrom: ["calltrack", "ga4"], arch: ["lg"], t: 3, a: 3, d: 3, e: 4, triggers: ["calltrack", "gtm", "ga4"] },
+    { key: "rep-held", name: "Leads in reps' personal phones", kit: "CRM Kit", sys: "Personal phones and inboxes", arch: ["lg"], t: 3, a: 3, d: 1, e: 1, triggers: [] },
+
+    // Only ever suggested when the site shows evidence for them
+    { key: "booking-reminders", name: "Booking confirmations and no-show reminders", kit: "Outreach Kit", sys: "Booking tool", sysFrom: ["localbooking", "reservations", "calendly", "acuity"], arch: [], t: 4, a: 5, d: 4, e: 4, triggers: ["localbooking", "reservations", "calendly", "acuity", "pathbook"] },
+    { key: "form-routing", name: "Web form routing and assignment", kit: "CRM Kit", sys: "Web forms + CRM", sysFrom: ["hubspot"], arch: [], t: 4, a: 4, d: 3, e: 4, web: true, triggers: ["inquiryform"] },
+    { key: "email-flows", name: "Welcome and win-back email flows", kit: "Outreach Kit", sys: "Email platform", sysFrom: ["klaviyo", "mailchimp", "activecampaign", "textmarketing", "hubspot"], arch: [], t: 4, a: 5, d: 4, e: 5, triggers: ["klaviyo", "mailchimp", "activecampaign", "emailsignup"] },
+    { key: "chat-triage", name: "Website chat and inquiry triage", kit: "Outreach Kit", sys: "Website chat", sysFrom: ["chat"], arch: [], t: 4, a: 4, d: 3, e: 4, web: true, triggers: ["chat"] },
+    { key: "subscription-churn", name: "Subscription skip, pause and churn handling", kit: "Outreach Kit", sys: "Subscriptions app", sysFrom: ["subscriptions"], arch: [], t: 3, a: 4, d: 4, e: 4, triggers: ["subscriptions"] }
+  ];
+
+  // Deterministic score adjustments from evidence. delta is added, then clamped to 1..5.
+  var ADJUST = [
+    { on: ["klaviyo", "mailchimp", "activecampaign"], keys: ["abandoned", "post-purchase", "email-flows", "winback", "segments"], d: { d: 1 }, why: "An email platform already holds customer data" },
+    { on: ["shopify", "woocommerce", "bigcommerce"], keys: ["abandoned", "inventory-alerts", "segments", "post-purchase"], d: { d: 1 }, why: "Orders live in a standard commerce platform" },
+    { on: ["hubspot"], keys: ["pipeline", "speed-to-lead", "quote", "form-routing"], d: { d: 1 }, why: "HubSpot is already capturing leads" },
+    { on: ["calltrack"], keys: ["attribution", "missed-call", "speed-to-lead"], d: { d: 1 }, why: "Call tracking already records calls" },
+    { on: ["localbooking", "reservations"], keys: ["appointments", "booking-reminders", "winback"], d: { d: 1, e: 1 }, why: "Bookings run in a mainstream tool" },
+    { on: ["fieldservice"], keys: ["quote", "pipeline", "speed-to-lead", "appointments"], d: { d: 1, e: 1 }, why: "Field-service software holds jobs and customers" },
+    { on: ["pos", "ordering"], keys: ["reviews", "winback", "inventory"], d: { d: 1 }, why: "A point-of-sale or ordering system holds customer and sales data" },
+    { on: ["custombuilt"], keys: ["@web"], d: { e: -1 }, why: "Custom-built site can be hard to hand over" },
+    { on: ["notracking"], keys: ["attribution", "ad-ownership"], d: { t: -1, d: -1 }, why: "No tracking found on the homepage" }
+  ];
+
+  /* ---------- 5. Context questions the site cannot answer ---------- */
+  // fx: primary | add (keys) | set (absolute scores) | adjust (deltas, "@web" = every web-dependent process) | sys (system overrides)
+  var QUESTIONS = [
+    { id: "arch", title: "Which describes most of your revenue?", sub: "Your site sends mixed signals, so we ask instead of guessing.",
+      when: function (c) { return c.needsArch; },
+      reason: function (c) { return "Votes are too close to call: " + c.voteText; },
+      options: [
+        { label: "People who walk in or book a visit", sub: "Brick and mortar", fx: { primary: "bm" } },
+        { label: "Orders placed online", sub: "Ecommerce", fx: { primary: "ec" } },
+        { label: "Inquiries we turn into booked jobs", sub: "Lead gen / services", fx: { primary: "lg" } }
+      ] },
+    { id: "ads", title: "Who controls your ad accounts and tracking?", sub: "Ownership decides how cleanly this hands over to a buyer.",
+      when: function (c) { return !!c.sig.adpixels; },
+      reason: function (c) { return "Ad pixels found: " + c.sig.adpixels.evidence.join(", "); },
+      options: [
+        { label: "We do, in our own accounts", fx: { add: ["ad-ownership"], set: { "ad-ownership": { e: 5 } } } },
+        { label: "An agency or freelancer does", fx: { add: ["ad-ownership"], set: { "ad-ownership": { e: 1 } } } },
+        { label: "I'm not sure", fx: { add: ["ad-ownership"], set: { "ad-ownership": { e: 2 } } } }
+      ] },
+    { id: "leads", title: "Where do new inquiries land first?", sub: "This decides where the follow-up workflows read their data.",
+      when: function (c) { return c.primary === "lg" || c.secondary === "lg" || !!(c.sig.inquiryform || c.sig.quotelang); },
+      reason: function (c) { return c.sig.inquiryform ? "An inquiry form was found on the homepage" : "The site asks for quotes and estimates"; },
+      options: [
+        { label: "A CRM everyone can see", fx: { sys: { "speed-to-lead": "CRM", quote: "CRM", pipeline: "CRM" }, adjust: { pipeline: { d: 1 } } } },
+        { label: "A shared email inbox", fx: { sys: { "speed-to-lead": "Shared inbox", quote: "Shared inbox", pipeline: "Shared inbox" } } },
+        { label: "Personal phones and texts", fx: { add: ["rep-held"], set: { "rep-held": { d: 1, e: 1 } } } },
+        { label: "They aren't tracked anywhere", fx: { add: ["rep-held"], set: { "rep-held": { d: 1, e: 2 } }, adjust: { attribution: { d: -1 } } } }
+      ] },
+    { id: "site", title: "Who can edit and deploy your website today?", sub: "Anything that depends on the website inherits this risk.",
+      when: function (c) { return !!c.sig.custombuilt || !(c.sig.shopify || c.sig.woocommerce || c.sig.bigcommerce || c.sig.squarespace || c.sig.wix || c.sig.wordpress || c.sig.webflow || c.sig.highlevel); },
+      reason: function (c) { return c.sig.custombuilt ? "The site looks custom-built" : "No standard website platform was detected"; },
+      options: [
+        { label: "We can, in-house" },
+        { label: "An agency or freelancer", fx: { adjust: { "@web": { e: -1 } } } },
+        { label: "Only the developer who built it", fx: { adjust: { "@web": { e: -2 } } } }
+      ] }
+  ];
+
+  /* ---------- 6. Route ---------- */
+  var SYSTEM_ORDER = ["shopify", "woocommerce", "bigcommerce", "localbooking", "reservations", "ordering", "pos", "fieldservice", "calendly", "acuity", "klaviyo", "mailchimp", "hubspot", "activecampaign", "textmarketing", "subscriptions", "reviewtool", "calltrack", "chat", "wordpress", "squarespace", "wix", "webflow", "highlevel"];
+
+  function businessFrom(scan) {
+    var name = scan.siteName || "";
+    if (!name && scan.title) {
+      var parts = scan.title.split(/\s+[|\u2013\u2014-]\s+|\s*[|\u2013\u2014]\s*/).map(function (s) { return s.trim(); }).filter(Boolean);
+      name = parts.filter(function (p) { return !/^(home|homepage|welcome)$/i.test(p); })[0] || parts[0] || "";
+    }
+    if (!name) name = scan.host;
+    var blurb = scan.description || (scan.headings[0] || "");
+    return { name: short(name, 60), blurb: short(blurb, 200), url: scan.url, host: scan.host };
+  }
+
+  function route(scan, opts) {
+    opts = opts || {};
+    var dismissed = {}; (opts.dismissed || []).forEach(function (id) { dismissed[id] = 1; });
+    var answers = opts.answers || {};
+    var force = opts.forceArch && opts.forceArch.primary ? opts.forceArch : null;
+
+    var all = scan ? detect(scan) : [];
+    var active = all.filter(function (s) { return !dismissed[s.id]; });
+    var sig = {}; active.forEach(function (s) { sig[s.id] = s; });
+
+    // Archetype votes
+    var votes = { bm: 0, ec: 0, lg: 0 };
+    active.forEach(function (s) { ["bm", "ec", "lg"].forEach(function (k) { votes[k] += s.votes[k] || 0; }); });
+    var ranked = TIE_ORDER.slice().sort(function (a, b) { return votes[b] - votes[a] || TIE_ORDER.indexOf(a) - TIE_ORDER.indexOf(b); });
+    var top = votes[ranked[0]], second = votes[ranked[1]];
+    var primary = ranked[0], secondary = second >= 3 && second * 5 >= top * 2 ? ranked[1] : "";
+    var needsArch = !force && scan && (top < 3 || top - second < 2);
+    if (force) { primary = force.primary; secondary = force.secondary || ""; needsArch = false; }
+    var voteText = "commerce " + votes.ec + ", storefront " + votes.bm + ", leads " + votes.lg;
+
+    var ctx = { sig: sig, primary: primary, secondary: secondary, needsArch: needsArch, voteText: voteText };
+    var qArch = QUESTIONS[0];
+    if (!force && needsArch && answers.arch != null && qArch.options[answers.arch]) {
+      primary = qArch.options[answers.arch].fx.primary;
+      var others = TIE_ORDER.filter(function (k) { return k !== primary; }).sort(function (a, b) { return votes[b] - votes[a] || TIE_ORDER.indexOf(a) - TIE_ORDER.indexOf(b); });
+      secondary = votes[others[0]] >= 3 ? others[0] : "";
+      ctx.primary = primary; ctx.secondary = secondary; ctx.needsArch = true;
+    }
+
+    // Which context questions apply, which are answered
+    var applied = [], pending = [];
+    QUESTIONS.forEach(function (q) {
+      if (!scan || !q.when(ctx)) return;
+      var idx = answers[q.id];
+      if (idx != null && q.options[idx]) applied.push({ q: q, opt: q.options[idx] });
+      else pending.push({ id: q.id, title: q.title, sub: q.sub, reason: q.reason(ctx), options: q.options.map(function (o) { return { label: o.label, sub: o.sub || "" }; }) });
+    });
+
+    // Candidate processes
+    var added = {}, setFx = {}, adjFx = {}, sysFx = {};
+    applied.forEach(function (a) {
+      var fx = a.opt.fx || {};
+      (fx.add || []).forEach(function (k) { added[k] = 1; });
+      Object.keys(fx.set || {}).forEach(function (k) { setFx[k] = Object.assign(setFx[k] || {}, fx.set[k]); });
+      Object.keys(fx.adjust || {}).forEach(function (k) { (adjFx[k] = adjFx[k] || []).push(fx.adjust[k]); });
+      Object.keys(fx.sys || {}).forEach(function (k) { sysFx[k] = fx.sys[k]; });
+    });
+
+    var candidates = [];
+    CATALOG.forEach(function (it) {
+      var inPrimary = it.arch.indexOf(primary) > -1, inSecondary = !!secondary && it.arch.indexOf(secondary) > -1;
+      var hits = it.triggers.filter(function (id) { return sig[id]; });
+      if (!inPrimary && !inSecondary && !hits.length && !added[it.key]) return;
+      var s = { t: it.t, a: it.a, d: it.d, e: it.e }, why = [];
+      hits.forEach(function (id) { why.push("Found on your site: " + sig[id].label); });
+      ADJUST.forEach(function (r) {
+        if (!r.on.some(function (id) { return sig[id]; })) return;
+        var hit = r.keys.indexOf(it.key) > -1 || (r.keys.indexOf("@web") > -1 && it.web);
+        if (!hit) return;
+        Object.keys(r.d).forEach(function (k) { s[k] = clamp(s[k] + r.d[k]); });
+        why.push(r.why);
+      });
+      (adjFx[it.key] || []).concat(it.web ? adjFx["@web"] || [] : []).forEach(function (d) { Object.keys(d).forEach(function (k) { s[k] = clamp(s[k] + d[k]); }); });
+      if (setFx[it.key]) Object.keys(setFx[it.key]).forEach(function (k) { s[k] = clamp(setFx[it.key][k]); });
+      var sys = (it.syses && it.syses[primary]) || it.sys;
+      var fromSig = (it.sysFrom || []).filter(function (id) { return sig[id] && sig[id].system; }).map(function (id) { return sig[id].system; });
+      if (fromSig.length) sys = uniq(fromSig).slice(0, 2).join(" + ");
+      if (sysFx[it.key]) sys = sysFx[it.key];
+      var score = Math.round(20 * (0.35 * s.t + 0.25 * s.a + 0.20 * s.d + 0.20 * s.e));
+      candidates.push({
+        key: it.key, name: (it.names && it.names[primary]) || it.name, kit: it.kit, sys: sys, typ: s, score: score,
+        flag: s.e <= 2, why: uniq(why), source: hits.length ? "site" : "library",
+        rel: (inPrimary ? 2 : 0) + (inSecondary ? 1 : 0) + Math.min(hits.length, 2) * 3 + (added[it.key] ? 3 : 0)
+      });
+    });
+    candidates.sort(function (a, b) { return (a.source === "site" ? 0 : 1) - (b.source === "site" ? 0 : 1) || b.score - a.score || b.rel - a.rel || (a.key < b.key ? -1 : 1); });
+
+    var systems = []; SYSTEM_ORDER.forEach(function (id) { if (sig[id] && sig[id].system && systems.indexOf(sig[id].system) < 0) systems.push(sig[id].system); });
+    var tracking = active.filter(function (s) { return s.group === "Tracking" && s.id !== "notracking" && s.id !== "adpixels"; }).map(function (s) { return s.evidence[0] && /^[A-Z0-9-]+$/.test(s.evidence[0]) ? s.label + " (" + s.evidence[0] + ")" : s.label; });
+
+    var planKey = JSON.stringify({ v: VERSION, s: active.map(function (s) { return s.id; }), a: answers, f: force, h: scan ? scan.host : "" });
+    return {
+      id: hash(planKey), version: VERSION,
+      business: scan ? businessFrom(scan) : null,
+      signals: all.map(function (s) { return Object.assign({}, s, { ignored: !!dismissed[s.id] }); }),
+      votes: votes, primary: primary, secondary: secondary,
+      confidence: force ? "manual" : needsArch ? "low" : top - second >= 6 ? "high" : "medium",
+      needsArchetype: !!needsArch && !(answers.arch != null),
+      systems: systems, tracking: tracking, noTracking: !!sig.notracking,
+      candidates: candidates, pending: pending,
+      answered: applied.map(function (a) { return { id: a.q.id, title: a.q.title, answer: a.opt.label }; })
+    };
+  }
+
+  return { VERSION: VERSION, SCAN_RULES: SCAN_RULES, normalize: normalize, detect: detect, route: route, CATALOG: CATALOG, QUESTIONS: QUESTIONS };
+});
+
+</script>
+<script>
+/* Synthetic example scans. Fake domains (.test), no real business data. Same shape JevRouter.normalize() produces. */
+(function (root, factory) {
+  if (typeof module === "object" && module.exports) module.exports = factory();
+  else root.JevFixtures = factory();
+})(typeof self !== "undefined" ? self : this, function () {
+  function base(o) {
+    return Object.assign({ url: "", host: "", title: "", description: "", siteName: "", generator: "", headings: [], ctas: [], scripts: [], links: [], anchors: [], iframes: [], formActions: [], formFields: [], jsonld: [], pages: [] }, o);
+  }
+  return [
+    { id: "hvac", label: "Local HVAC company", blurb: "WordPress site, call tracking, ad pixels, estimate form",
+      scan: base({
+        url: "https://example-comfort-air.test/", host: "example-comfort-air.test",
+        title: "Example Comfort Heating & Air | Austin HVAC Repair",
+        description: "24/7 emergency AC repair and heating service. Licensed and insured. Get a free estimate today.",
+        generator: "WordPress 6.5",
+        headings: ["Austin's trusted HVAC company", "Emergency AC repair", "Heating and cooling installs", "Get a free estimate"],
+        ctas: ["Call now", "Get a free estimate", "Schedule service", "Our services"],
+        scripts: ["https://example-comfort-air.test/wp-content/themes/comfort/main.js", "https://www.googletagmanager.com/gtm.js?id=GTM-EXMPL01", "https://connect.facebook.net/en_US/fbevents.js", "https://cdn.callrail.com/companies/000/js/swap.js"],
+        anchors: ["tel:+15125550100", "/services/", "/service-areas/", "/free-estimate/", "/contact/"],
+        formFields: ["name", "phone", "email", "message"],
+        jsonld: ['{"@context":"https://schema.org","@type":"HVACBusiness","name":"Example Comfort Heating & Air"}'],
+        pages: ["https://example-comfort-air.test/services/", "https://example-comfort-air.test/service-areas/", "https://example-comfort-air.test/free-estimate/"]
+      }) },
+    { id: "shop", label: "Shopify brand", blurb: "Shopify store, Klaviyo, reviews app, subscriptions, ad pixels",
+      scan: base({
+        url: "https://example-goods.test/", host: "example-goods.test",
+        title: "Example Goods – Everyday Essentials", siteName: "Example Goods",
+        description: "Everyday essentials, made to last. Free shipping over $50.",
+        headings: ["New arrivals", "Best sellers", "Subscribe and save"],
+        ctas: ["Shop now", "Add to cart", "Subscribe and save"],
+        scripts: ["https://cdn.shopify.com/s/files/1/0000/theme.js", "https://static.klaviyo.com/onsite/js/klaviyo.js", "https://staticw2.yotpo.com/example/widget.js", "https://static.rechargecdn.com/rechargeapps.com/loader.js", "https://connect.facebook.net/en_US/fbevents.js", "https://analytics.tiktok.com/i18n/pixel/events.js", "https://www.googletagmanager.com/gtag/js?id=G-EXAMPLE01"],
+        anchors: ["/collections/all", "/products/canvas-tote", "/cart", "/pages/about"],
+        formFields: ["email"]
+      }) },
+    { id: "cafe", label: "Neighborhood café", blurb: "Squarespace, Toast ordering, hours, map, restaurant schema",
+      scan: base({
+        url: "https://example-corner-cafe.test/", host: "example-corner-cafe.test",
+        title: "Example Corner Café | Coffee & Pastries", description: "Small-batch coffee and fresh pastries. Visit us on Main Street.",
+        headings: ["Visit us", "Hours", "Our menu"], ctas: ["Order online", "View menu", "Get directions"],
+        scripts: ["https://static1.squarespace.com/static/vta/site.js"],
+        anchors: ["/menu", "/locations", "https://order.toasttab.com/online/example-corner-cafe", "https://maps.app.goo.gl/example", "tel:+15125550111"],
+        jsonld: ['{"@context":"https://schema.org","@type":"CafeOrCoffeeShop","name":"Example Corner Café"}']
+      }) },
+    { id: "florist", label: "Flower shop (mixed signals)", blurb: "Shopify store plus a storefront, so the router asks",
+      scan: base({
+        url: "https://example-petal-shop.test/", host: "example-petal-shop.test",
+        title: "Example Petal & Stem | Flowers & Gifts", description: "Same-day flowers. Visit our shop or order online.",
+        headings: ["Visit our shop", "Hours"], ctas: ["Shop now", "Get directions"],
+        scripts: ["https://cdn.shopify.com/s/files/1/0000/theme.js"],
+        anchors: ["/collections/bouquets", "/pages/visit-us", "https://maps.app.goo.gl/example-petal"]
+      }) }
+  ];
+});
+
+</script>
+<script>
+(function () {
+  var KITS = ["CRM Kit", "Outreach Kit", "Process Auditor", "Target Scanner"];
+  var DIMS = ["t", "a", "d", "e"];
+  var EXAMPLE = [
+    { name: "Missed-call follow-up", kit: "Outreach Kit", sys: "Phone system + voicemail", t: 5, a: 5, d: 4, e: 5 },
+    { name: "Quote follow-up", kit: "Outreach Kit", sys: "Quotes in email + QuickBooks", t: 4, a: 4, d: 4, e: 5 },
+    { name: "Job pipeline tracking", kit: "CRM Kit", sys: "Shared spreadsheet", t: 3, a: 3, d: 3, e: 4 },
+    { name: "Technician scheduling", kit: "Process Auditor", sys: "Owner's custom database", t: 3, a: 4, d: 3, e: 2 },
+    { name: "Vendor invoicing", kit: "Process Auditor", sys: "Paper + QuickBooks", t: 2, a: 3, d: 2, e: 4 }
+  ];
+  var ARCH = {
+    bm: {
+      label: "Brick and mortar", blurb: "Retail, restaurants, clinics, salons",
+      conversion: "Visit, booking, repeat visit",
+      data: "POS (Square, Toast, Clover), booking tools",
+      risk: "Owner-held know-how, paper schedules",
+      checks: ["Customer journey mapped from search to visit", "Bookings and repeat visits tracked from the POS", "POS totals reconcile with booked revenue"]
+    },
+    ec: {
+      label: "Ecommerce", blurb: "DTC brands, online retail, subscriptions",
+      conversion: "Purchase, repeat purchase",
+      data: "Shopify, Klaviyo, ad accounts",
+      risk: "Agency-owned ad accounts and pixels, custom theme code",
+      checks: ["Funnel mapped from ad click to purchase", "Purchase event tagged with order value", "Platform revenue reconciles with Shopify"]
+    },
+    lg: {
+      label: "Lead gen / services", blurb: "Home services, B2B and professional services",
+      conversion: "Qualified lead, then booked job",
+      data: "CRM, web forms, call tracking, inboxes",
+      risk: "Leads in reps' personal phones and inboxes",
+      checks: ["Funnel mapped from lead source to booked job", "Form fills and calls tagged as conversions", "Lead counts reconcile between CRM and ad platforms"]
+    }
+  };
+  var ARCH_ORDER = ["bm", "ec", "lg"];
+  var arch = { primary: "lg", secondary: "bm", checks: {}, lock: false };
+  var CONTEXT_SERVER = "Context.Dev";
+  var site = { url: "", scan: null, source: "", dismissed: [], answers: {}, skipCtx: false };
+  var scanState = { phase: "idle", lines: [], error: null };
+  var liveAvail = null, plan = null, targetTouched = false, lastUrl = "";
+
+  // The router decides; the page only renders. Same scan + same answers = same plan.
+  function computePlan() {
+    var force = (!site.scan || arch.lock) ? { primary: arch.primary, secondary: arch.secondary || "" } : null;
+    plan = JevRouter.route(site.scan, { dismissed: site.dismissed, answers: site.answers, forceArch: force });
+    if (site.scan && !arch.lock) { arch.primary = plan.primary; arch.secondary = plan.secondary; }
+    return plan;
+  }
+
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var hasGsap = typeof window.gsap !== "undefined" && typeof window.Flip !== "undefined";
+  if (hasGsap) gsap.registerPlugin(Flip);
+
+  var nextId = 1;
+  function withId(r) { return Object.assign({ id: "p" + (nextId++) }, r); }
+  var rows = EXAMPLE.map(function (r) { return withId(Object.assign({ auto: true }, r)); });
+  var target = document.getElementById("target");
+
+  try {
+    var saved = JSON.parse(localStorage.getItem("jev-intake-v1") || "null");
+    if (saved && Array.isArray(saved.rows)) { rows = saved.rows.map(withId); if (saved.target) target.value = saved.target; }
+    if (saved && saved.arch && ARCH[saved.arch.primary]) arch = { primary: saved.arch.primary, secondary: ARCH[saved.arch.secondary] ? saved.arch.secondary : "", checks: saved.arch.checks || {}, lock: !!saved.arch.lock };
+    if (saved && saved.site && saved.site.scan && Array.isArray(saved.site.scan.scripts)) site = { url: saved.site.url || "", scan: saved.site.scan, source: saved.site.source || "live", dismissed: saved.site.dismissed || [], answers: saved.site.answers || {}, skipCtx: !!saved.site.skipCtx };
+    targetTouched = !!(saved && saved.targetTouched);
+  } catch (e) {}
+  function persist() {
+    try {
+      localStorage.setItem("jev-intake-v1", JSON.stringify({ target: target.value, targetTouched: targetTouched, arch: arch, site: site, rows: rows.map(function (r) { var c = Object.assign({}, r); delete c.id; return c; }) }));
+    } catch (e) {}
+  }
+
+  function score(r) { return Math.round(20 * (0.35 * r.t + 0.25 * r.a + 0.20 * r.d + 0.20 * r.e)); }
+  function band(s) { return s >= 75 ? "now" : s >= 55 ? "queue" : "park"; }
+  var BAND_LABEL = { now: "Install now", queue: "Queue next", park: "Park" };
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+  function ranked() { return rows.slice().sort(function (a, b) { return score(b) - score(a); }); }
+
+  var rowsEl = document.getElementById("rows");
+  function callFor(r) { var s = score(r); return r.e <= 2 ? ["flag", "Rework first"] : [band(s), BAND_LABEL[band(s)]]; }
+
+  // Guided intake: one question at a time, answers are buttons
+  var STEPS = ["name", "kit", "sys", "t", "a", "d", "e"];
+  var SHORT = { name: "Process", kit: "Kit", sys: "Data lives in", t: "Time-to-value", a: "Automation fit", d: "Data readiness", e: "Exit-safety" };
+  var Q = {
+    name: { q: "Which process are we scoring?", p: "Pick from this archetype's starter list, or name your own." },
+    kit: { q: "Which kit would handle it?", p: "Every process maps to one kit in the standard stack." },
+    sys: { q: "Where does its data live today?", p: "This drives data readiness and whether a kit can layer on top." },
+    t: { q: "How soon would a fix show a first win?", p: "Time-to-value · 35% of the score", opts: ["Needs a new system, migration and new habits", "Needs a new tool before anything works", "Some setup, then a win", "Mostly ready, light setup", "Works with what's there today"] },
+    a: { q: "How repetitive is this work?", p: "Automation fit · 25% of the score", opts: ["Every case is different", "Mostly judgment calls", "A mix of rules and judgment", "Mostly follows rules", "Same steps every time"] },
+    d: { q: "How organized is the data behind it?", p: "Data readiness · 20% of the score", opts: ["It lives in someone's head", "Paper or scattered inboxes", "Spreadsheets", "In a system, partly clean", "Clean and structured in a system"] },
+    e: { q: "Would a buyer inherit it cleanly?", p: "Exit-safety · 20% of the score. A 1 or 2 flags it for rework.", opts: ["Only one person can run it", "Runs on a custom-built tool", "Partly documented", "Standard tool, some documentation", "Mainstream tool, fully documented"] }
+  };
+  var KIT_DESC = { "CRM Kit": "Pipeline and customer records, one schema", "Outreach Kit": "Follow-up, reactivation, voice outreach", "Process Auditor": "Back-office operations and handoffs", "Target Scanner": "Sourcing and market research" };
+  var SYS_BY_ARCH = { bm: ["POS system", "Booking tool", "Phone system"], ec: ["Shopify", "Klaviyo", "Help desk inbox", "Ad accounts"], lg: ["CRM", "Web forms", "Call tracking", "Email inbox"] };
+  var SYS_COMMON = ["Spreadsheet", "Paper", "In someone's head"];
+
+  var flow;
+  function newFlow() { flow = { editId: null, step: 0, d: {}, other: false }; }
+  function editFlow(id) {
+    var r = rows.find(function (x) { return x.id === id; }); if (!r) return;
+    flow = { editId: id, step: 3, d: { name: r.name, kit: r.kit, sys: r.sys, t: r.t, a: r.a, d: r.d, e: r.e }, other: false };
+  }
+  newFlow();
+  function answered(f) { return flow.d[f] !== undefined && flow.d[f] !== ""; }
+  function answerText(f) {
+    var v = flow.d[f];
+    if (Q[f].opts) return v + " · " + Q[f].opts[v - 1];
+    return v;
+  }
+  function sysOptions() {
+    var list = [];
+    function add(x) { if (x && list.indexOf(x) < 0) list.push(x); }
+    if (flow.d.typ && flow.d.typ.sys) add(flow.d.typ.sys);
+    ((plan && plan.systems) || []).forEach(add);
+    (SYS_BY_ARCH[arch.primary] || []).forEach(add);
+    (SYS_BY_ARCH[arch.secondary] || []).forEach(add);
+    SYS_COMMON.forEach(add);
+    if (flow.d.sys) add(flow.d.sys);
+    return list;
+  }
+  function btn(attrs, badge, title, sub, pressed, extraCls) {
+    return '<button type="button" class="ans' + (extraCls || "") + '" aria-pressed="' + (pressed ? "true" : "false") + '" ' + attrs + ">" +
+      '<span class="badge" aria-hidden="true">' + badge + "</span><span><strong>" + esc(title) + "</strong>" + (sub ? "<small>" + esc(sub) + "</small>" : "") + "</span></button>";
+  }
+  function ctxPending() {
+    return plan && plan.pending.length && !site.skipCtx && !flow.editId && flow.step === 0 && !flow.d.name ? plan.pending[0] : null;
+  }
+  function renderCtx(q) {
+    var done = plan.answered.length, total = done + plan.pending.length;
+    document.getElementById("flow-label").textContent = "About your business" + (plan.business ? " · " + plan.business.name : "");
+    document.getElementById("flow-count").textContent = "Question " + (done + 1) + " of " + total;
+    document.getElementById("flow-meter").style.width = (done / total * 100) + "%";
+    document.getElementById("flow-back").hidden = true;
+    document.getElementById("trail").innerHTML = plan.answered.map(function (a) {
+      return '<button type="button" data-ctx-undo="' + a.id + '"><span class="q">' + esc(a.title) + '</span><span class="a">' + esc(a.answer) + '</span><span class="ch">Change</span></button>';
+    }).join("");
+    var reason = q.reason ? " Why we ask: " + q.reason.charAt(0).toLowerCase() + q.reason.slice(1) + "." : "";
+    var html = '<div class="question"><h3 tabindex="-1">' + esc(q.title) + "</h3><p>" + esc(q.sub) + '<span class="why">' + esc(reason.trim()) + '</span></p><div class="answers">' +
+      q.options.map(function (o, i) { return btn('data-ctx="' + q.id + '" data-i="' + i + '"', String.fromCharCode(65 + i), o.label, o.sub, false); }).join("") +
+      '</div><div style="margin-top:12px"><button class="link-btn" type="button" data-act="ctx-skip">Skip these questions</button></div></div>';
+    var stage = document.getElementById("stage");
+    stage.innerHTML = html;
+    var h = stage.querySelector("h3[tabindex]"); if (h) h.focus({ preventScroll: true });
+    if (hasGsap && !reduce) gsap.fromTo(stage, { opacity: 0, x: 18 }, { opacity: 1, x: 0, duration: 0.3, ease: "power2.out", clearProps: "transform,opacity" });
+  }
+  function renderFlow(animate) {
+    var ctxQ = ctxPending();
+    if (ctxQ) { renderCtx(ctxQ); return; }
+    if (flow.step >= STEPS.length && !flow.editId) { var gap = STEPS.findIndex(function (x) { return !answered(x); }); flow.step = gap < 0 ? 0 : gap; }
+    var f = STEPS[flow.step], total = STEPS.length;
+    var count = STEPS.filter(answered).length;
+    var idx = flow.editId ? rows.findIndex(function (r) { return r.id === flow.editId; }) + 1 : rows.length + 1;
+    document.getElementById("flow-label").textContent = "Process " + idx + (flow.d.name ? " · " + flow.d.name : "");
+    document.getElementById("flow-count").textContent = f ? "Question " + (flow.step + 1) + " of " + total : "Scored";
+    document.getElementById("flow-meter").style.width = (count / total * 100) + "%";
+    document.getElementById("flow-back").hidden = flow.step === 0;
+
+    document.getElementById("trail").innerHTML = STEPS.map(function (s, i) {
+      if (i === flow.step || !answered(s) || (f && i > flow.step)) return "";
+      return '<button type="button" data-goto="' + i + '"><span class="q">' + SHORT[s] + '</span><span class="a">' + esc(answerText(s)) + '</span><span class="ch">Change</span></button>';
+    }).join("");
+
+    var html = "";
+    if (!f) {
+      var r = rows.find(function (x) { return x.id === flow.editId; });
+      var c = callFor(r), rank = ranked().indexOf(r) + 1;
+      html = '<div class="result"><div class="num' + (r.e <= 2 ? " flag" : "") + '">' + score(r) + "</div><h3>" + esc(r.name) + '</h3><div><span class="pill ' + c[0] + '">' + c[1] + '</span> <span style="font-size:13px;color:var(--muted)">#' + rank + " of " + rows.length + " on the opportunity map</span></div>" +
+        '<div class="next"><button class="primary" type="button" data-act="another">Score another process →</button><button class="secondary" type="button" data-goto="3">Revisit the scores</button></div></div>';
+    } else {
+      var qp = f === "name" && site.scan ? "Ranked from your website, fastest win first. Or name your own." : Q[f].p;
+      var qHint = f === "t" && flow.d.typ ? '<span class="why">Dashed answers are typical for this process.' + (flow.d.typ.why && flow.d.typ.why.length ? " Evidence: " + esc(flow.d.typ.why.slice(0, 2).join("; ")) + "." : "") + "</span>" : "";
+      html = '<div class="question"><h3 tabindex="-1">' + Q[f].q + "</h3><p>" + qp + qHint + '</p><div class="answers' + (f === "name" || f === "kit" || f === "sys" ? " two" : "") + '">';
+      if (f === "name") {
+        var taken = rows.filter(function (r) { return r.id !== flow.editId; }).map(function (r) { return r.name; });
+        var lib = plan.candidates.filter(function (it) { return taken.indexOf(it.name) < 0; }).slice(0, 8);
+        html += lib.map(function (it, i) { return btn('data-lib="' + i + '"', "+", it.name, it.kit + (it.why[0] ? " · " + it.why[0] : ""), flow.d.name === it.name); }).join("");
+        html += btn('data-act="other"', "…", "Something else", "Name your own process", flow.other);
+        html += "</div>";
+        if (flow.other) html += '<div class="other"><input id="other-name" placeholder="e.g. Invoice collections" aria-label="Process name" value="' + esc(flow.d.name && lib.every(function (it) { return it.name !== flow.d.name; }) ? flow.d.name : "") + '"><button class="primary" type="button" data-act="other-next">Next →</button></div>';
+        flow._lib = lib;
+      } else if (f === "kit") {
+        html += KITS.map(function (k, i) { return btn('data-v="' + k + '"', String.fromCharCode(65 + i), k, KIT_DESC[k], flow.d.kit === k, flow.d.typ && flow.d.typ.kit === k && flow.d.kit !== k ? " typical" : ""); }).join("") + "</div>";
+      } else if (f === "sys") {
+        var so = sysOptions();
+        html += so.map(function (x, i) { return btn('data-v="' + esc(x) + '"', String(i + 1), x, "", flow.d.sys === x, flow.d.typ && flow.d.typ.sys === x && flow.d.sys !== x ? " typical" : ""); }).join("");
+        html += btn('data-act="other"', "…", "Somewhere else", "Type it in", flow.other) + "</div>";
+        if (flow.other) html += '<div class="other"><input id="other-sys" placeholder="e.g. ServiceTitan" aria-label="System of record"><button class="primary" type="button" data-act="other-next">Next →</button></div>';
+      } else {
+        html += Q[f].opts.map(function (o, i) {
+          var v = i + 1, typ = flow.d.typ && flow.d.typ[f] === v && flow.d[f] !== v;
+          return btn('data-v="' + v + '"', v, o, "", flow.d[f] === v, (f === "e" && v <= 2 ? " low" : "") + (typ ? " typical" : ""));
+        }).join("") + "</div>";
+      }
+      html += "</div>";
+    }
+    var stage = document.getElementById("stage");
+    stage.innerHTML = html;
+    var h = stage.querySelector("h3[tabindex]"); if (h && animate) h.focus({ preventScroll: true });
+    var oi = stage.querySelector(".other input"); if (oi) oi.focus({ preventScroll: true });
+    if (animate && hasGsap && !reduce) gsap.fromTo(stage, { opacity: 0, x: 18 }, { opacity: 1, x: 0, duration: 0.3, ease: "power2.out", clearProps: "transform,opacity" });
+  }
+  function commit() {
+    var d = flow.d, vals = { name: d.name, kit: d.kit, sys: d.sys || "", t: d.t, a: d.a, d: d.d, e: d.e };
+    if (flow.editId) {
+      var r = rows.find(function (x) { return x.id === flow.editId; }); if (r) { Object.assign(r, vals); r.auto = false; r.fromSite = false; }
+      return true;
+    }
+    if (["t", "a", "d", "e"].every(function (k) { return typeof d[k] === "number"; }) && d.name && d.kit) {
+      var nr = withId(vals); rows.push(nr); flow.editId = nr.id; return true;
+    }
+    return false;
+  }
+  function answer(field, value) {
+    flow.d[field] = value; flow.other = false;
+    var changed = commit();
+    // after the last question, or when editing a finished row, jump to the next unanswered step or the result
+    flow.step = Math.min(flow.step + 1, STEPS.length);
+    if (changed) { renderScored(); refresh(true); }
+    renderFlow(true);
+  }
+  document.getElementById("stage").addEventListener("click", function (e) {
+    var b = e.target.closest("button"); if (!b) return;
+    var f = STEPS[flow.step];
+    if (b.dataset.ctx) { site.answers[b.dataset.ctx] = +b.dataset.i; computePlan(); renderAll(true); return; }
+    if (b.dataset.act === "ctx-skip") { site.skipCtx = true; renderFlow(true); persist(); return; }
+    if (b.dataset.act === "another") { newFlow(); renderScored(); renderFlow(true); return; }
+    if (b.dataset.goto) { flow.step = +b.dataset.goto; renderFlow(true); return; }
+    if (b.dataset.act === "other") { flow.other = true; renderFlow(false); return; }
+    if (b.dataset.act === "other-next") {
+      var inp = document.querySelector(".other input"), v = inp && inp.value.trim();
+      if (!v) { inp.focus(); toast(f === "name" ? "Type a process name first" : "Type where the data lives first"); return; }
+      if (f === "name") flow.d.typ = null;
+      answer(f, v); return;
+    }
+    if (b.dataset.lib !== undefined) {
+      var it = flow._lib[+b.dataset.lib];
+      flow.d.typ = { kit: it.kit, sys: it.sys, t: it.typ.t, a: it.typ.a, d: it.typ.d, e: it.typ.e, why: it.why };
+      answer("name", it.name); return;
+    }
+    if (b.dataset.v !== undefined) answer(f, Q[f] && Q[f].opts ? Number(b.dataset.v) : b.dataset.v);
+  });
+  document.getElementById("stage").addEventListener("keydown", function (e) {
+    if (e.key === "Enter" && e.target.matches(".other input")) { e.preventDefault(); var n = document.querySelector('[data-act="other-next"]'); if (n) n.click(); }
+  });
+  document.getElementById("trail").addEventListener("click", function (e) {
+    var u = e.target.closest("[data-ctx-undo]");
+    if (u) { delete site.answers[u.dataset.ctxUndo]; site.skipCtx = false; computePlan(); renderAll(true); return; }
+    var b = e.target.closest("[data-goto]"); if (!b) return;
+    flow.step = +b.dataset.goto; flow.other = false; renderFlow(true);
+  });
+  document.getElementById("flow-back").addEventListener("click", function () { if (flow.step > 0) { flow.step--; flow.other = false; renderFlow(true); } });
+  document.getElementById("flow-new").addEventListener("click", function () { newFlow(); renderScored(); renderFlow(true); });
+
+  function renderScored() {
+    rowsEl.innerHTML = rows.length ? rows.map(function (r) {
+      var c = callFor(r);
+      return '<div class="srow' + (flow && flow.editId === r.id ? " active" : "") + '"><span class="n">' + esc(r.name || "Untitled process") + "<small>" + esc(r.kit) + (r.sys ? " · " + esc(r.sys) : "") + (r.fromSite ? ' · <b class="pf">prefilled from your site</b>' : "") + '</small></span><span class="sc' + (r.e <= 2 ? " flag" : "") + '">' + score(r) + '</span><span class="pill ' + c[0] + '">' + c[1] + '</span><span><button class="link-btn" type="button" data-edit="' + r.id + '">Edit</button> · <button class="link-btn" type="button" data-del="' + r.id + '">Remove</button></span></div>';
+    }).join("") : '<p style="margin:0;color:var(--muted);font-size:14px">Nothing scored yet. Answer the questions above and each process lands here and on the map.</p>';
+  }
+  function renderLedger() { renderScored(); renderFlow(false); }
+  rowsEl.addEventListener("click", function (e) {
+    var ed = e.target.closest("[data-edit]"), del = e.target.closest("[data-del]");
+    if (ed) { editFlow(ed.dataset.edit); renderScored(); renderFlow(true); document.getElementById("flow").scrollIntoView({ block: "start", behavior: reduce ? "auto" : "smooth" }); }
+    if (del) {
+      if (del.dataset.armed !== "1") { del.dataset.armed = "1"; del.textContent = "Confirm remove"; setTimeout(function () { if (del.isConnected) { del.dataset.armed = ""; del.textContent = "Remove"; } }, 3000); return; }
+      rows = rows.filter(function (r) { return r.id !== del.dataset.del; });
+      if (flow.editId === del.dataset.del) newFlow();
+      renderLedger(); refresh(true);
+    }
+  });
+
+  var mapEl = document.getElementById("map-list");
+  var items = {};
+  function renderMap(animate) {
+    var state = hasGsap && animate && !reduce ? Flip.getState(mapEl.querySelectorAll(".item")) : null;
+    var list = ranked(), keep = {};
+    list.forEach(function (r, i) {
+      var s = score(r), b = band(s), f = r.e <= 2;
+      var el = items[r.id];
+      if (!el) { el = document.createElement("div"); el.className = "item"; el.setAttribute("data-flip-id", r.id); items[r.id] = el; }
+      el.dataset.band = b;
+      el.classList.toggle("flag", f);
+      el.innerHTML = '<span class="rank">' + String(i + 1).padStart(2, "0") + "</span>" +
+        '<span class="name">' + esc(r.name || "Untitled process") + "</span>" +
+        '<span class="pts">' + s + "</span>" +
+        '<span class="bar"><i style="width:' + s + '%"></i></span>' +
+        '<span class="meta"><span class="pill ' + (f ? "flag" : b) + '">' + (f ? "Rework first" : BAND_LABEL[b]) + "</span><span>" + esc(r.kit) + "</span>" + (r.sys ? "<span>" + esc(r.sys) + "</span>" : "") + "</span>";
+      mapEl.appendChild(el);
+      keep[r.id] = true;
+    });
+    Object.keys(items).forEach(function (id) { if (!keep[id]) { items[id].remove(); delete items[id]; } });
+    var empty = mapEl.querySelector(".empty");
+    if (!list.length && !empty) mapEl.innerHTML = '<div class="empty">Answer the intake questions and each process is ranked here.</div>';
+    else if (list.length && empty) empty.remove();
+    if (state) Flip.from(state, { duration: 0.5, ease: "power2.inOut", nested: true });
+
+    var top = list.filter(function (r) { return r.e > 2; })[0];
+    setNum("stamp-score", top ? score(top) : 0);
+    document.getElementById("stamp-name").textContent = top ? (top.name || "Untitled process") : "Score a process to see your first install";
+  }
+
+  function renderSummary() {
+    var n = rows.length, now = 0, fl = 0, sum = 0, kitSum = {};
+    KITS.forEach(function (k) { kitSum[k] = 0; });
+    rows.forEach(function (r) {
+      var s = score(r); sum += s;
+      if (r.e <= 2) fl++; else if (band(s) === "now") now++;
+      if (band(s) !== "park" && r.e > 2) kitSum[r.kit] += s;
+    });
+    setNum("s-count", n); setNum("s-now", now); setNum("s-flag", fl);
+    setNum("s-avg", n ? Math.round(sum / n) : 0, "<small> /100</small>");
+    var max = Math.max.apply(null, KITS.map(function (k) { return kitSum[k]; }).concat([1]));
+    document.getElementById("kits").innerHTML = KITS.map(function (k) {
+      return '<div class="kit-row"><span>' + k + '</span><span class="track"><i style="width:' + (kitSum[k] / max * 100) + '%"></i></span><span class="n">' + kitSum[k] + "</span></div>";
+    }).join("");
+    renderJourney();
+  }
+  function setNum(id, v, suffix) {
+    var el = document.getElementById(id); suffix = suffix || "";
+    var from = parseInt(el.textContent, 10) || 0;
+    if (!hasGsap || reduce || from === v) { el.innerHTML = v + suffix; return; }
+    var o = { n: from };
+    gsap.to(o, { n: v, duration: 0.45, ease: "power1.out", onUpdate: function () { el.innerHTML = Math.round(o.n) + suffix; } });
+  }
+  function renderJourney() {
+    if (!plan) return;
+    var checks = ARCH[arch.primary].checks.map(function (_, i) { return !!arch.checks["chk-" + arch.primary + "-" + i]; });
+    var named = rows.some(function (r) { return r.name; });
+    document.getElementById("j0").classList.toggle("done", !!site.scan);
+    document.getElementById("j1").classList.toggle("done", !site.scan || !plan.needsArchetype);
+    document.getElementById("j2").classList.toggle("done", checks.every(Boolean));
+    document.getElementById("j3").classList.toggle("done", named);
+    document.getElementById("j4").classList.toggle("done", rows.length > 0 && named);
+  }
+
+  function refresh(animate) { renderMap(animate); renderSummary(); persist(); }
+
+  var primaryEl = document.getElementById("primary"), secondaryEl = document.getElementById("secondary");
+  function renderArch() {
+    primaryEl.innerHTML = ARCH_ORDER.map(function (k) {
+      return '<button class="option" type="button" data-p="' + k + '" aria-pressed="' + (arch.primary === k) + '"><span class="chk" aria-hidden="true">✓</span><span><strong>' + ARCH[k].label + "</strong><small>" + ARCH[k].blurb + "</small></span></button>";
+    }).join("");
+    secondaryEl.innerHTML = ['<button class="option" type="button" data-s="" aria-pressed="' + (!arch.secondary) + '"><span class="chk" aria-hidden="true">✓</span><span><strong>None</strong></span></button>'].concat(ARCH_ORDER.filter(function (k) { return k !== arch.primary; }).map(function (k) {
+      return '<button class="option" type="button" data-s="' + k + '" aria-pressed="' + (arch.secondary === k) + '"><span class="chk" aria-hidden="true">✓</span><span><strong>' + ARCH[k].label + "</strong></span></button>";
+    })).join("");
+    var p = ARCH[arch.primary], s = arch.secondary ? ARCH[arch.secondary] : null;
+    function both(f) { return esc(p[f]) + (s ? '<span class="plus">+ ' + esc(s[f]) + "</span>" : ""); }
+    document.getElementById("profile").innerHTML =
+      "<div><dt>Conversion that matters</dt><dd>" + both("conversion") + "</dd></div>" +
+      "<div><dt>Where the data lives</dt><dd>" + both("data") + "</dd></div>" +
+      '<div class="risk"><dt>Common exit-safety risk</dt><dd>' + both("risk") + "</dd></div>";
+    var n = plan.candidates.length;
+    document.getElementById("load-lib").textContent = "Pre-fill " + n + " processes with typical scores";
+    var src = document.getElementById("arch-src");
+    if (!site.scan) src.textContent = "";
+    else if (arch.lock) src.innerHTML = 'Set by you. <button class="link-btn" type="button" data-act="unlock">Use the website\'s pick instead</button>';
+    else src.textContent = "Set from your website (" + (plan.business ? plan.business.host : "") + "), confidence " + plan.confidence + ". Tap a card to override.";
+    var det = document.getElementById("f-detect");
+    det.textContent = !site.scan ? "" : plan.noTracking ? "On your site: no analytics or ad tags are visible in the page source. Some platforms load them later, so confirm what is installed first." : plan.tracking.length ? "On your site: " + plan.tracking.join(", ") + "." : "";
+    document.getElementById("f-sub").textContent = "Track “" + p.conversion.toLowerCase() + "” before installing any kit, so every kit has a before and after number.";
+    document.getElementById("checks").innerHTML = p.checks.map(function (c, i) {
+      var id = "chk-" + arch.primary + "-" + i, on = !!arch.checks[id], seen = on ? "" : seenFor(i);
+      return '<button type="button" data-chk="' + id + '" aria-pressed="' + on + '"' + (seen ? ' class="seen"' : "") + '><span class="box" aria-hidden="true">✓</span><span>' + esc(c) + (seen ? '<em class="seen-tag">Seen on your site: ' + esc(seen) + ". Tap once you have confirmed the events fire.</em>" : "") + "</span></button>";
+    }).join("");
+    renderJourney();
+  }
+  primaryEl.addEventListener("click", function (e) {
+    var b = e.target.closest("[data-p]"); if (!b) return;
+    arch.primary = b.dataset.p; if (arch.secondary === arch.primary) arch.secondary = "";
+    arch.lock = true; computePlan(); renderAll(false);
+  });
+  secondaryEl.addEventListener("click", function (e) {
+    var b = e.target.closest("[data-s]"); if (!b) return;
+    arch.secondary = b.dataset.s; arch.lock = true; computePlan(); renderAll(false);
+  });
+  document.getElementById("checks").addEventListener("click", function (e) {
+    var b = e.target.closest("[data-chk]"); if (!b) return;
+    var on = b.getAttribute("aria-pressed") !== "true";
+    arch.checks[b.dataset.chk] = on; b.setAttribute("aria-pressed", on); if (on) { b.classList.remove("seen"); var tg = b.querySelector(".seen-tag"); if (tg) tg.remove(); } renderJourney(); persist();
+  });
+  document.getElementById("load-lib").addEventListener("click", function (e) {
+    var btn = e.currentTarget, lib = plan.candidates.map(function (c) { return { name: c.name, kit: c.kit, sys: c.sys, t: c.typ.t, a: c.typ.a, d: c.typ.d, e: c.typ.e }; });
+    var hasWork = rows.some(function (r) { return r.name; });
+    if (hasWork && btn.dataset.armed !== "1") {
+      btn.dataset.armed = "1"; btn.textContent = "Click again to replace " + rows.length + " rows";
+      setTimeout(function () { if (btn.dataset.armed === "1") { btn.dataset.armed = ""; renderArch(); } }, 3000); return;
+    }
+    btn.dataset.armed = "";
+    rows = lib.map(withId); newFlow(); renderLedger(); refresh(true); renderArch();
+    toast("Filled " + lib.length + " processes with typical scores");
+    if (hasGsap && !reduce) gsap.from("#rows .srow", { opacity: 0.3, y: 6, duration: 0.4, stagger: 0.04, ease: "power2.out", clearProps: "all" });
+  });
+
+  document.getElementById("clear").addEventListener("click", function (e) {
+    var btn = e.currentTarget;
+    if (btn.dataset.armed !== "1") { btn.dataset.armed = "1"; btn.textContent = "Click again to clear all rows"; setTimeout(function () { btn.dataset.armed = ""; btn.textContent = "Start blank"; }, 3000); return; }
+    btn.dataset.armed = ""; btn.textContent = "Start blank";
+    rows = []; newFlow();
+    target.value = ""; renderLedger(); refresh(true);
+  });
+  target.addEventListener("input", function () { targetTouched = true; persist(); });
+
+  var toastEl = document.getElementById("toast"), tt;
+  function toast(msg) { toastEl.textContent = msg; toastEl.classList.add("show"); clearTimeout(tt); tt = setTimeout(function () { toastEl.classList.remove("show"); }, 2200); }
+  document.getElementById("copy").addEventListener("click", function () {
+    var list = ranked();
+    var lines = ["Opportunity map: " + (target.value || "Untitled business"), "Archetype: " + ARCH[arch.primary].label + (arch.secondary ? " + " + ARCH[arch.secondary].label : ""), (site.scan ? "Website: " + site.scan.url + (site.source === "example" ? " (example)" : "") + " · Plan " + plan.id : "Website: not scanned"), "", "| Rank | Process | Kit | System of record | T | A | D | E | Score | Call |", "| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |"];
+    list.forEach(function (r, i) { var s = score(r); lines.push("| " + (i + 1) + " | " + (r.name || "Untitled") + " | " + r.kit + " | " + (r.sys || "") + " | " + r.t + " | " + r.a + " | " + r.d + " | " + r.e + " | " + s + " | " + (r.e <= 2 ? "Rework first" : BAND_LABEL[band(s)]) + " |"); });
+    var text = lines.join("\n");
+    function fallback() {
+      var ta = document.createElement("textarea"); ta.value = text; ta.setAttribute("readonly", ""); ta.style.position = "fixed"; ta.style.opacity = "0";
+      document.body.appendChild(ta); ta.select();
+      var ok = false; try { ok = document.execCommand("copy"); } catch (err) {}
+      ta.remove(); toast(ok ? "Copied " + list.length + " rows as a table" : "Copy didn't work here. Select the ledger text instead.");
+    }
+    try { navigator.clipboard.writeText(text).then(function () { toast("Copied " + list.length + " rows as a table"); }, fallback); } catch (err) { fallback(); }
+  });
+
+
+  /* ---------- Website scan ---------- */
+  var GROUP_ORDER = ["Platform", "Booking and ordering", "Commerce", "Marketing and reviews", "Support", "Tracking", "Contact", "Content", "Structure", "Structured data"];
+  var ARCH_SHORT = { ec: "ecommerce", lg: "lead gen", bm: "brick and mortar" };
+  var CONF_TEXT = { high: "The leading model wins clearly.", medium: "The leading model is ahead, but not by much.", low: "Too close to call, so we ask.", manual: "You picked the model, so votes are shown for reference." };
+
+  // Prefill: rows the scan can rank are added as replaceable rows. Anything the person edits or adds stays.
+  var lastFill = 0;
+  function autoFill() {
+    if (!site.scan || !plan) return false;
+    var manual = rows.filter(function (r) { return !r.auto; });
+    var have = manual.map(function (r) { return r.name; });
+    var fresh = plan.candidates.filter(function (c) { return have.indexOf(c.name) < 0; }).slice(0, Math.max(0, 5 - manual.length)).map(function (c) {
+      return { name: c.name, kit: c.kit, sys: c.sys || "", t: c.typ.t, a: c.typ.a, d: c.typ.d, e: c.typ.e, auto: true, fromSite: true };
+    });
+    function sig(list) { return list.map(function (r) { return [r.name, r.kit, r.sys, r.t, r.a, r.d, r.e].join("|"); }).join(";"); }
+    var cur = rows.filter(function (r) { return r.auto && r.fromSite; });
+    if (cur.length === rows.filter(function (r) { return r.auto; }).length && sig(cur) === sig(fresh)) return false;
+    rows = manual.concat(fresh.map(withId));
+    if (flow && flow.editId && !rows.some(function (r) { return r.id === flow.editId; })) newFlow();
+    lastFill = fresh.length;
+    return true;
+  }
+  // Step-zero: what the scan already saw for each check. Never ticked for the person: tags in the source do not prove events fire.
+  function seenFor(idx) {
+    if (!plan || !site.scan) return "";
+    var on = plan.signals.filter(function (sg) { return !sg.ignored; }), ids = on.map(function (sg) { return sg.id; });
+    function has() { return Array.prototype.slice.call(arguments).some(function (i) { return ids.indexOf(i) > -1; }); }
+    function names() { var a = Array.prototype.slice.call(arguments); return on.filter(function (sg) { return a.indexOf(sg.id) > -1; }).map(function (sg) { return sg.label; }).slice(0, 3).join(", "); }
+    if (idx !== 1) return "";
+    if (arch.primary === "lg" && has("inquiryform", "form", "phone", "calltrack") && has("gtm", "ga4", "calltrack", "adpixels")) return names("inquiryform", "form", "phone", "calltrack", "gtm", "ga4", "adpixels");
+    if (arch.primary === "ec" && has("shopify", "woocommerce", "bigcommerce") && has("gtm", "ga4", "adpixels")) return names("shopify", "woocommerce", "bigcommerce", "gtm", "ga4", "adpixels");
+    if (arch.primary === "bm" && has("pos", "localbooking", "reservations", "ordering")) return names("pos", "localbooking", "reservations", "ordering");
+    return "";
+  }
+  function renderAll(animate) {
+    computePlan(); autoFill(); renderSite(); renderArch(); renderScored(); renderFlow(!!animate); refresh(false);
+  }
+  function renderSite() {
+    var urlEl = document.getElementById("site-url");
+    if (site.source === "live" && site.url && !urlEl.value) urlEl.value = site.url;
+    var h = "";
+    if (scanState.lines.length) h += scanState.lines.map(function (l) { return '<div class="scan-line ' + l.state + '"><span class="dot"></span>' + esc(l.text) + "</div>"; }).join("");
+    if (scanState.error) h += '<div class="notice" role="alert">' + esc(scanState.error.copy) + (scanState.error.retry ? ' <button class="link-btn" type="button" data-act="scan-retry">Try again</button>' : "") + "</div>";
+    document.getElementById("scan-status").innerHTML = h;
+    var noLive = liveAvail === false;
+    document.getElementById("scan-btn").disabled = scanState.phase === "running" || noLive;
+    urlEl.disabled = noLive;
+    urlEl.placeholder = noLive ? "Live scan isn't available here" : "yourcompany.com";
+    document.getElementById("scan-btn").textContent = scanState.phase === "running" ? "Scanning…" : "Scan my site";
+    document.getElementById("live-note").textContent = liveAvail === false ? "Live scanning runs with Jordan after the session. Example sites use made-up data." : "Example sites use made-up data. Live scans read your homepage through the Context.Dev connector.";
+    document.getElementById("examples").innerHTML = JevFixtures.map(function (f) {
+      var on = site.source === "example" && site.scan && site.scan.url === f.scan.url;
+      return '<button class="ex" type="button" data-ex="' + f.id + '" aria-pressed="' + (on ? "true" : "false") + '"><strong>' + esc(f.label) + "</strong><small>" + esc(f.blurb) + "</small></button>";
+    }).join("");
+
+    var found = document.getElementById("found"), fl = found.querySelector(".found-list"), keep = fl ? fl.scrollTop : 0;
+    if (!site.scan) {
+      found.innerHTML = '<p class="opt-label">What we found</p><p class="empty-dark">Nothing scanned yet. We look for your platform, booking and email tools, tracking, and how your pages are laid out. Then we pick the business model and skip the questions the site already answers.</p>';
+    } else {
+      var b = plan.business, groups = {};
+      plan.signals.forEach(function (sg) { (groups[sg.group] = groups[sg.group] || []).push(sg); });
+      var list = GROUP_ORDER.filter(function (g) { return groups[g]; }).map(function (g) {
+        return '<div class="sig-group"><h4>' + esc(g) + "</h4>" + groups[g].map(function (sg) {
+          return '<div class="sig' + (sg.ignored ? " ignored" : "") + '"><span><strong>' + esc(sg.label) + '</strong><span class="ev">' + esc(sg.evidence.join(", ")) + '</span></span><button class="link-btn" type="button" data-sig="' + sg.id + '">' + (sg.ignored ? "Use again" : "Not right") + "</button></div>";
+        }).join("") + "</div>";
+      }).join("");
+      found.innerHTML = '<p class="opt-label">' + (site.source === "example" ? "Example site · made-up data" : "Read from " + esc(b.host)) + '</p><h3 class="biz">' + esc(b.name) + '</h3><p class="blurb">' + esc(b.blurb) + '</p><div class="found-list">' + (list || '<p class="empty-dark">We found no recognizable tools on the homepage.</p>') + '</div><div class="found-foot"><button class="link-btn" type="button" data-act="site-clear">Remove this website</button></div>';
+      var nl = found.querySelector(".found-list"); if (nl) nl.scrollTop = keep;
+    }
+    renderRoute();
+  }
+  function renderRoute() {
+    var el = document.getElementById("route-panel");
+    if (!site.scan) { el.hidden = true; return; }
+    el.hidden = false;
+    var max = Math.max(1, plan.votes.bm, plan.votes.ec, plan.votes.lg);
+    var votes = ARCH_ORDER.map(function (k) {
+      return '<div class="vote-row' + (plan.primary === k ? " top" : "") + '"><span>' + ARCH[k].label + '</span><span class="track"><i style="width:' + (plan.votes[k] / max * 100) + '%"></i></span><span class="n">' + plan.votes[k] + "</span></div>";
+    }).join("");
+    var voters = plan.signals.filter(function (sg) { return !sg.ignored && (sg.votes.bm || sg.votes.ec || sg.votes.lg); }).map(function (sg) {
+      return "<li>" + esc(sg.label) + " <span>" + ["ec", "lg", "bm"].filter(function (k) { return sg.votes[k]; }).map(function (k) { return ARCH_SHORT[k] + " +" + sg.votes[k]; }).join(", ") + "</span></li>";
+    }).join("");
+    var qs = plan.answered.map(function (a) { return "<li>" + esc(a.title) + " <span>→ " + esc(a.answer) + "</span></li>"; }).concat(plan.pending.map(function (q) { return "<li>" + esc(q.title) + " <span>asked because " + esc(q.reason.charAt(0).toLowerCase() + q.reason.slice(1)) + "</span></li>"; })).join("");
+    document.getElementById("route-body").innerHTML =
+      '<div><h4>Business model votes</h4>' + votes + '<p class="hint">' + esc(CONF_TEXT[plan.confidence] || "") + "</p></div>" +
+      "<div><h4>Signals that voted</h4><ul>" + (voters || "<li>None</li>") + "</ul></div>" +
+      "<div><h4>Questions we added</h4><ul>" + (qs || "<li>None. The site answered what we need.</li>") + "</ul></div>" +
+      '<div><h4>Rules, not a model</h4><p class="hint" style="margin:0">Context reads the page. Every decision here comes from a fixed rule, so the same site and the same answers always give the same plan. Ignoring a wrong signal above re-runs the rules.</p></div>' +
+      '<p class="pid">Plan ID <strong>' + esc(plan.id) + "</strong> · router v" + esc(plan.version) + "</p>";
+  }
+
+  function normalizeUrl(raw) {
+    var v = String(raw || "").trim(); if (!v) return null;
+    if (!/^https?:\/\//i.test(v)) v = "https://" + v;
+    try {
+      var u = new URL(v);
+      if (!/\./.test(u.hostname) || /^(\d{1,3}\.){3}\d{1,3}$/.test(u.hostname)) return null;
+      return u.origin + (u.pathname || "/");
+    } catch (e) { return null; }
+  }
+  function asObject(x) {
+    if (x && typeof x === "object") return x;
+    if (typeof x === "string") { try { var o = JSON.parse(x); return o && typeof o === "object" ? o : null; } catch (e) { return null; } }
+    return null;
+  }
+  var CONNECT_HELP = "Add the Context.Dev connector in Claude Settings → Connectors to scan a live site. You can still pick an archetype or try an example site.";
+  var ERR_COPY = {
+    unavailable: "Live scanning runs with Jordan after the session. For now, pick the example closest to your business.",
+    not_granted: "Live scanning runs with Jordan after the session. For now, pick the example closest to your business.",
+    capability_disabled: "Live scanning runs with Jordan after the session. For now, pick the example closest to your business.",
+    capability_removed: "Live scanning runs with Jordan after the session. For now, pick the example closest to your business.",
+    server_not_connected: CONNECT_HELP,
+    selection_required: "You have more than one Context connector. Choose one in Claude Settings → Connectors, then scan again.",
+    not_in_manifest: "This page isn't allowed to use Context.Dev right now. Allow it when asked, or reload the page and scan again.",
+    needs_reauth: "Reconnect Context.Dev in Claude Settings → Connectors, then scan again.",
+    blocked_by_policy: "Your organization doesn't allow this connector on shared pages.",
+    approval_required: "Your organization needs to approve this connector call first.",
+    server_unavailable: "Context.Dev didn't answer in time.",
+    upstream_error: "Context.Dev hit an error reading that site.",
+    bad_shape: "Context.Dev answered, but the page had nothing we could read. Try the site's main address.",
+    cancelled: "The scan was cancelled."
+  };
+  function failScan(err) {
+    var code = (err && err.code) || "upstream_error";
+    var copy = ERR_COPY[code] || "Something went wrong reading that site.";
+    if (code === "tool_error") copy = "Context.Dev couldn't read that site" + (err.message ? ": " + String(err.message).slice(0, 160) : ".");
+    var lines = scanState.lines.map(function (l) { return l.state === "run" ? { text: l.text.replace(/^Reading/, "Couldn't read").replace(/^Mapping/, "Couldn't map"), state: "bad" } : l; });
+    scanState = { phase: "error", lines: code === "unavailable" ? [] : lines, error: { copy: copy, retry: !!(err && (err.retryable || code === "server_unavailable")) } };
+    renderSite();
+  }
+  function setLine(i, state, text) { if (scanState.lines[i]) { scanState.lines[i] = { state: state, text: text }; renderSite(); } }
+  function afterSiteChange() {
+    lastFill = 0; computePlan();
+    if (plan.business && !targetTouched) target.value = plan.business.name;
+    newFlow(); renderAll(true);
+  }
+  async function startScan(raw) {
+    var url = normalizeUrl(raw);
+    if (!url) { scanState = { phase: "error", lines: [], error: { copy: "Enter a website address like yourcompany.com.", retry: false } }; renderSite(); return; }
+    lastUrl = url;
+    scanState = { phase: "running", lines: [{ state: "run", text: "Reading your homepage" }, { state: "run", text: "Mapping your pages" }], error: null };
+    renderSite();
+    var mcp = null;
+    try { mcp = window.claude && window.claude.use ? await window.claude.use("mcp") : null; } catch (e) { mcp = null; }
+    if (!mcp) { failScan({ code: "unavailable" }); return; }
+    var host = new URL(url).hostname.replace(/^www\./, "");
+    var pageP = mcp.callTool(CONTEXT_SERVER, "web-scrape", {
+      url: url, formats: { parse: true }, parseParams: { rules: JevRouter.SCAN_RULES },
+      sharedParams: { dismissCookies: true, dismissPopups: true }, timeoutOpts: { milliseconds: 60000, behavior: "return-partial" }
+    }).then(function (r) { setLine(0, "ok", "Read your homepage"); return r; }, function (err) { setLine(0, "bad", "Couldn't read your homepage"); throw err; });
+    var mapP = mcp.callTool(CONTEXT_SERVER, "web-map", { domain: host, maxLinks: 300, timeoutOpts: { milliseconds: 30000, behavior: "return-partial" } })
+      .then(function (r) { var m = asObject(r.payload); setLine(1, "ok", "Mapped " + ((m && m.urls && m.urls.length) || 0) + " pages"); return m; }, function () { setLine(1, "bad", "Couldn't map pages, using the homepage only"); return null; });
+    var page;
+    try { page = await pageP; } catch (err) { failScan(err); return; }
+    var pagePayload = asObject(page.payload), mapPayload = await mapP;
+    if (!pagePayload || !pagePayload.parsed || !pagePayload.parsed.data) { failScan({ code: "bad_shape" }); return; }
+    site = { url: url, scan: JevRouter.normalize({ parsed: pagePayload.parsed, metadata: pagePayload.metadata, url: pagePayload.url || url }, mapPayload, url), source: "live", dismissed: [], answers: {}, skipCtx: false };
+    arch.lock = false;
+    scanState = { phase: "done", lines: scanState.lines, error: null };
+    afterSiteChange();
+    toast("Read " + host + (lastFill ? ". Prefilled " + lastFill + " processes." : ""));
+  }
+  function loadExample(id) {
+    var fx = JevFixtures.filter(function (x) { return x.id === id; })[0]; if (!fx) return;
+    site = { url: fx.scan.url, scan: JSON.parse(JSON.stringify(fx.scan)), source: "example", dismissed: [], answers: {}, skipCtx: false };
+    arch.lock = false; scanState = { phase: "done", lines: [], error: null };
+    afterSiteChange();
+    toast("Loaded example: " + fx.label + (lastFill ? ". Prefilled " + lastFill + " processes." : ""));
+  }
+  function checkLive() {
+    function set(v) { liveAvail = v; renderSite(); }
+    try {
+      if (!(window.claude && window.claude.use)) { set(false); return; }
+      window.claude.use("mcp").then(function (m) { set(!!m); }, function () { set(false); });
+    } catch (e) { set(false); }
+  }
+  document.getElementById("scan-btn").addEventListener("click", function () { startScan(document.getElementById("site-url").value); });
+  document.getElementById("site-url").addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); startScan(e.target.value); } });
+  document.getElementById("scan-status").addEventListener("click", function (e) { if (e.target.closest('[data-act="scan-retry"]')) startScan(lastUrl); });
+  document.getElementById("examples").addEventListener("click", function (e) { var b = e.target.closest("[data-ex]"); if (b) loadExample(b.dataset.ex); });
+  document.getElementById("found").addEventListener("click", function (e) {
+    var sb = e.target.closest("[data-sig]"), cl = e.target.closest('[data-act="site-clear"]');
+    if (sb) { var i = site.dismissed.indexOf(sb.dataset.sig); if (i > -1) site.dismissed.splice(i, 1); else site.dismissed.push(sb.dataset.sig); computePlan(); renderAll(false); }
+    if (cl) { site = { url: "", scan: null, source: "", dismissed: [], answers: {}, skipCtx: false }; arch.lock = false; scanState = { phase: "idle", lines: [], error: null }; document.getElementById("site-url").value = ""; var man = rows.filter(function (r) { return !r.auto; }); rows = man.length ? man : EXAMPLE.map(function (r) { return withId(Object.assign({ auto: true }, r)); }); newFlow(); computePlan(); renderAll(false); }
+  });
+  document.getElementById("arch-src").addEventListener("click", function (e) { if (e.target.closest('[data-act="unlock"]')) { arch.lock = false; computePlan(); renderAll(false); } });
+
+  // Sidebar highlights the section in view
+  var navLinks = Array.prototype.slice.call(document.querySelectorAll("[data-nav]"));
+  if ("IntersectionObserver" in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (!en.isIntersecting) return;
+        navLinks.forEach(function (a) { a.classList.toggle("active", a.dataset.nav === en.target.id); });
+      });
+    }, { rootMargin: "-30% 0px -60% 0px" });
+    ["website", "archetype", "step-zero", "ledger", "map", "rubric"].forEach(function (id) { var el = document.getElementById(id); if (el) io.observe(el); });
+  }
+  navLinks[0].classList.add("active");
+
+  renderAll(false); checkLive();
+  if (hasGsap && !reduce) {
+    gsap.from(".hero h1, .hero p", { y: 10, duration: 0.6, stagger: 0.08, ease: "power2.out", clearProps: "transform" });
+    gsap.from(".stamp", { rotate: -8, y: 12, duration: 0.8, ease: "back.out(1.6)", clearProps: "transform" });
+    gsap.from("#map-list .item", { x: 12, duration: 0.5, stagger: 0.05, ease: "power2.out", delay: 0.15, clearProps: "transform" });
+  }
+})();
+</script>
