@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Your Fractional FDE // Organized AI</title>
+<meta name="description" content="A fractional forward deployed engineer for 7–9 figure acquirers. One toolkit, built, deployed and kept running across every business you buy. Kicks off with a $5,000 AI readiness audit.">
+<meta name="theme-color" content="#0c0b09">
+<meta property="og:title" content="Your Fractional FDE // Organized AI">
+<meta property="og:description" content="One engineer, one toolkit, every business you buy. Starts with a $5,000 AI readiness audit.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0c0b09;--bg-2:#100f0c;--surface:#1a1814;--surface-2:#211e19;--line:#2a2520;--muted:#605848;--text-2:#a09888;--text-1:#cfc7b6;--text-hi:#f0ece4;--accent:#f5d623;--accent-dim:#c4943d;--accent-deep:#8b7a12;--accent-tint:rgba(245,214,35,.06);--cyan:#22d3ee;--red:#e05252;--maxw:1180px;--r:10px;--mono:"JetBrains Mono",ui-monospace,monospace;--sans:"Inter",-apple-system,system-ui,sans-serif}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text-1);font-family:var(--sans);line-height:1.65;font-size:15.5px;-webkit-font-smoothing:antialiased}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 22px}
+a{color:inherit}
+.topbar{border-bottom:1px solid var(--line);background:rgba(12,11,9,.92);backdrop-filter:blur(8px);position:sticky;top:0;z-index:50}
+.topnav{display:flex;align-items:center;gap:26px;padding:16px 0}
+.brand{font-family:var(--mono);font-weight:800;font-size:16px;letter-spacing:.04em;color:var(--text-hi);text-decoration:none;white-space:nowrap}
+.brand .y{color:var(--accent)}.brand .sec{color:var(--muted);font-weight:600}
+.navlinks{display:flex;gap:22px;margin-left:auto;align-items:center}
+.navlink{font-family:var(--mono);font-size:12.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text-2);text-decoration:none}
+.navlink:hover{color:var(--text-hi)}
+.btn{font-family:var(--mono);font-weight:700;font-size:13px;letter-spacing:.05em;text-transform:uppercase;padding:14px 22px;border-radius:7px;cursor:pointer;border:1px solid transparent;text-decoration:none;display:inline-block;transition:transform .12s,background .2s,border-color .2s}
+.btn-primary{background:var(--accent);color:var(--bg)}.btn-primary:hover{transform:translateY(-1px)}
+.btn-ghost{border-color:var(--line);color:var(--text-1)}.btn-ghost:hover{border-color:var(--accent-deep);color:var(--text-hi)}
+.btn small{display:block;font-size:10px;font-weight:500;letter-spacing:.12em;margin-top:3px;opacity:.75}
+.hero{display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(28px,4vw,56px);align-items:center;padding:72px 0 64px}
+.status{display:inline-flex;align-items:center;gap:9px;font-family:var(--mono);font-size:11.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);border:1px solid var(--accent-deep);border-radius:7px;padding:8px 14px;background:var(--accent-tint);margin-bottom:26px}
+.status::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--accent)}
+h1{font-weight:700;font-size:clamp(34px,4.6vw,56px);line-height:1.12;color:var(--text-hi);letter-spacing:-.5px}
+h1 .y,h2 .y{color:var(--accent)}
+.sub{color:var(--text-2);margin:20px 0 30px;max-width:56ch}
+.heroctas{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+.statrow{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);border-radius:var(--r);margin-top:38px;background:var(--bg-2);overflow:hidden}
+.stat{padding:20px 18px;border-right:1px solid var(--line)}.stat:last-child{border-right:none}
+.stat b{display:block;font-family:var(--mono);font-weight:800;font-size:26px;color:var(--accent);line-height:1.1}
+.stat span{font-family:var(--mono);font-size:10.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.sessioncard{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:26px;box-shadow:0 30px 80px rgba(0,0,0,.5)}
+.sessioncard .k,.panel .k,.sample .k{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--accent-dim);margin-bottom:14px}
+.sessionrow{display:flex;justify-content:space-between;gap:16px;padding:11px 0;border-bottom:1px dashed var(--line);font-size:13.5px}
+.sessionrow:last-child{border-bottom:none}
+.sessionrow span:first-child{color:var(--muted);font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
+.sessionrow span:last-child{color:var(--text-hi);font-weight:600;text-align:right}
+section{padding:72px 0;border-top:1px solid var(--line)}
+.seclabel{font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--accent-dim);margin-bottom:18px}
+h2{font-weight:700;font-size:clamp(26px,3.4vw,40px);line-height:1.18;color:var(--text-hi);letter-spacing:-.4px;max-width:26ch}
+.lead{color:var(--text-2);margin:16px 0 40px;max-width:64ch}
+.twocol{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:8px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:24px}
+.panel.bad .k{color:var(--muted)}
+.panel ul{list-style:none}
+.panel li{font-size:13.5px;padding:8px 0;border-bottom:1px dashed var(--line);color:var(--text-2)}
+.panel li:last-child{border-bottom:none}
+.panel.bad li::before{content:"× ";font-family:var(--mono);color:var(--muted)}
+.panel.good li::before{content:"✓ ";font-family:var(--mono);color:var(--accent)}
+.steps{list-style:none;counter-reset:s;display:grid;gap:14px}
+.steps li{counter-increment:s;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:20px 22px 20px 62px;position:relative}
+.steps li::before{content:"0" counter(s);position:absolute;left:22px;top:19px;font-family:var(--mono);font-weight:800;font-size:15px;color:var(--accent-deep);letter-spacing:.04em}
+.steps li.kick{border-color:var(--accent-deep);background:linear-gradient(180deg,var(--surface-2),var(--surface))}
+.steps li.kick::before{color:var(--accent)}
+.steps b{display:block;font-weight:700;font-size:16.5px;color:var(--text-hi);margin-bottom:5px}
+.steps b em{font-style:normal;font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);border:1px solid var(--accent-deep);border-radius:5px;padding:2px 7px;margin-left:8px;vertical-align:2px}
+.steps p{color:var(--text-2);font-size:13.5px}
+.ladder{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.rung{background:var(--surface);border:1px solid var(--line);border-top:3px solid var(--muted);border-radius:var(--r);padding:20px}
+.rung:nth-child(2){border-top-color:var(--accent-dim)}.rung:nth-child(3){border-top-color:var(--cyan)}.rung:nth-child(4){border-top-color:var(--accent);background:var(--surface-2)}
+.rung .n{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-2);margin-bottom:8px}
+.rung b{display:block;color:var(--text-hi);font-size:15.5px;margin-bottom:8px}
+.rung p{font-size:13px;color:var(--text-2)}.rung p strong{color:var(--text-1)}
+.term{background:var(--bg-2);border:1px solid var(--line);border-radius:var(--r);padding:22px 24px;font-family:var(--mono);font-size:13px;line-height:2;overflow-x:auto;white-space:pre;color:var(--text-2)}
+.term .c{color:var(--muted)}.term .y{color:var(--accent)}.term .p{color:var(--accent-dim)}.term .g{color:#4ade80}.term .cy{color:var(--cyan)}
+.sample{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:22px 24px}
+.sample .biz{font-weight:700;color:var(--text-hi);font-size:15px;margin-bottom:12px}
+.about{display:grid;grid-template-columns:260px 1fr;gap:40px;align-items:center}
+.photo{width:260px;height:260px;border-radius:14px;border:1px solid var(--accent-deep);background:radial-gradient(circle at 30% 30%,rgba(245,214,35,.14),transparent 60%),var(--surface);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-weight:800;font-size:64px;color:var(--accent);overflow:hidden}
+.photo img{width:100%;height:100%;object-fit:cover}
+.chips{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.pill{font-family:var(--mono);font-size:11.5px;font-weight:600;letter-spacing:.06em;color:var(--text-2);border:1px solid var(--line);border-radius:7px;padding:8px 14px}
+.pill.y{color:var(--accent);border-color:var(--accent-deep)}
+.buypanel{background:linear-gradient(180deg,var(--surface-2),var(--surface));border:1px solid var(--line);border-radius:14px;padding:clamp(30px,5vw,54px);display:grid;grid-template-columns:1.2fr .8fr;gap:36px;align-items:center}
+.price{font-family:var(--mono);font-weight:800;font-size:clamp(46px,6vw,72px);color:var(--accent);line-height:1}
+.price small{font-size:16px;color:var(--muted);font-weight:600;letter-spacing:.1em}
+.buylist{list-style:none;margin:18px 0 0}
+.buylist li{font-size:14px;color:var(--text-1);padding:7px 0;border-bottom:1px dashed var(--line)}
+.buylist li::before{content:"→ ";font-family:var(--mono);color:var(--accent-dim)}
+.buyside{text-align:center}
+.buyside .btn{width:100%;padding:18px 22px;font-size:14px}
+.guarantee{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:14px}
+.faq{display:grid;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;background:var(--surface)}
+.faq details{border-bottom:1px solid var(--line)}.faq details:last-child{border-bottom:none}
+.faq summary{cursor:pointer;padding:18px 22px;font-weight:600;font-size:15px;color:var(--text-hi);list-style:none;display:flex;justify-content:space-between;gap:16px}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";font-family:var(--mono);color:var(--accent-dim);font-weight:700}
+.faq details[open] summary::after{content:"−"}
+.faq details[open] summary{color:var(--accent)}
+.faq p{padding:0 22px 20px;color:var(--text-2);font-size:14px;max-width:74ch}
+.builtwith{display:flex;flex-direction:column;align-items:center;gap:20px;padding:56px 0 20px;border-top:1px solid var(--line)}
+.builtwith .k{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.4em;text-transform:uppercase;color:var(--muted)}
+.builtwith .row{display:flex;align-items:center;gap:14px;flex-wrap:wrap;justify-content:center}
+footer{font-family:var(--mono);color:var(--muted);font-size:11.5px;text-align:center;padding:28px 0 44px;letter-spacing:.04em}
+footer a{color:var(--text-2);text-decoration:none}footer a:hover{color:var(--accent)}
+.rv{opacity:1}
+@media (max-width:920px){.hero{grid-template-columns:1fr}.sessioncard{max-width:460px}.statrow{grid-template-columns:repeat(2,1fr)}.stat:nth-child(2){border-right:none}.stat:nth-child(-n+2){border-bottom:1px solid var(--line)}.buypanel,.twocol,.about{grid-template-columns:1fr}.ladder{grid-template-columns:1fr 1fr}.navlink{display:none}.photo{width:200px;height:200px}}
+@media (max-width:520px){.ladder{grid-template-columns:1fr}.brand .sec{display:none}.topnav .btn{padding:11px 14px;font-size:11.5px}.sessionrow{flex-direction:column;gap:2px}.sessionrow span:last-child{text-align:left}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<div class="topbar"><div class="wrap topnav">
+  <a class="brand" href="https://offer.organizedai.vip/">ORGANIZED <span class="y">AI</span> <span class="sec">// FRACTIONAL FDE</span></a>
+  <div class="navlinks">
+    <a class="navlink" href="#fde">What's an FDE</a>
+    <a class="navlink" href="#how">How it works</a>
+    <a class="navlink" href="#audit">The audit</a>
+    <a class="navlink" href="#faq">FAQ</a>
+    <a class="btn btn-primary buy-link" href="https://buy.stripe.com/fZu7sKeD57Dhe87bma6oo0d">Book the audit →</a>
+  </div>
+</div></div>
+
+<div class="wrap">
+  <div class="hero">
+    <div>
+      <div class="status rv">DealCon 2026 · For 7–9 figure acquirers</div>
+      <h1 class="rv">Your fractional FDE for every business you <span class="y">buy.</span></h1>
+      <p class="sub rv">One engineer who builds your AI and automation tools, deploys them into each business you acquire, and keeps them running. The same toolkit, reused across your whole portfolio. It starts with an AI readiness audit.</p>
+      <div class="heroctas rv">
+        <a class="btn btn-primary buy-link" href="https://buy.stripe.com/fZu7sKeD57Dhe87bma6oo0d">Book the AI readiness audit — $5,000<small>kickoff · one business</small></a>
+        <a class="btn btn-ghost" href="#fde">What's a fractional FDE?</a>
+      </div>
+      <div class="statrow rv">
+        <div class="stat"><b>1</b><span>Engineer, whole portfolio</span></div>
+        <div class="stat"><b>4</b><span>Reusable kits</span></div>
+        <div class="stat"><b>0</b><span>New vendors per deal</span></div>
+        <div class="stat"><b>$5K</b><span>Kickoff audit</span></div>
+      </div>
+    </div>
+    <div class="sessioncard rv">
+      <div class="k">Engagement //</div>
+      <div class="sessionrow"><span>Kickoff</span><span>AI readiness audit</span></div>
+      <div class="sessionrow"><span>Price</span><span>$5,000 · one business</span></div>
+      <div class="sessionrow"><span>Then</span><span>Fractional FDE, portfolio-wide</span></div>
+      <div class="sessionrow"><span>Built on</span><span>Your accounts, on Cloudflare</span></div>
+      <div class="sessionrow"><span>Measured</span><span>Before and after every kit</span></div>
+      <div class="sessionrow"><span>Owned by</span><span>You</span></div>
+    </div>
+  </div>
+</div>
+
+<section id="fde"><div class="wrap">
+  <div class="seclabel">What's a fractional FDE //</div>
+  <h2>The missing seat on your deal team.</h2>
+  <p class="lead">A forward deployed engineer sits with the team, watches the real work, and builds AI into the systems the business already runs on. The role started at Palantir, and OpenAI, Anthropic and Cursor now run their own FDE teams. Fractional means you get one across your portfolio, without hiring one per company. For your first few deals you don't need a full integration team: a fractional CFO, a deal attorney and a lender cover the paper. Nobody on that list installs the systems.</p>
+  <div class="twocol">
+    <div class="panel bad rv">
+      <div class="k">A new vendor per business</div>
+      <ul>
+        <li>Every company gets its own agency, tools and logins</li>
+        <li>Every fix is rediscovered from scratch</li>
+        <li>AI tools get built fast, then fail quietly</li>
+        <li>Nobody measures before or after</li>
+        <li>Know-how leaves with the vendor, and shows up at exit</li>
+      </ul>
+    </div>
+    <div class="panel good rv">
+      <div class="k">One fractional FDE</div>
+      <ul>
+        <li>One toolkit, built once and deployed on every close</li>
+        <li>Business two starts where business one finished</li>
+        <li>Every tool monitored; a failure alerts a person</li>
+        <li>Baseline first, so every kit has a number</li>
+        <li>Built on your accounts, so a buyer can inherit it</li>
+      </ul>
+    </div>
+  </div>
+</div></section>
+
+<section id="how"><div class="wrap">
+  <div class="seclabel">How it works //</div>
+  <h2>Build once. Deploy on every close. <span class="y">Keep it running.</span></h2>
+  <p class="lead">The Bending Spoons idea at your size: buy businesses that share a function (leads to booked jobs, repeat purchases, visits and bookings, client delivery) and one toolkit fits all of them.</p>
+  <ol class="steps">
+    <li class="kick rv"><b>AI readiness audit <em>Kickoff · $5,000</em></b><p>I scan one business's site and stack, check what's being measured, and score every process. You get a ranked plan: what to automate first, what to queue, and what stays by hand. Run it on a company you own, or on a target during diligence.</p></li>
+    <li class="rv"><b>Baseline</b><p>Before anything is installed, we track the one conversion that matters, so every change has a before and after number.</p></li>
+    <li class="rv"><b>Deploy the kit</b><p>Tools go onto the systems the team already uses. A person approves anything a customer sees until the tool has earned trust.</p></li>
+    <li class="rv"><b>Troubleshoot and carry forward</b><p>I fix what breaks, log every correction, and carry the fixes into the next business you buy.</p></li>
+  </ol>
+</div></section>
+
+<section id="when"><div class="wrap">
+  <div class="seclabel">Knowing when //</div>
+  <h2>Nothing jumps straight to AI. <span class="y">Every task earns each step.</span></h2>
+  <p class="lead">Knowing when to automate is the job. And building the tool is only 20% of it. The other 80% is getting your team to trust it, which is the part I focus on.</p>
+  <div class="ladder">
+    <div class="rung rv"><div class="n">1 · By hand</div><b>A person does it</b><p><strong>Move on when</strong> it repeats every week and the steps can be written down.</p></div>
+    <div class="rung rv"><div class="n">2 · Rules</div><b>Plain software</b><p><strong>Move on when</strong> the fixed steps run clean and what's left needs judgment.</p></div>
+    <div class="rung rv"><div class="n">3 · AI + review</div><b>AI drafts, a person approves</b><p><strong>Move on when</strong> it matches a person on real cases with known answers.</p></div>
+    <div class="rung rv"><div class="n">4 · AI on its own</div><b>Monitored, not supervised</b><p><strong>Only when</strong> a mistake is cheap and gets caught. Costly calls stay human.</p></div>
+  </div>
+</div></section>
+
+<section id="audit"><div class="wrap">
+  <div class="seclabel">The audit //</div>
+  <h2>What the AI readiness audit gives you.</h2>
+  <p class="lead">One business, scored the same way every future acquisition will be. Every process gets a Jev score from 0 to 100, weighted on time-to-value, automation fit, data readiness and exit-safety.</p>
+  <div class="sample rv">
+    <div class="k">Sample output //</div>
+    <div class="biz">Example: a local HVAC company (synthetic)</div>
+    <div class="term"><span class="c"># ranked install plan</span>
+<span class="p">→</span> Missed-call follow-up      <span class="y">Outreach Kit</span>   <span class="g">100 · install now</span>
+<span class="p">→</span> Speed-to-lead response     <span class="y">Outreach Kit</span>   <span class="g">100 · install now</span>
+<span class="p">→</span> Quote follow-up            <span class="y">Outreach Kit</span>   <span class="g"> 84 · install now</span>
+<span class="p">→</span> Web form routing           <span class="y">CRM Kit</span>        <span class="g"> 76 · install now</span>
+<span class="p">→</span> Lead source attribution    <span class="y">Process Auditor</span><span class="cy"> 68 · queue next</span>
+
+<span class="c"># measurement check</span>
+<span class="p">→</span> layer 1 · funnel: pixels, conversions, CRM vs ad-platform counts
+<span class="p">→</span> layer 2 · agents: traces, tool calls, tokens per run</div>
+  </div>
+</div></section>
+
+<section id="about"><div class="wrap">
+  <div class="about">
+    <div class="photo rv" aria-label="Jordan Hill">JH</div>
+    <div class="rv">
+      <div class="seclabel">Your FDE //</div>
+      <h2>Jordan Hill, founder of Organized AI.</h2>
+      <p class="lead" style="margin-bottom:0">A measurement marketer by trade: about ten years in tracking and attribution across GTM, GA4, Conversions API, Google Ads and Meta Ads, and a mentor at MeasureU. For the last two years, building agentic AI systems on Cloudflare. Measuring before installing isn't a step I add. It's how I work.</p>
+      <div class="chips">
+        <span class="pill y">~10 yrs measurement</span><span class="pill">MeasureU mentor</span><span class="pill">Agentic systems</span><span class="pill">Cloudflare-first</span><span class="pill">Austin, TX</span>
+      </div>
+    </div>
+  </div>
+</div></section>
+
+<section id="register"><div class="wrap">
+  <div class="seclabel">Start here //</div>
+  <div class="buypanel rv" id="buy">
+    <div>
+      <h2>Book the AI readiness audit.</h2>
+      <ul class="buylist">
+        <li>A scan of one business's site and stack</li>
+        <li>A measurement check, before anything is installed</li>
+        <li>Every process scored and ranked with the Jev score</li>
+        <li>A plan: what to automate first, what stays by hand</li>
+        <li>The kickoff for a fractional FDE across your portfolio</li>
+      </ul>
+    </div>
+    <div class="buyside">
+      <div class="price">$5,000 <small>KICKOFF</small></div>
+      <div style="height:18px"></div>
+      <a class="btn btn-primary buy-link" href="https://buy.stripe.com/fZu7sKeD57Dhe87bma6oo0d">Book the audit →<small>secure checkout on Stripe</small></a>
+      <div class="guarantee">One business · I follow up by email to schedule</div>
+    </div>
+  </div>
+</div></section>
+
+<section id="faq"><div class="wrap">
+  <div class="seclabel">Questions //</div>
+  <h2 style="margin-bottom:28px">Before you book.</h2>
+  <div class="faq">
+    <details open><summary>What happens after I pay?</summary><p>You get a confirmation from Stripe, and I follow up by email to schedule the audit and get access to what I need to look at.</p></details>
+    <details><summary>Is $5,000 the whole engagement?</summary><p>The audit is the kickoff and stands on its own: you keep the ranked plan either way. If you want a fractional FDE across your portfolio after that, we scope it from what the audit finds.</p></details>
+    <details><summary>Can I run it on a business I haven't bought yet?</summary><p>Yes. Running the audit on a target during diligence shows what pays back first after close, and what could hurt the exit.</p></details>
+    <details><summary>Do I need to be technical?</summary><p>No. My job is to keep the systems simple enough to explain to you, and solid enough to maintain, monitor and fix.</p></details>
+    <details><summary>Who owns the tools?</summary><p>You do. Everything is built on your own accounts, so a future buyer can inherit it cleanly.</p></details>
+  </div>
+</div></section>
+
+<div class="builtwith">
+  <div class="k">Built with</div>
+  <div class="row">
+    <span class="pill">Claude</span><span class="pill">Cloudflare Workers</span><span class="pill">Context.dev</span><span class="pill">GTM · GA4</span><span class="pill">Conversions API</span><span class="pill">Jev score</span>
+  </div>
+</div>
+
+<footer>© 2026 ORGANIZED AI · <a href="https://talk.organizedai.vip/dealcon/">DealCon talk</a> · <a href="https://talk.organizedai.vip/dealcon/intake/">Try the intake</a></footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+<script>
+window.addEventListener('load',function(){
+  if(!window.gsap||!window.ScrollTrigger||matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+  gsap.registerPlugin(ScrollTrigger);
+  gsap.utils.toArray('.rv').forEach(function(el){
+    gsap.from(el,{y:18,opacity:0,duration:.6,ease:'power2.out',scrollTrigger:{trigger:el,start:'top 90%',once:true}});
+  });
+});
+</script>
+</body>
+</html>
