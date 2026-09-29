@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jev Intake Harness · DealCon</title>
+<meta name="description" content="Score every target. Install the kit that pays back first. A reusable AI-workflow intake for rollup buyers.">
+<meta name="theme-color" content="#0c0b09">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0c0b09;--bg2:#141210;--card:#1a1814;--card-hover:#211e18;--border:#2a2520;--gold:#F5D623;--gold-dim:#8B7A12;--rust:#C4943D;--text:#f0ece4;--text2:#a09888;--muted:#8a8272;--red:#e05252;--cyan:#22d3ee;--green:#4ade80;--mono:'JetBrains Mono',ui-monospace,monospace;--body:'Inter',-apple-system,sans-serif}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text2);font-family:var(--body);font-size:16px;-webkit-font-smoothing:antialiased}
+a{color:var(--cyan);text-decoration:none}a:hover{color:var(--gold)}
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(12,11,9,.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:13px 36px}
+.nav-logo{font-family:var(--mono);font-weight:800;font-size:.82rem;color:var(--text);letter-spacing:.18em;text-transform:uppercase}.nav-logo span{color:var(--gold)}.nav-logo em{font-style:normal;color:var(--muted);font-weight:500;letter-spacing:.12em;margin-left:10px}
+.nav-right{display:flex;align-items:center;gap:24px}.nav-dots{display:flex;gap:6px}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--border);cursor:pointer;transition:background .2s;border:0;padding:0}.dot.active{background:var(--gold)}
+.counter{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.1em;min-width:56px;text-align:right}
+.progress{position:fixed;top:0;left:0;height:2px;background:var(--gold);z-index:101;width:0}
+main{padding-top:56px}
+.slide{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:64px 72px;border-bottom:1px solid var(--border);position:relative;overflow:hidden}
+.slide::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.024) 2px,rgba(0,0,0,.024) 4px);pointer-events:none}
+.slide::before{content:attr(data-num);position:absolute;top:76px;right:72px;font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.1em}
+.alt{background:var(--bg2)}
+.content{position:relative;z-index:1;max-width:1020px;width:100%;margin:0 auto}
+.tag{font-family:var(--mono);font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:18px;display:flex;align-items:center;gap:12px}
+.tag::before{content:"";display:block;width:20px;height:1px;background:var(--gold-dim)}.tag.red{color:var(--red)}
+h1{font-family:var(--mono);font-size:clamp(36px,5.5vw,68px);font-weight:800;line-height:1.06;letter-spacing:-.02em;color:var(--text);margin-bottom:22px}
+h2{font-family:var(--mono);font-size:clamp(26px,3.8vw,48px);font-weight:800;line-height:1.1;letter-spacing:-.02em;color:var(--text);margin-bottom:28px}
+h3{font-family:var(--mono);font-size:.95rem;font-weight:700;color:var(--text);margin-bottom:10px;letter-spacing:.02em}
+.hl{color:var(--gold);font-style:italic}.cy{color:var(--cyan);font-style:italic}
+.sub{font-size:1.02rem;color:var(--text2);line-height:1.65;max-width:680px;margin-bottom:28px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:26px}
+.chip{font-family:var(--mono);font-size:.65rem;padding:5px 12px;border:1px solid var(--border);border-radius:2px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
+.chip.gold{border-color:var(--gold-dim);color:var(--gold)}.chip.rust{border-color:var(--rust);color:var(--rust)}.chip.cyan{border-color:var(--cyan);color:var(--cyan)}.chip.green{border-color:var(--green);color:var(--green)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:3px;padding:24px;transition:border-color .3s,background .3s}
+.card:hover{border-color:#3a3428;background:var(--card-hover)}
+.c-gold{border-top:2px solid var(--gold)}.c-rust{border-top:2px solid var(--rust)}.c-cyan{border-top:2px solid var(--cyan)}.c-green{border-top:2px solid var(--green)}.c-red{border-top:2px solid var(--red)}.c-dash{border-top:2px dashed var(--cyan)}
+.card p{font-size:.88rem;color:var(--text2);line-height:1.55}
+.card .num{font-family:var(--mono);font-size:.68rem;color:var(--gold);letter-spacing:.12em;margin-bottom:10px;display:block}
+.callout{margin-top:22px;background:rgba(196,148,61,.06);border:1px solid var(--rust);border-radius:3px;padding:18px 24px;display:flex;align-items:center;gap:22px}
+.callout .ic{font-family:var(--mono);font-size:22px;color:var(--rust)}
+.callout .t{font-family:var(--mono);font-weight:700;font-size:.95rem;color:var(--text);margin-bottom:4px}
+.callout .d{font-size:.88rem;color:var(--text2);line-height:1.55}
+.quote{border-left:3px solid var(--gold);background:var(--card);padding:28px 30px}
+.quote p{font-family:var(--mono);font-size:clamp(20px,2.6vw,30px);font-weight:600;color:var(--text);line-height:1.3}
+.quote small{display:block;margin-top:14px;font-size:.9rem;color:var(--text2)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:26px;margin-top:8px}
+.stat{border-left:1px solid var(--gold-dim);padding-left:18px}
+.stat b{display:block;font-family:var(--mono);font-size:2.3rem;font-weight:800;color:var(--text);line-height:1}
+.stat span{display:block;font-size:.85rem;color:var(--text2);margin-top:6px;line-height:1.45}
+table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--border);margin-top:8px}
+th,td{text-align:left;padding:12px 16px;font-family:var(--mono);font-size:.78rem;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.55}
+th{background:rgba(245,214,35,.04);color:var(--gold);font-weight:700;letter-spacing:.04em;text-transform:uppercase;font-size:.68rem}
+td:first-child{color:var(--text);font-weight:600}td{color:var(--text2)}tr:last-child td{border-bottom:none}
+td.g{color:var(--green)}td.c{color:var(--cyan)}
+.formula{font-family:var(--mono);font-size:clamp(15px,2vw,22px);color:var(--text);background:var(--bg);border:1px solid var(--border);border-left:3px solid var(--gold);padding:20px 24px;margin-bottom:22px;overflow-x:auto;white-space:nowrap}
+.bands{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:22px}
+.band{font-family:var(--mono);font-size:.78rem;font-weight:700;padding:8px 14px;border-radius:2px;letter-spacing:.04em}
+.b-now{background:var(--gold);color:#0c0b09}.b-q{border:1px solid var(--cyan);color:var(--cyan)}.b-p{border:1px solid var(--muted);color:var(--text2)}
+.flow{display:flex;align-items:stretch;gap:12px}.flow .card{flex:1}.arrow{align-self:center;color:var(--gold-dim);font-family:var(--mono);font-size:1.4rem}
+.checks{display:flex;flex-direction:column;gap:12px}
+.check{display:flex;gap:18px;align-items:center;background:var(--card);border-left:3px solid var(--gold);padding:18px 22px;color:var(--text);font-size:1rem}
+.check i{font-style:normal;color:var(--gold);font-family:var(--mono);font-weight:800}
+.split{display:grid;grid-template-columns:1.05fr 1fr;gap:28px;align-items:center}
+.terminal{font-family:var(--mono);font-size:.82rem;line-height:1.95;background:rgba(0,0,0,.35);border:1px solid var(--border);border-radius:8px;padding:22px 24px;box-shadow:rgba(245,214,35,.06) 0 0 80px}
+.terminal .k{color:var(--muted);display:inline-block;min-width:64px}.terminal .cm{color:var(--gold)}
+.glow{position:absolute;top:40%;left:30%;width:600px;height:600px;background:radial-gradient(circle,rgba(245,214,35,.06) 0%,transparent 70%);pointer-events:none}
+.video{position:relative;width:100%;aspect-ratio:16/9;background:#000;border:1px solid var(--border);border-radius:6px;overflow:hidden;box-shadow:rgba(245,214,35,.06) 0 0 80px}
+.video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.links{margin-top:14px;font-family:var(--mono);font-size:.78rem;letter-spacing:.04em}
+.steps{display:flex;flex-direction:column;gap:14px;margin-top:6px}
+.step{display:flex;gap:22px;align-items:baseline;font-size:1.15rem;color:var(--text)}.step b{font-family:var(--mono);color:var(--gold-dim);font-weight:700}
+.footnote{font-family:var(--mono);font-size:.7rem;color:var(--muted);margin-top:18px;line-height:1.6}
+.sig{margin-top:36px;font-family:var(--mono);font-size:.78rem;color:var(--muted);letter-spacing:.08em}
+@media (max-width:900px){.slide{padding:48px 24px}.slide::before{top:60px;right:24px}.split{grid-template-columns:1fr}.grid2,.grid3,.grid4,.stats{grid-template-columns:1fr 1fr}.flow{flex-direction:column}.arrow{transform:rotate(90deg)}.nav{padding:13px 18px}.nav-logo em{display:none}.nav-dots{display:none}table{display:block;overflow-x:auto}}
+@media (max-width:560px){.grid2,.grid3,.grid4,.stats{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+@media print{.nav,.progress{display:none}.slide{min-height:auto;page-break-after:always}}
+</style>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+<nav class="nav">
+  <div class="nav-logo">Organized<span>AI</span><em>· DealCon · Jev intake harness</em></div>
+  <div class="nav-right"><div class="nav-dots" id="dots"></div><div class="counter" id="counter">01 / 14</div></div>
+</nav>
+
+<main id="slides">
+
+<!-- 01 -->
+<section class="slide" data-num="01 / 14">
+  <div class="glow"></div>
+  <div class="content">
+    <div class="split">
+      <div>
+        <div class="tag reveal">DealCon · AI workflow intake</div>
+        <h1 class="reveal">Score every target. Install the <span class="hl">kit</span> that pays back <span class="cy">first.</span></h1>
+        <p class="sub reveal">A reusable intake for rollup buyers. Paste a website, get the processes worth fixing first, ranked by time-to-value.</p>
+        <div class="chips reveal"><span class="chip gold">Jev</span><span class="chip rust">Intake harness</span><span class="chip cyan">Live scan</span><span class="chip gold">With Jordaaan</span></div>
+      </div>
+      <div class="terminal reveal" aria-label="Synthetic example of a scan result">
+        <div class="cm">// synthetic example</div>
+        <div><span class="k">type</span><span style="color:var(--text)">lead gen</span></div>
+        <div><span class="k">conf</span><span style="color:var(--text)">high</span></div>
+        <div><span class="k">seen</span><span style="color:var(--text)">12 signals</span></div>
+        <div><span class="k">fix</span><span style="color:var(--gold)">Missed-call follow-up</span></div>
+        <div><span class="k">score</span><span style="color:var(--green)">100 · install now</span></div>
+        <div><span class="k">plan</span><span style="color:var(--cyan)">1igcmhf</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 02 -->
+<section class="slide alt" data-num="02 / 14">
+  <div class="content">
+    <div class="tag reveal">The problem</div>
+    <h2 class="reveal">Every target is a <span class="hl">different mess.</span> Every buyer relearns the fix.</h2>
+    <div class="grid2">
+      <div class="quote reveal"><p>“Time to value is the most important metric today.”</p><small>Steven Tran, CTO of Soundcheck Live</small></div>
+      <div class="card c-cyan reveal"><span class="num" style="color:var(--cyan)">THE MODEL WE BORROW</span><p style="font-size:1.02rem;color:var(--text)">Every acquisition ships with the same proven toolkit: CRM, sales and outreach. You install what already worked instead of inventing fixes per target.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 03 VIDEO -->
+<section class="slide" data-num="03 / 14">
+  <div class="content">
+    <div class="tag reveal">Watch</div>
+    <h2 class="reveal">Worth <span class="hl">watching</span> with this room in mind.</h2>
+    <div class="video reveal">
+      <iframe src="https://www.youtube-nocookie.com/embed/ZT4mpjx0JnE" title="Recommended video" loading="lazy" allow="accelerometer; encrypted-media; picture-in-picture; fullscreen" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    </div>
+    <p class="links reveal"><a href="https://youtu.be/ZT4mpjx0JnE" target="_blank" rel="noopener">Open on YouTube ↗</a></p>
+  </div>
+</section>
+
+<!-- 04 -->
+<section class="slide alt" data-num="04 / 14">
+  <div class="content">
+    <div class="tag reveal">The toolkit</div>
+    <h2 class="reveal">Four kits. <span class="hl">Same stack</span> on every target.</h2>
+    <div class="grid4">
+      <div class="card c-gold reveal"><span class="num">01 · SOURCE</span><h3>Target Scanner</h3><p>Sourcing and market research</p></div>
+      <div class="card c-rust reveal"><span class="num" style="color:var(--rust)">02 · OPERATE</span><h3>Process Auditor</h3><p>Back-office operations and handoffs</p></div>
+      <div class="card c-cyan reveal"><span class="num" style="color:var(--cyan)">03 · RECORD</span><h3>CRM Kit</h3><p>Pipeline and customer records, one schema</p></div>
+      <div class="card c-green reveal"><span class="num" style="color:var(--green)">04 · REACH</span><h3>Outreach Kit</h3><p>Follow-up, reactivation, voice outreach</p></div>
+    </div>
+    <p class="sub reveal" style="margin-top:24px">Every process in the ledger maps to exactly one kit. The playbook you build on target one is the starting point for target two.</p>
+  </div>
+</section>
+
+<!-- 05 -->
+<section class="slide" data-num="05 / 14">
+  <div class="content">
+    <div class="tag reveal">Three kinds of business</div>
+    <h2 class="reveal">The same fix looks <span class="hl">different</span> in each.</h2>
+    <table class="reveal">
+      <tr><th>Type</th><th>Converts on</th><th>Data lives in</th><th>Biggest risk</th></tr>
+      <tr><td>Brick and mortar</td><td>Visit, booking, repeat visit</td><td>POS (Square, Toast, Clover), booking tools</td><td>Owner-held know-how, paper schedules</td></tr>
+      <tr><td>Ecommerce</td><td>Purchase, repeat purchase</td><td>Shopify, Klaviyo, ad accounts</td><td>Agency-owned ad accounts and pixels, custom theme code</td></tr>
+      <tr><td>Lead gen / services</td><td>Qualified lead, then booked job</td><td>CRM, web forms, call tracking, inboxes</td><td>Leads in reps' personal phones and inboxes</td></tr>
+    </table>
+    <p class="sub reveal" style="margin-top:22px">Hybrids are routed too. The harness picks a primary and a secondary type, and asks when the signals disagree.</p>
+  </div>
+</section>
+
+<!-- 06 -->
+<section class="slide alt" data-num="06 / 14">
+  <div class="content">
+    <div class="tag reveal">Step zero</div>
+    <h2 class="reveal">Measure <span class="hl">before</span> you install anything.</h2>
+    <div class="split">
+      <div class="reveal"><p class="sub" style="color:var(--text);font-size:1.15rem">Track the one conversion that matters before any kit goes in, so every kit has a before and after number.</p><p class="sub">For a lead-gen target the conversion is a qualified lead, then a booked job.</p></div>
+      <div class="checks">
+        <div class="check reveal"><i>✓</i>Funnel mapped from lead source to booked job</div>
+        <div class="check reveal"><i>✓</i>Form fills and calls tagged as conversions</div>
+        <div class="check reveal"><i>✓</i>Lead counts reconcile between CRM and ad platforms</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 07 -->
+<section class="slide" data-num="07 / 14">
+  <div class="content">
+    <div class="tag reveal">The Jev score</div>
+    <h2 class="reveal">One number. <span class="hl">Four</span> dimensions.</h2>
+    <div class="formula reveal">score = round(20 × (0.35T + 0.25A + 0.20D + 0.20E))</div>
+    <div class="stats">
+      <div class="stat reveal"><b>35%</b><span>T · Time-to-value</span></div>
+      <div class="stat reveal"><b>25%</b><span>A · Automation fit</span></div>
+      <div class="stat reveal"><b>20%</b><span>D · Data readiness</span></div>
+      <div class="stat reveal"><b>20%</b><span>E · Exit-safety</span></div>
+    </div>
+    <div class="bands reveal"><span class="band b-now">75+ · INSTALL NOW</span><span class="band b-q">55–74 · QUEUE NEXT</span><span class="band b-p">UNDER 55 · PARK</span><span style="color:var(--red);font-size:.9rem;padding-left:8px">Exit-safety of 2 or less flags “Rework first.”</span></div>
+    <p class="footnote reveal">Each dimension is scored 1 to 5.</p>
+  </div>
+</section>
+
+<!-- 08 -->
+<section class="slide alt" data-num="08 / 14">
+  <div class="content">
+    <div class="tag reveal">Live scan</div>
+    <h2 class="reveal">Paste a URL. <span class="cy">Context.dev</span> reads the page.</h2>
+    <div class="flow">
+      <div class="card c-gold reveal"><span class="num">01</span><h3>A website</h3><p>The buyer pastes the target's address.</p></div><div class="arrow">→</div>
+      <div class="card c-cyan reveal"><span class="num" style="color:var(--cyan)">02</span><h3>One scan</h3><p>Scripts, links, forms and schema from the homepage.</p></div><div class="arrow">→</div>
+      <div class="card c-rust reveal"><span class="num" style="color:var(--rust)">03</span><h3>Signals</h3><p>Platform, booking, email and tracking, each with its evidence.</p></div><div class="arrow">→</div>
+      <div class="card c-green reveal"><span class="num" style="color:var(--green)">04</span><h3>A route</h3><p>Business type, questions to ask, ranked processes.</p></div>
+    </div>
+    <p class="sub reveal" style="margin-top:24px">Every detected signal has a “Not right” button. Dismiss one and the route re-runs on the rest.</p>
+  </div>
+</section>
+
+<!-- 09 -->
+<section class="slide" data-num="09 / 14">
+  <div class="content">
+    <div class="tag reveal">The router</div>
+    <h2 class="reveal">Rules, <span class="hl">not a model,</span> decide the route.</h2>
+    <div class="grid3">
+      <div class="card c-cyan reveal"><h3>Context reads</h3><p>It fetches and parses the page. It never picks a route.</p></div>
+      <div class="card c-gold reveal"><h3>Rules decide</h3><p>Fixed rules turn signals into votes, questions and a ranked list.</p></div>
+      <div class="card c-green reveal"><h3>Nothing hidden</h3><p>A trace shows the votes, the evidence and why each question was asked.</p></div>
+    </div>
+    <div class="stats" style="margin-top:28px">
+      <div class="stat reveal"><b>51</b><span>router tests passing</span></div>
+      <div class="stat reveal"><b>51</b><span>page tests passing</span></div>
+      <div class="stat reveal"><b style="color:var(--gold)">0</b><span>model calls in routing</span></div>
+      <div class="stat reveal"><b style="color:var(--cyan)">1</b><span>plan id per site and answers</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 10 -->
+<section class="slide alt" data-num="10 / 14">
+  <div class="content">
+    <div class="tag reveal">Prefill</div>
+    <h2 class="reveal">The forms fill in <span class="hl">before</span> anyone types.</h2>
+    <div class="grid2">
+      <div class="card c-gold reveal"><span class="num">INTAKE LEDGER</span><h3>Five ranked processes, already scored</h3><p>Each row is tagged “prefilled from your site.” Edit one and it becomes yours; the rest re-rank when you answer a question.</p></div>
+      <div class="card c-dash reveal"><span class="num" style="color:var(--cyan)">STEP ZERO</span><h3>“Seen on your site,” never ticked for you</h3><p>A tag in the page source does not prove the conversion event fires. The buyer taps to confirm.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 11 -->
+<section class="slide" data-num="11 / 14">
+  <div class="content">
+    <div class="tag reveal">Worked example</div>
+    <h2 class="reveal">A local HVAC company, <span class="hl">routed.</span></h2>
+    <table class="reveal">
+      <tr><th>Process</th><th>Kit</th><th>Score</th><th>Found on the site</th></tr>
+      <tr><td>Missed-call follow-up</td><td>Outreach</td><td class="g">100 · Install now</td><td>Click-to-call number</td></tr>
+      <tr><td>Speed-to-lead response</td><td>Outreach</td><td class="g">100 · Install now</td><td>Inquiry form</td></tr>
+      <tr><td>Quote follow-up</td><td>Outreach</td><td class="g">84 · Install now</td><td>Quote and estimate language</td></tr>
+      <tr><td>Web form routing</td><td>CRM</td><td class="g">76 · Install now</td><td>Inquiry form</td></tr>
+      <tr><td>Lead source attribution</td><td>Auditor</td><td class="c">68 · Queue next</td><td>CallRail call tracking</td></tr>
+    </table>
+    <p class="footnote reveal">Synthetic example site. Routed as lead gen with high confidence from 12 signals, including Google Tag Manager, a Meta pixel and CallRail.</p>
+  </div>
+</section>
+
+<!-- 12 -->
+<section class="slide alt" data-num="12 / 14">
+  <div class="content">
+    <div class="tag reveal">Build plan on Cloudflare</div>
+    <h2 class="reveal">Seven phases, in <span class="hl">order,</span> each gated.</h2>
+    <div class="grid4">
+      <div class="card c-gold reveal"><span class="num">PHASE 0</span><h3>Scaffold</h3><p>Every binding resolves locally.</p></div>
+      <div class="card c-gold reveal"><span class="num">PHASE 1</span><h3>Harness on Worker Assets</h3><p>A map saves and reloads.</p></div>
+      <div class="card c-cyan reveal"><span class="num" style="color:var(--cyan)">PHASE 1B</span><h3>Site scan and router</h3><p>Same site, same plan id.</p></div>
+      <div class="card c-gold reveal"><span class="num">PHASE 2</span><h3>Jev scoring</h3><p>A probability or a visible failure.</p></div>
+      <div class="card c-gold reveal"><span class="num">PHASE 3</span><h3>Workshop room</h3><p>Two browsers, one live room.</p></div>
+      <div class="card c-gold reveal"><span class="num">PHASE 4</span><h3>Outcomes loop</h3><p>Target two learns from target one.</p></div>
+      <div class="card c-gold reveal"><span class="num">PHASE 5</span><h3>Tracking and follow-up</h3><p>Events verified in GTM and GA4.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 13 -->
+<section class="slide" data-num="13 / 14">
+  <div class="content">
+    <div class="tag red reveal">The honest part</div>
+    <h2 class="reveal">The part most demos <span class="hl">skip.</span></h2>
+    <div class="grid2">
+      <div class="card c-red reveal"><h3>Not on Cloudflare yet</h3><p>The build plan is written and the router is ready to move unchanged into a Worker. The harness itself is not deployed there.</p></div>
+      <div class="card c-red reveal"><h3>Live scan is owner-only</h3><p>It uses one person's Context.dev connector. The room needs the Worker scan route with a server-side key.</p></div>
+      <div class="card c-rust reveal"><h3>Tags are not proof</h3><p>A pixel in the source does not show the event fires. Step zero suggests, and the buyer confirms.</p></div>
+      <div class="card c-rust reveal"><h3>Not yet run in the viewer</h3><p>Tested with a mock connector and two real scans, not by clicking Scan inside Claude.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 14 -->
+<section class="slide alt" data-num="14 / 14">
+  <div class="glow"></div>
+  <div class="content">
+    <div class="tag reveal">Next</div>
+    <h1 class="reveal">Start with <span class="hl">step zero.</span> Then install the first kit.</h1>
+    <div class="steps">
+      <div class="step reveal"><b>01</b>Scan the target and confirm what it sees.</div>
+      <div class="step reveal"><b>02</b>Baseline the conversion, then score the ledger.</div>
+      <div class="step reveal"><b>03</b>Install the top kit, and log the result for the next target.</div>
+    </div>
+    <p class="sig reveal">ORGANIZEDAI · WITH JORDAAAN</p>
+  </div>
+</section>
+
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+<script>
+(function(){
+  var slides=[].slice.call(document.querySelectorAll('.slide')),dots=document.getElementById('dots'),counter=document.getElementById('counter'),bar=document.getElementById('progress');
+  var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches,cur=0;
+  slides.forEach(function(s,i){var d=document.createElement('button');d.className='dot'+(i?'':' active');d.setAttribute('aria-label','Go to slide '+(i+1));d.onclick=function(){go(i)};dots.appendChild(d)});
+  function pad(n){return (n<10?'0':'')+n}
+  function go(i){i=Math.max(0,Math.min(slides.length-1,i));slides[i].scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'})}
+  function set(i){cur=i;[].forEach.call(dots.children,function(d,j){d.classList.toggle('active',j===i)});counter.textContent=pad(i+1)+' / '+pad(slides.length)}
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){set(slides.indexOf(e.target));reveal(e.target)}})},{threshold:.55});
+  slides.forEach(function(s){io.observe(s)});
+  var done=new WeakSet();
+  function reveal(s){if(done.has(s))return;done.add(s);var els=s.querySelectorAll('.reveal');if(!els.length)return;
+    if(reduce||!window.gsap){[].forEach.call(els,function(e){e.style.opacity=1});return}
+    gsap.fromTo(els,{y:14,opacity:0},{y:0,opacity:1,duration:.55,stagger:.07,ease:'power2.out',clearProps:'transform'})}
+  // Content stays visible if GSAP is slow or blocked.
+  function hideForAnim(){if(reduce||!window.gsap)return;slides.forEach(function(s,i){if(i>0)[].forEach.call(s.querySelectorAll('.reveal'),function(e){e.style.opacity=0})})}
+  window.addEventListener('load',function(){hideForAnim();reveal(slides[0])});
+  setTimeout(function(){if(!window.gsap)[].forEach.call(document.querySelectorAll('.reveal'),function(e){e.style.opacity=1})},2500);
+  window.addEventListener('scroll',function(){var h=document.documentElement;bar.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%'},{passive:true});
+  window.addEventListener('keydown',function(e){if(e.target&&/INPUT|TEXTAREA|IFRAME/.test(e.target.tagName))return;
+    if(['ArrowDown','ArrowRight','PageDown',' '].indexOf(e.key)>-1){e.preventDefault();go(cur+1)}
+    if(['ArrowUp','ArrowLeft','PageUp'].indexOf(e.key)>-1){e.preventDefault();go(cur-1)}
+    if(e.key==='Home'){e.preventDefault();go(0)}if(e.key==='End'){e.preventDefault();go(slides.length-1)}});
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,602 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jev Decision Talk</title>
+<meta name="description" content="Stop parsing prose, start governing decisions: typed judgments, policy gates, and judgment traces for Jev and System One.">
+<meta name="theme-color" content="#0c0b09">
+<link rel="preconnect" href="https://fonts.googleapis.com/">
+<link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+
+:root{--bg-primary:#0c0b09;--bg-secondary:#141210;--bg-card:#1a1814;--bg-card-hover:#211e18;--border:#2a2520;--border-hover:#3a3428;--gold:#F5D623;--gold-dim:#8B7A12;--gold-bright:#FFE94A;--gold-glow:rgba(245,214,35,.06);--gold-glow-strong:rgba(245,214,35,.12);--rust:#C4943D;--rust-dim:rgba(196,148,61,.15);--text-primary:#f0ece4;--text-secondary:#a09888;--text-muted:#605848;--red:#e05252;--red-dim:rgba(224,82,82,.12);--cyan:#22d3ee;--green:#4ade80;--font-mono:'JetBrains Mono',monospace;--font-body:'Inter',-apple-system,sans-serif}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg-primary);color:var(--text-secondary);font-family:var(--font-body);font-size:16px;-webkit-font-smoothing:antialiased}
+a{color:var(--cyan);text-decoration:none}a:hover{color:var(--gold)}
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(12,11,9,.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:13px 36px}
+.nav-logo{font-family:var(--font-mono);font-weight:800;font-size:.82rem;color:var(--text-primary);letter-spacing:.18em;text-transform:uppercase}.nav-logo span{color:var(--gold)}.nav-logo em{font-style:normal;color:var(--text-muted);font-weight:500;letter-spacing:.12em;margin-left:10px}
+.nav-right{display:flex;align-items:center;gap:24px}.nav-dots{display:flex;gap:6px}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--border);cursor:pointer;transition:background .2s}.dot.active{background:var(--gold)}
+.slide-counter{font-family:var(--font-mono);font-size:10px;color:var(--text-muted);letter-spacing:.1em;min-width:56px;text-align:right}
+.progress{position:fixed;top:0;left:0;height:2px;background:var(--gold);z-index:101;width:0}
+.slides-container{padding-top:56px}
+.slide{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:64px 72px;border-bottom:1px solid var(--border);position:relative;overflow:hidden}
+.slide::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.024) 2px,rgba(0,0,0,.024) 4px);pointer-events:none;z-index:0}
+.slide::before{content:attr(data-num);position:absolute;top:76px;right:72px;font-family:var(--font-mono);font-size:10px;color:var(--text-muted);letter-spacing:.1em;z-index:1}
+.slide-content{position:relative;z-index:1;max-width:1020px;width:100%;margin:0 auto}
+.slide-tag{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:18px;display:flex;align-items:center;gap:12px}
+.slide-tag::before{content:"";display:block;width:20px;height:1px;background:var(--gold-dim)}
+h1{font-family:var(--font-mono);font-size:clamp(36px,5.5vw,68px);font-weight:800;line-height:1.06;letter-spacing:-.02em;color:var(--text-primary);margin-bottom:22px}
+h2{font-family:var(--font-mono);font-size:clamp(26px,3.8vw,48px);font-weight:800;line-height:1.1;letter-spacing:-.02em;color:var(--text-primary);margin-bottom:28px}
+h3{font-family:var(--font-mono);font-size:.88rem;font-weight:700;color:var(--text-primary);margin-bottom:10px;letter-spacing:.02em}
+.subtitle{font-size:1rem;color:var(--text-secondary);line-height:1.65;max-width:640px;margin-bottom:32px}
+.highlight{color:var(--gold);font-style:italic}
+code{font-family:var(--font-mono);font-size:.88em;color:var(--gold);background:rgba(245,214,35,.06);padding:1px 5px;border-radius:2px}
+.tag-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:28px}
+.tag{font-family:var(--font-mono);font-size:.65rem;padding:5px 12px;border:1px solid var(--border);border-radius:2px;color:var(--text-muted);letter-spacing:.08em;text-transform:uppercase}
+.tag.gold{border-color:var(--gold-dim);color:var(--gold)}.tag.rust{border-color:var(--rust);color:var(--rust)}.tag.cyan{border-color:var(--cyan);color:var(--cyan)}.tag.red{border-color:var(--red);color:var(--red)}
+.card-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:8px}
+.cols-3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:8px}
+.cols-4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:8px}
+.card{background:var(--bg-card);border:1px solid var(--border);border-radius:3px;padding:24px;transition:border-color .3s,background .3s}
+.card-gold{border-top:2px solid var(--gold)}.card-rust{border-top:2px solid var(--rust)}.card-cyan{border-top:2px solid var(--cyan)}.card-red{border-top:2px solid var(--red)}.card-green{border-top:2px solid var(--green)}
+.card p,.card li{font-size:.85rem;color:var(--text-secondary);line-height:1.55}
+.card ul{list-style:none;margin-top:6px}.card li{padding-left:16px;position:relative;margin-bottom:6px}.card li::before{content:"↳";position:absolute;left:0;color:var(--gold-dim)}
+.card .num{font-family:var(--font-mono);font-size:.65rem;color:var(--gold);letter-spacing:.12em;margin-bottom:10px;display:block}
+.card.lit{border-color:var(--gold-dim);background:var(--bg-card-hover)}
+.layers{display:flex;flex-direction:column;gap:8px}
+.layer{display:flex;align-items:center;gap:20px;background:var(--bg-card);border:1px solid var(--border);border-radius:3px;padding:12px 20px}
+.layer-num{font-family:var(--font-mono);font-size:.65rem;color:var(--gold);min-width:40px;letter-spacing:.08em}
+.layer-name{font-family:var(--font-mono);font-weight:700;font-size:.82rem;color:var(--text-primary);min-width:110px}
+.layer-desc{font-size:.8rem;color:var(--text-secondary);flex:1;line-height:1.5}
+.layer-badge{font-family:var(--font-mono);font-size:.6rem;padding:4px 9px;border:1px solid var(--gold-dim);border-radius:2px;color:var(--gold);white-space:nowrap;letter-spacing:.06em}
+.layer-badge.red{border-color:var(--red);color:var(--red)}
+.stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:28px;margin-top:8px}
+.stat-block{border-left:1px solid var(--gold-dim);padding-left:18px}
+.stat-num{font-family:var(--font-mono);font-size:2.4rem;font-weight:800;color:var(--text-primary);line-height:1}
+.stat-num .of{font-size:1.1rem;color:var(--text-muted);font-weight:600}
+.stat-label{font-size:.78rem;color:var(--text-muted);margin-top:6px;line-height:1.5}
+.pi-callout{margin-top:22px;background:rgba(196,148,61,.06);border:1px solid var(--rust);border-radius:3px;padding:18px 24px;display:flex;align-items:center;gap:22px}
+.pi-callout-icon{font-family:var(--font-mono);font-size:22px;color:var(--rust)}
+.pi-callout-title{font-family:var(--font-mono);font-weight:700;font-size:.95rem;color:var(--text-primary);margin-bottom:4px}
+.pi-callout-desc{font-size:.85rem;color:var(--text-secondary);line-height:1.55}
+.title-grid{display:grid;grid-template-columns:1fr auto;gap:60px;align-items:center}
+.title-glow{position:absolute;top:40%;left:30%;width:600px;height:600px;background:radial-gradient(circle,rgba(245,214,35,.06) 0%,transparent 70%);pointer-events:none}
+.title-code{width:300px;border:1px solid var(--border);border-radius:8px;background:rgba(0,0,0,.3);padding:28px 30px;font-family:var(--font-mono);font-size:13px;line-height:2;color:var(--text-muted);box-shadow:rgba(245,214,35,.06) 0 0 80px}
+.title-code .comment{color:var(--gold);margin-bottom:10px}.gold{color:var(--gold)}.rust{color:var(--rust)}.cyan{color:var(--cyan)}.red{color:var(--red)}.green{color:var(--green)}.muted{color:var(--text-muted)}
+.panel{background:var(--bg-secondary);border:1px solid var(--border);border-radius:8px;padding:22px}
+.panel-label{font-family:var(--font-mono);font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--text-muted);margin-bottom:10px;display:flex;justify-content:space-between;gap:10px}
+.split{display:grid;grid-template-columns:1.05fr 1fr;gap:28px;align-items:center}
+.terminal{font-family:var(--font-mono);font-size:.74rem;line-height:1.9;background:rgba(0,0,0,.35);border:1px solid var(--border);border-radius:8px;padding:18px 20px}
+.terminal .ln{display:flex;gap:12px;white-space:nowrap;overflow:hidden}
+.terminal .t{color:var(--text-muted)}.terminal .k{min-width:98px;font-weight:700}
+.compare-table{width:100%;border-collapse:collapse;margin-top:8px;background:var(--bg-card);border:1px solid var(--border);border-radius:4px;overflow:hidden}
+.compare-table th,.compare-table td{text-align:left;padding:12px 16px;font-family:var(--font-mono);font-size:.76rem;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.55}
+.compare-table th{background:rgba(245,214,35,.04);color:var(--gold);font-weight:700;letter-spacing:.04em;text-transform:uppercase;font-size:.66rem}
+.compare-table td:first-child{color:var(--text-primary);font-weight:600;white-space:nowrap}
+.compare-table td{color:var(--text-secondary)}.compare-table tr:last-child td{border-bottom:none}
+.sections-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:14px}
+.section-tile{background:var(--bg-card);border:1px solid var(--border);border-radius:3px;padding:16px 14px}
+.section-tile .num{font-family:var(--font-mono);font-size:1.6rem;font-weight:800;color:var(--gold);line-height:1}
+.section-tile .name{font-family:var(--font-mono);font-size:.76rem;color:var(--text-primary);margin-top:8px}
+.section-tile .desc{font-size:.72rem;color:var(--text-muted);margin-top:4px;line-height:1.45}
+.phase-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.phase{font-family:var(--font-mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);border-top:1px solid var(--gold-dim);padding-top:8px}
+.phase span{display:block;color:var(--text-muted);text-transform:none;letter-spacing:0;font-size:.72rem;margin-top:4px;font-family:var(--font-body)}
+.big-num-hero{text-align:left;margin:0 0 18px}
+.big-num-hero .num{font-family:var(--font-mono);font-size:clamp(88px,12vw,160px);font-weight:800;color:var(--gold);line-height:.95;letter-spacing:-.04em}
+.big-num-hero .label{font-family:var(--font-mono);font-size:.95rem;color:var(--text-secondary);margin-top:6px}
+.footnote{font-family:var(--font-mono);font-size:.66rem;color:var(--text-muted);margin-top:18px;line-height:1.6;letter-spacing:.02em}
+.cmd{font-family:var(--font-mono);font-size:.78rem;background:rgba(0,0,0,.35);border:1px solid var(--border);border-left:2px solid var(--gold);border-radius:3px;padding:12px 16px;color:var(--text-primary);margin-top:10px;overflow-x:auto;white-space:nowrap}
+.cmd .p{color:var(--gold-dim);margin-right:8px}
+.link-list{margin-top:18px;font-family:var(--font-mono);font-size:.95rem;line-height:2.3}
+.link-list .arrow{color:var(--gold-dim);margin-right:12px}.link-list .label{color:var(--text-muted);margin-left:14px;font-size:.76rem}
+.qr-row{display:flex;gap:22px;margin-top:10px}
+.qr{text-align:center;font-family:var(--font-mono);font-size:.62rem;color:var(--text-muted);letter-spacing:.1em;text-transform:uppercase}
+.qr svg{width:132px;height:132px;display:block;border:1px solid var(--border);border-radius:6px;margin-bottom:8px}
+.signature{margin-top:36px;font-family:var(--font-mono);font-size:.78rem;color:var(--text-muted);text-align:center;letter-spacing:.08em}
+svg text{font-family:var(--font-mono)}
+@media (max-width:900px){.slide{padding:48px 24px}.slide::before{top:60px;right:24px}.title-grid,.split{grid-template-columns:1fr}.title-code{width:100%}.card-grid,.cols-3,.cols-4,.stat-row,.sections-grid,.phase-row{grid-template-columns:1fr 1fr!important}.layer{flex-wrap:wrap}.nav{padding:13px 18px}.nav-logo em{display:none}}
+@media (max-width:560px){.card-grid,.cols-3,.cols-4,.stat-row,.sections-grid,.phase-row{grid-template-columns:1fr!important}.nav-dots{display:none}}
+
+/* State-driven SVG loop: discrete JS state + short CSS interpolation. */
+.loop-figure{position:relative;background:radial-gradient(circle at 50% 30%,rgba(245,214,35,.055),transparent 48%),rgba(0,0,0,.22);border:1px solid var(--border);border-radius:8px;padding:14px 14px 10px;overflow:hidden}
+.loop-figure svg{display:block;width:100%;height:auto;overflow:visible}
+.loop-stage .stage-shell{fill:#141210;stroke:#3a3428;stroke-width:1.5;transition:stroke 180ms linear,fill 180ms linear,filter 180ms linear}
+.loop-stage .stage-index,.loop-stage .stage-label,.loop-stage .stage-detail,.loop-stage .geom{transition:fill 180ms linear,stroke 180ms linear,opacity 180ms linear,transform 180ms linear}
+.loop-stage .stage-index{fill:#605848;font-size:9px;letter-spacing:.14em}
+.loop-stage .stage-label{fill:#a09888;font-size:11px;font-weight:800;letter-spacing:.08em}
+.loop-stage .stage-detail{fill:#605848;font-size:8px}
+.loop-stage.is-active .stage-shell{stroke:#FFE94A;fill:#211e18;filter:url(#loopGlow)}
+.loop-stage.is-active .stage-index,.loop-stage.is-active .stage-label{fill:#FFE94A}
+.loop-stage.is-active .stage-detail{fill:#a09888}
+.loop-stage.is-complete .stage-shell{stroke:#8B7A12;fill:#1a1814}
+.loop-stage.is-complete .stage-index{fill:#8B7A12}.loop-stage.is-complete .stage-label{fill:#f0ece4}
+.loop-track{fill:none;stroke:#3a3428;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.loop-track.return{stroke:#8B7A12;stroke-dasharray:4 7}.loop-track.regression{stroke:#e05252;stroke-dasharray:3 5}.loop-track.clear{stroke:#4ade80;stroke-dasharray:3 5}
+.loop-packet{fill:#FFE94A;stroke:#0c0b09;stroke-width:3;filter:url(#packetGlow);transition:cx 190ms linear,cy 190ms linear,r 180ms linear,fill 180ms linear}
+.loop-packet-ring{fill:none;stroke:#F5D623;stroke-width:1;opacity:.45;transition:cx 190ms linear,cy 190ms linear,r 180ms linear,opacity 180ms linear}
+.loop-status{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-top:8px;padding:0 4px 2px}
+.loop-readout{font-family:var(--font-mono);font-size:.67rem;color:var(--text-muted);letter-spacing:.06em;min-height:1.3em}.loop-readout strong{color:var(--gold);font-weight:700}
+.loop-replay{appearance:none;border:1px solid var(--gold-dim);background:rgba(245,214,35,.05);color:var(--gold);font-family:var(--font-mono);font-size:.63rem;letter-spacing:.1em;text-transform:uppercase;padding:7px 12px;border-radius:3px;cursor:pointer}.loop-replay:hover,.loop-replay:focus-visible{border-color:var(--gold);background:rgba(245,214,35,.1);outline:none}
+.loop-legend{display:flex;flex-wrap:wrap;gap:12px 20px;margin-top:12px;font-family:var(--font-mono);font-size:.6rem;color:var(--text-muted);letter-spacing:.04em}.loop-key{display:flex;align-items:center;gap:7px}.loop-swatch{width:18px;height:1px;background:#8B7A12}.loop-swatch.red{background:#e05252}.loop-swatch.green{background:#4ade80}.loop-swatch.dash{background:repeating-linear-gradient(90deg,#8B7A12 0 4px,transparent 4px 7px)}
+@media(max-width:700px){.loop-figure{margin-left:-10px;margin-right:-10px;padding:9px 7px 8px}.loop-status{align-items:flex-start}.loop-readout{font-size:.58rem}.loop-legend{gap:8px 12px}.loop-figure svg{min-width:760px}.loop-figure{overflow-x:auto}}
+@media(prefers-reduced-motion:reduce){.loop-stage *,.loop-packet,.loop-packet-ring{transition:none!important}.loop-replay{display:none}}
+
+@media print{.nav,.progress{display:none}.slide{min-height:auto;page-break-after:always}}
+
+</style>
+</head>
+<body>
+
+<div class="progress" id="progress"></div>
+<nav class="nav">
+  <div class="nav-logo">Organized<span>AI</span><em>· Decision Models · Jev</em></div>
+  <div class="nav-right"><div class="nav-dots" id="dots"></div><div class="slide-counter" id="counter">01 / 12</div></div>
+</nav>
+
+<main class="slides-container">
+
+<!-- 01 TITLE -->
+<section class="slide slide-title" data-num="01 / 13">
+  <div class="title-glow"></div>
+  <div class="slide-content">
+    <div class="title-grid">
+      <div>
+        <div class="slide-tag reveal">Decision Models · Field Guide</div>
+        <h1 class="reveal">Stop <span class="highlight">parsing</span> prose. Start <span class="highlight" style="color:var(--cyan)">governing</span> decisions.</h1>
+        <p class="subtitle reveal">A typed answer removes parser failure. It doesn't remove model error, policy, permissions, or the need to measure confidence against outcomes. Jev turns model output into a governed decision &mdash; gated, traced, and reviewed before anything acts.</p>
+        <div class="tag-row reveal">
+          <span class="tag gold">Jev</span><span class="tag rust">System One</span><span class="tag cyan">Open source</span><span class="tag">12 chapters</span><span class="tag">48 milestones</span><span class="tag gold">With Jordaaan</span>
+        </div>
+      </div>
+      <div class="title-code reveal" style="width:300px;padding:20px">
+        <svg id="titleDiagram" viewBox="0 0 240 160" width="100%" aria-label="Unstructured prose, marked uncertain, becomes a typed and checked judgment">
+          <defs><marker id="arrowTitle" markerWidth="7" markerHeight="7" refX="5.5" refY="2.5" orient="auto"><path d="M0 0L5.5 2.5L0 5Z" fill="#F5D623"/></marker></defs>
+          <text x="4" y="14" font-family="var(--font-mono)" font-size="7" letter-spacing="1" fill="#605848">PROSE</text>
+          <path class="prose-line" d="M4,30 Q14,24 24,30 T44,30 T60,30" stroke="#605848" stroke-width="3" stroke-linecap="round" fill="none"/>
+          <path class="prose-line" d="M4,46 Q14,40 24,46 T44,46 T64,46" stroke="#605848" stroke-width="3" stroke-linecap="round" fill="none"/>
+          <path class="prose-line" d="M4,62 Q14,56 24,62 T44,62 T50,62" stroke="#605848" stroke-width="3" stroke-linecap="round" fill="none"/>
+          <circle class="prose-mark" cx="58" cy="16" r="9" fill="#141210" stroke="#e05252" stroke-width="2" opacity="0"/>
+          <text class="prose-mark" x="58" y="20" font-family="var(--font-mono)" font-size="11" font-weight="800" fill="#e05252" text-anchor="middle" opacity="0">?</text>
+
+          <path class="hero-arrow" d="M78,74 L122,74" fill="none" stroke="#F5D623" stroke-width="2" marker-end="url(#arrowTitle)"/>
+
+          <text x="152" y="14" font-family="var(--font-mono)" font-size="7" letter-spacing="1" fill="#8B7A12">TYPED</text>
+          <rect class="typed-box" x="140" y="24" width="96" height="86" rx="8" fill="#1a1814" stroke="#F5D623" stroke-width="2"/>
+          <g class="typed-text" font-family="var(--font-mono)" font-size="9" fill="#F5D623" opacity="0">
+            <text x="150" y="46">shape: Choice</text>
+            <text x="150" y="62">value: "route_a"</text>
+            <text x="150" y="78">conf: 0.92</text>
+            <text x="150" y="94" fill="#605848">trace: on</text>
+          </g>
+          <circle class="typed-check" cx="226" cy="32" r="9" fill="#4ade80" opacity="0"/>
+          <path class="typed-check" d="M221,32l4,4l8,-8" fill="none" stroke="#0c0b09" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 02 THE PROBLEM -->
+<section class="slide" data-num="02 / 13">
+  <div class="slide-content">
+    <div class="slide-tag reveal">The problem</div>
+    <div class="split">
+      <div>
+        <h2 class="reveal">A model can sound certain and still be <span class="highlight">wrong about its own shape.</span></h2>
+        <p class="subtitle reveal">Parse the wrong field out of generated text and you don't get an error &mdash; you get a plausible number in the wrong place. Stated confidence is no better: a model that says "92% confident" is making a claim about calibration, and that claim is frequently wrong until you measure it.</p>
+      </div>
+      <div class="panel reveal">
+        <div class="panel-label"><span>Calibration by confidence bin</span><span class="red">illustrative</span></div>
+        <svg id="confidenceChart" viewBox="0 0 520 230" width="100%" role="img" aria-label="Illustrative reliability chart: measured accuracy tracks stated confidence at low bins, then falls sharply at the 92 percent bin before recalibration restores it to 94 percent">
+          <g stroke="#2a2520" stroke-width="1"><line x1="30" y1="205" x2="500" y2="205"/><line x1="30" y1="117" x2="500" y2="117"/><line x1="30" y1="30" x2="500" y2="30"/></g>
+          <g font-size="9" fill="#605848"><text x="4" y="209">0</text><text x="0" y="121">50</text><text x="0" y="34">100</text></g>
+          <g font-family="var(--font-mono)" font-size="9" fill="#605848" text-anchor="middle">
+            <text x="99" y="222">50%</text><text x="209" y="222">65%</text><text x="319" y="222">80%</text><text x="429" y="222">92%</text>
+          </g>
+          <g>
+            <rect class="cal-bar" data-final-y="117" data-final-h="88" x="64" y="205" width="22" height="0" fill="#F5D623"/>
+            <rect class="cal-bar" data-final-y="121" data-final-h="84" x="90" y="205" width="22" height="0" fill="#a09888"/>
+            <rect class="cal-bar" data-final-y="91" data-final-h="114" x="174" y="205" width="22" height="0" fill="#F5D623"/>
+            <rect class="cal-bar" data-final-y="100" data-final-h="105" x="200" y="205" width="22" height="0" fill="#a09888"/>
+            <rect class="cal-bar" data-final-y="65" data-final-h="140" x="284" y="205" width="22" height="0" fill="#F5D623"/>
+            <rect class="cal-bar" data-final-y="82" data-final-h="123" x="310" y="205" width="22" height="0" fill="#a09888"/>
+            <rect class="cal-bar" data-final-y="44" data-final-h="161" x="394" y="205" width="22" height="0" fill="#F5D623"/>
+            <rect class="cal-bar" data-final-y="98" data-final-h="107" x="420" y="205" width="22" height="0" fill="#e05252"/>
+          </g>
+          <circle id="calMarker" cx="431" cy="41" r="0" fill="#4ade80"/>
+          <text id="calMarkerLabel" x="431" y="27" font-size="9" fill="#4ade80" text-anchor="middle" opacity="0">94% after reset</text>
+          <text x="431" y="72" font-size="10" fill="#e05252" text-anchor="middle" font-weight="700">-31 pts</text>
+          <g font-family="var(--font-mono)" font-size="8" fill="#a09888">
+            <rect x="34" y="10" width="9" height="9" fill="#F5D623"/><text x="47" y="18">stated confidence</text>
+            <rect x="34" y="23" width="9" height="9" fill="#a09888"/><text x="47" y="31">measured accuracy</text>
+          </g>
+        </svg>
+      </div>
+    </div>
+    <div class="pi-callout reveal">
+      <div class="pi-callout-icon">!</div>
+      <div><div class="pi-callout-title">Shape is not truth.</div><div class="pi-callout-desc">A typed response guarantees you can read it. It does not guarantee the judgment inside it is correct &mdash; and a stated confidence is a claim to test, not a fact to trust.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 03 THE ONE-PASS DECISION ENGINE (cycle) -->
+<section class="slide" data-num="03 / 13">
+  <div class="slide-content">
+    <div class="slide-tag reveal">Inside the one-pass decision engine</div>
+    <h2 class="reveal">Cache the context once. <span class="highlight">Judge it four ways.</span></h2>
+    <p class="subtitle reveal" style="margin-bottom:8px">Where this shape earns its keep: <strong>high-volume</strong> workloads and <strong>real-time</strong> latency budgets &mdash; one cached context and four parallel judgments, not a slow multi-turn chain.</p>
+    <div class="tag-row reveal" style="margin-bottom:16px"><span class="tag gold">High-volume</span><span class="tag rust">Real-time</span></div>
+    <div class="split" style="grid-template-columns:1.1fr 1fr">
+      <div class="reveal">
+        <svg id="jevFanout" viewBox="0 0 640 260" width="100%" aria-label="One cached context fans out into three independent judgments, converges at calibration, then applies policy">
+          <defs><marker id="arrowJev" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0 0L6 3L0 6Z" fill="#8B7A12"/></marker></defs>
+          <g font-family="var(--font-mono)">
+            <rect x="10" y="110" width="110" height="40" rx="6" fill="#141210" stroke="#F5D623" stroke-width="2"/>
+            <text x="65" y="127" text-anchor="middle" font-size="11" font-weight="800" fill="#f0ece4">CONTEXT</text>
+            <text x="65" y="141" text-anchor="middle" font-size="8" fill="#605848">cached once</text>
+
+            <path class="fan-path" d="M120,130 C180,130 180,55 226,55" fill="none" stroke="#3a3428" stroke-width="1.5"/>
+            <path class="fan-path" d="M120,130 L226,130" fill="none" stroke="#3a3428" stroke-width="1.5"/>
+            <path class="fan-path" d="M120,130 C180,130 180,205 226,205" fill="none" stroke="#3a3428" stroke-width="1.5"/>
+
+            <circle cx="250" cy="55" r="24" fill="#1a1814" stroke="#F5D623" stroke-width="2"/><text x="250" y="52" text-anchor="middle" font-size="10" font-weight="800" fill="#F5D623">Q1</text><text x="250" y="63" text-anchor="middle" font-size="7" fill="#a09888">CHOICE</text>
+            <circle cx="250" cy="130" r="24" fill="#1a1814" stroke="#C4943D" stroke-width="2"/><text x="250" y="127" text-anchor="middle" font-size="10" font-weight="800" fill="#C4943D">Q2</text><text x="250" y="138" text-anchor="middle" font-size="7" fill="#a09888">SCORE</text>
+            <circle cx="250" cy="205" r="24" fill="#1a1814" stroke="#22d3ee" stroke-width="2"/><text x="250" y="202" text-anchor="middle" font-size="10" font-weight="800" fill="#22d3ee">Q3</text><text x="250" y="213" text-anchor="middle" font-size="7" fill="#a09888">NOUL</text>
+
+            <path class="fan-path" d="M274,55 C330,55 330,130 368,130" fill="none" stroke="#3a3428" stroke-width="1.5"/>
+            <path class="fan-path" d="M274,130 L368,130" fill="none" stroke="#3a3428" stroke-width="1.5"/>
+            <path class="fan-path" d="M274,205 C330,205 330,130 368,130" fill="none" stroke="#3a3428" stroke-width="1.5"/>
+
+            <path d="M400,98 L432,130 L400,162 L368,130 Z" fill="#1a1814" stroke="#e05252" stroke-width="2"/>
+            <text x="400" y="134" text-anchor="middle" font-size="9" font-weight="800" fill="#e05252">CALIBRATE</text>
+
+            <path class="fan-path" d="M432,130 L460,130" fill="none" stroke="#3a3428" stroke-width="1.5" marker-end="url(#arrowJev)"/>
+
+            <rect x="460" y="108" width="100" height="44" rx="6" fill="#141210" stroke="#4ade80" stroke-width="2"/>
+            <text x="510" y="127" text-anchor="middle" font-size="11" font-weight="800" fill="#f0ece4">POLICY</text>
+            <text x="510" y="141" text-anchor="middle" font-size="8" fill="#605848">versioned rules</text>
+
+            <path id="jevRouteArrow" d="M560,130 L610,130" fill="none" stroke="#8B7A12" stroke-width="1.5" marker-end="url(#arrowJev)"/>
+            <text x="616" y="134" font-size="10" font-weight="700" fill="#8B7A12">ROUTE</text>
+          </g>
+        </svg>
+      </div>
+      <div class="card-grid" id="jevCycleCards">
+        <div class="card card-gold reveal"><span class="num">01 · DECLARE</span><h3>Type the question first</h3><p>Choose Choice, Score, or Noul before the model runs, so the shape of the answer can never be the thing that fails.</p></div>
+        <div class="card card-rust reveal"><span class="num">02 · EVALUATE</span><h3>Run it in parallel</h3><p>Independent judgments over one cached context &mdash; no invented causal link between them.</p></div>
+        <div class="card card-cyan reveal"><span class="num">03 · CALIBRATE</span><h3>Test the claim</h3><p>Check stated confidence against your own fixtures, locally, before it drives anything.</p></div>
+        <div class="card card-green reveal"><span class="num">04 · POLICY</span><h3>Turn evidence into a route</h3><p>Versioned rules decide what happens next. The model never executes its own verdict.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 04 THE DECISION LOOP (state-driven SVG) -->
+<section class="slide" data-num="04 / 13" id="jev-loop-slide">
+  <div class="slide-content">
+    <div class="slide-tag reveal">The loop · state-driven SVG</div>
+    <h2 class="reveal">Declare. Calibrate. <span class="highlight">Gate the effect.</span></h2>
+    <p class="subtitle reveal" style="margin-bottom:16px">One judgment moves through six distinct jobs. Evidence under threshold takes the policy-review path; evidence that clears the bar reaches the gate without inventing extra work.</p>
+    <figure class="loop-figure reveal" id="jevLoopFigure">
+      <svg id="jevLoopSvg" viewBox="0 70 1120 340" role="img" aria-label="Animated Jev decision loop: Declare, Evaluate, Calibrate, Apply Policy, Trace, Gate, and a visible return as the next policy version">
+        <defs>
+          <filter id="loopGlow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          <filter id="packetGlow" x="-120%" y="-120%" width="340%" height="340%"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          <marker id="arrowGold" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0 0L6 3L0 6Z" fill="#8B7A12"/></marker>
+          <marker id="arrowRed" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0 0L6 3L0 6Z" fill="#e05252"/></marker>
+          <marker id="arrowGreen" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0 0L6 3L0 6Z" fill="#4ade80"/></marker>
+        </defs>
+        <path class="loop-track" d="M150 176H250M330 176H430" marker-end="url(#arrowGold)"/>
+        <path class="loop-track regression" d="M510 176H610" marker-end="url(#arrowRed)"/>
+        <path class="loop-track" d="M690 176H790M870 176H970" marker-end="url(#arrowGold)"/>
+        <path class="loop-track return" d="M1010 219V344Q1010 374 980 374H136Q100 374 100 338V219" marker-end="url(#arrowGold)"/>
+        <path class="loop-track clear" d="M470 219V310Q470 342 438 342H390" marker-end="url(#arrowGreen)"/>
+        <text x="555" y="162" text-anchor="middle" font-size="8" fill="#e05252" letter-spacing="1.4">UNDER THRESHOLD</text>
+        <text x="426" y="300" text-anchor="middle" font-size="8" fill="#4ade80" letter-spacing="1.2">CLEARS THRESHOLD · AUTO-ACT</text>
+        <text x="555" y="393" text-anchor="middle" font-size="8" fill="#8B7A12" letter-spacing="1.5">APPROVED ROUTE BECOMES THE NEXT POLICY VERSION</text>
+
+        <g class="loop-stage" data-stage="0" transform="translate(60 132)">
+          <rect class="stage-shell" width="80" height="88" rx="5"/>
+          <text class="stage-index" x="10" y="16">00</text><text class="stage-label" x="40" y="104" text-anchor="middle">DECLARE</text><text class="stage-detail" x="40" y="117" text-anchor="middle">typed question</text>
+          <circle class="geom trigger-core" cx="40" cy="48" r="8" fill="none" stroke="#C4943D" stroke-width="2"/>
+          <g class="trigger-rays" stroke="#C4943D" stroke-width="2"><path d="M40 27v8M40 61v8M19 48h8M53 48h8M25 33l6 6M49 57l6 6M55 33l-6 6M31 57l-6 6"/></g>
+        </g>
+        <g class="loop-stage" data-stage="1" transform="translate(250 132)">
+          <rect class="stage-shell" width="80" height="88" rx="5"/>
+          <text class="stage-index" x="10" y="16">01</text><text class="stage-label" x="40" y="104" text-anchor="middle">EVALUATE</text><text class="stage-detail" x="40" y="117" text-anchor="middle">parallel</text>
+          <line x1="17" y1="70" x2="64" y2="70" stroke="#3a3428"/><rect class="score-bar geom" data-bar="0" x="20" y="54" width="7" height="16" fill="#F5D623"/><rect class="score-bar geom" data-bar="1" x="31" y="45" width="7" height="25" fill="#F5D623"/><rect class="score-bar geom" data-bar="2" x="42" y="36" width="7" height="34" fill="#F5D623"/><rect class="score-bar geom" data-bar="3" x="53" y="28" width="7" height="42" fill="#F5D623"/>
+        </g>
+        <g class="loop-stage" data-stage="2" transform="translate(430 132)">
+          <rect class="stage-shell" width="80" height="88" rx="5"/>
+          <text class="stage-index" x="10" y="16">02</text><text class="stage-label" x="40" y="104" text-anchor="middle">CALIBRATE</text><text class="stage-detail" x="40" y="117" text-anchor="middle">vs. fixtures</text>
+          <circle cx="40" cy="49" r="23" fill="none" stroke="#3a3428"/><circle cx="40" cy="49" r="14" fill="none" stroke="#3a3428"/><path class="detect-sweep geom" d="M40 49L40 26A23 23 0 0 1 60 60Z" fill="rgba(224,82,82,.18)" stroke="#e05252" transform-origin="40px 49px"/><circle cx="52" cy="43" r="3" fill="#e05252"/>
+        </g>
+        <g class="loop-stage" data-stage="3" transform="translate(610 132)">
+          <rect class="stage-shell" width="80" height="88" rx="5"/>
+          <text class="stage-index" x="10" y="16">03</text><text class="stage-label" x="40" y="104" text-anchor="middle">POLICY</text><text class="stage-detail" x="40" y="117" text-anchor="middle">versioned rules</text>
+          <g class="research-links geom" stroke="#22d3ee" fill="#0c0b09"><line x1="40" y1="48" x2="20" y2="31"/><line x1="40" y1="48" x2="62" y2="30"/><line x1="40" y1="48" x2="62" y2="66"/><line x1="40" y1="48" x2="19" y2="66"/><circle cx="40" cy="48" r="6" fill="#22d3ee"/><circle cx="20" cy="31" r="5"/><circle cx="62" cy="30" r="5"/><circle cx="62" cy="66" r="5"/><circle cx="19" cy="66" r="5"/></g>
+        </g>
+        <g class="loop-stage" data-stage="4" transform="translate(790 132)">
+          <rect class="stage-shell" width="80" height="88" rx="5"/>
+          <text class="stage-index" x="10" y="16">04</text><text class="stage-label" x="40" y="104" text-anchor="middle">TRACE</text><text class="stage-detail" x="40" y="117" text-anchor="middle">code + telemetry</text>
+          <g class="draft-pages geom" fill="#141210" stroke="#C4943D"><rect x="22" y="27" width="35" height="44" rx="2"/><rect x="18" y="23" width="35" height="44" rx="2"/><path d="M26 36h19M26 43h19M26 50h12"/><path class="draft-pencil" d="M50 61l15-15 5 5-15 15-7 2z" fill="#C4943D" stroke="none"/></g>
+        </g>
+        <g class="loop-stage" data-stage="5" transform="translate(970 132)">
+          <rect class="stage-shell" width="80" height="88" rx="5"/>
+          <text class="stage-index" x="10" y="16">05</text><text class="stage-label" x="40" y="104" text-anchor="middle">GATE</text><text class="stage-detail" x="40" y="117" text-anchor="middle">human / auto-act</text>
+          <path class="gate-left geom" d="M18 70V31H38V70" fill="none" stroke="#F5D623" stroke-width="3"/><path class="gate-right geom" d="M62 70V31H42V70" fill="none" stroke="#F5D623" stroke-width="3"/><path class="stage-check geom" d="M28 50l8 8 18-20" fill="none" stroke="#4ade80" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" opacity="0"/>
+        </g>
+        <g aria-hidden="true"><circle class="loop-packet-ring" id="loopPacketRing" cx="100" cy="176" r="14"/><circle class="loop-packet" id="loopPacket" cx="100" cy="176" r="6"/></g>
+      </svg>
+      <figcaption class="loop-status"><div class="loop-readout" id="loopReadout" aria-live="polite"><strong>DECLARE</strong> — three typed questions over one cached context.</div><button class="loop-replay" id="loopReplay" type="button" aria-label="Replay the Jev decision loop animation">↻ Replay</button></figcaption>
+      <div class="loop-legend" aria-hidden="true"><span class="loop-key"><i class="loop-swatch"></i>evidence flow</span><span class="loop-key"><i class="loop-swatch red"></i>policy-review path</span><span class="loop-key"><i class="loop-swatch green"></i>auto-act path</span><span class="loop-key"><i class="loop-swatch dash"></i>closed return</span></div>
+    </figure>
+    <p class="footnote reveal">Timing is schematic. Auto-act is promoted only after local evidence clears policy thresholds; it never routes without a trace.</p>
+  </div>
+</section>
+
+<!-- 05 VOCABULARY: CHOICE / SCORE / NOUL -->
+<section class="slide" data-num="05 / 13">
+  <div class="slide-content">
+    <div class="slide-tag reveal">Vocabulary · System One</div>
+    <h2 class="reveal">Three primitives. <span class="highlight">One decision geometry each.</span></h2>
+    <table class="compare-table reveal">
+      <tr><th>Primitive</th><th>What it captures</th><th>When to reach for it</th></tr>
+      <tr><td class="gold">Choice</td><td>A closed set of named options, structurally guaranteed.</td><td>Categorical decisions &mdash; a route, a label, a verdict &mdash; where every valid answer is enumerable in advance.</td></tr>
+      <tr><td class="rust">Score</td><td>A bounded numeric judgment.</td><td>Degree, not category &mdash; confidence, severity, distance to a threshold policy will apply.</td></tr>
+      <tr><td class="cyan">Noul</td><td>Explicit "insufficient evidence."</td><td>When forcing a Choice or Score would manufacture false confidence.</td></tr>
+    </table>
+    <div class="pi-callout reveal"><div class="pi-callout-icon">≠</div><div><div class="pi-callout-title">A typed answer is not a correct answer.</div><div class="pi-callout-desc">The structural guarantee stops at structure. Whether the judgment inside it is right is a separate question, checked by evaluators against evidence &mdash; not by the schema.</div></div></div>
+  </div>
+</section>
+
+<!-- 06 PROVIDER-NEUTRAL LAYER -->
+<section class="slide" data-num="06 / 13">
+  <div class="slide-content">
+    <div class="slide-tag reveal">The provider-neutral decision layer</div>
+    <h2 class="reveal">One typed layer. <span class="highlight">Policy above it, versioned separately.</span></h2>
+    <p class="subtitle reveal">Jev's typed primitives are the same whichever model answers them. What a Choice of "regression" actually triggers &mdash; a stage, a hold, an escalation &mdash; is application policy, so swapping the underlying model never means rewriting what the business does with its answers.</p>
+    <div class="card-grid">
+      <div class="card card-gold reveal"><span class="num">LAYER · JEV WIRE TYPES</span><h3>Same whichever model answers</h3><ul><li>Choice / Score / Noul are structurally guaranteed</li><li>A model swap never breaks the schema</li><li>Cost of a wrong shape: zero</li></ul></div>
+      <div class="card card-rust reveal"><span class="num">LAYER · APPLICATION POLICY</span><h3>Yours, versioned separately</h3><ul><li>Decides what a judgment actually triggers</li><li>Gates, scopes, and hard stops live here</li><li>Model-owned effects: zero</li></ul></div>
+    </div>
+    <div class="tag-row reveal"><span class="tag gold">Provider-neutral</span><span class="tag rust">Versioned separately</span><span class="tag cyan">Judgment traces</span><span class="tag">Scopes + hard stops</span><span class="tag gold">0 model-owned effects</span></div>
+  </div>
+</section>
+
+<!-- 07 WHERE THIS RUNS TODAY: SKILL LOOP + GTM AUTORESEARCH -->
+<section class="slide" data-num="07 / 13">
+  <div class="slide-content">
+    <div class="slide-tag reveal">Where this runs today</div>
+    <h2 class="reveal">Same engine. <span class="highlight">Two adapters, already shipping.</span></h2>
+    <p class="subtitle reveal">The Skill Loop and GTM Autoresearch already run this exact cycle &mdash; declare, evaluate, calibrate, apply policy, gate. They share bounded iteration, command execution, and evidence handling. What differs is only the adapter: the typed judgment shape, the evaluation rules, and the changes each is allowed to make.</p>
+    <div class="card-grid">
+      <div class="card card-gold reveal"><span class="num">ADAPTER · SKILL LOOP</span><h3>Judges skill effectiveness</h3><ul><li>Choice{regression, no_drift} + a fixed-suite Score</li><li>Policy: candidate must strictly improve the score, never lose a passing check</li><li>Gate: approval verifies skill, suite, baseline, and evidence &mdash; then backs up the original</li></ul></div>
+      <div class="card card-rust reveal"><span class="num">ADAPTER · GTM AUTORESEARCH</span><h3>Judges config drift &mdash; and feeds the flywheel</h3><ul><li>A Score per static config dimension, Noul when one can't be assessed</li><li>Policy: candidates restricted to metadata edits only</li><li>Gate: no lost audit dimension, no new critical findings, no live import or publish</li><li>Same scored records &ge;0.75 become fine-tuning data for client-specialized models; eval regression &gt;0.05 auto-rolls the policy back</li></ul></div>
+    </div>
+    <div class="pi-callout reveal"><div class="pi-callout-icon">=</div><div><div class="pi-callout-title">Jev isn't a third product.</div><div class="pi-callout-desc">It's the decision layer both already run on. In GTM Autoresearch the same Score that gates a config change also decides what becomes training data &mdash; one judgment, two consumers. Neither adapter's score alone proves live tracking or every skill is correct &mdash; that's what the human gate is still for.</div></div></div>
+  </div>
+</section>
+
+<!-- 08 CASE STUDY: GTM AUTORESEARCH -->
+<section class="slide" data-num="08 / 13">
+  <div class="slide-content">
+    <div class="slide-tag reveal">Case study &middot; GTM Autoresearch</div>
+    <h2 class="reveal">One scored judgment, <span class="highlight">six jobs downstream.</span></h2>
+    <p class="subtitle reveal">GTM Autoresearch runs automated audits on live client GTM, Google Ads, and GA4 accounts, then turns every scored finding into training data for a client-specialized model &mdash; the same Score wire type Jev uses for calibration, doing double duty.</p>
+    <div class="phase-row reveal" style="grid-template-columns:repeat(3,1fr)">
+      <div class="phase">01 &middot; Log<span>Every audit finding becomes a scored ExperimentRecord, 0&ndash;1, in SQLite.</span></div>
+      <div class="phase">02 &middot; Collect<span>GTM, Google Ads, and GA4 Admin API state versioned into one AccountState JSON.</span></div>
+      <div class="phase">03 &middot; Filter<span>Score &ge;0.75 and de-duplicated at 0.92 cosine similarity survive to training data.</span></div>
+      <div class="phase">04 &middot; Fine-tune<span>Cloud (GPT-4o-mini) for most clients; local Llama 3.1 8B for zero-egress accounts.</span></div>
+      <div class="phase">05 &middot; Route<span>Each client's fine-tuned model served by client ID, with RAG as fallback.</span></div>
+      <div class="phase">06 &middot; Flywheel<span>Retrains on 20 new examples; auto-rolls back if eval drifts more than 0.05.</span></div>
+    </div>
+    <div class="pi-callout reveal"><div class="pi-callout-icon">&rarr;</div><div><div class="pi-callout-title">The calibration step is the whole business model.</div><div class="pi-callout-desc">The 0.75 threshold in step 3 is the same calibration idea from slide 02 &mdash; just tuned for "is this worth training on" instead of "is this worth auto-acting on."</div></div></div>
+    <div class="link-list reveal">
+      <div><span class="arrow">&rarr;</span><a href="https://github.com/Organized-AI/gtm-autoresearch" target="_blank" rel="noopener">github.com/Organized-AI/gtm-autoresearch</a><span class="label">repo</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 09 WHY BUILT THIS WAY -->
+<section class="slide" data-num="09 / 13">
+  <div class="slide-content">
+    <div class="slide-tag reveal">From fixtures to auto-act</div>
+    <h2 class="reveal">Auto-act is <span class="highlight">earned, not assumed.</span></h2>
+    <div class="cols-3">
+      <div class="card card-gold reveal"><span class="num">01</span><h3>Never auto-acts by default</h3><p>Every candidate route is staged. A human approves before it reaches anyone, until fixture history says otherwise.</p></div>
+      <div class="card card-rust reveal"><span class="num">02</span><h3>Targeted, not blind</h3><p>Promotion criteria are explicit and versioned &mdash; not a vibe about how the model "seems" lately.</p></div>
+      <div class="card card-cyan reveal"><span class="num">03</span><h3>Model-version aware</h3><p>Every trace records which model and runner produced the judgment, so a promotion never silently survives a model swap.</p></div>
+    </div>
+    <div class="pi-callout reveal"><div class="pi-callout-icon">✓</div><div><div class="pi-callout-title">General auto-act is not released.</div><div class="pi-callout-desc">A bounded check → repair → retest cycle with stop conditions is planned. Today, every route not yet cleared by fixtures ends in review.</div></div></div>
+  </div>
+</section>
+
+<!-- 10 CURRICULUM -->
+<section class="slide" data-num="10 / 13">
+  <div class="slide-content">
+    <div class="slide-tag reveal">Under the hood</div>
+    <h2 class="reveal">Twelve chapters, <span class="highlight">four moves.</span></h2>
+    <div class="phase-row reveal" style="grid-template-columns:repeat(4,1fr)">
+      <div class="phase">01 · System One<span>Typed judgments, Choice/Score/Noul, parallel evaluation.</span></div>
+      <div class="phase">02 · Evidence<span>RLCD and calibration, shape is not truth.</span></div>
+      <div class="phase">03 · Operations<span>Provider-neutral layer, gates/scopes/traces, fixtures to auto-act.</span></div>
+      <div class="phase">04 · Practice<span>Gavel &amp; Gown, the one-pass engine, judge not writer, the classification seam.</span></div>
+    </div>
+    <div class="sections-grid">
+      <div class="section-tile reveal"><div class="num">01</div><div class="name">Typed judgments</div><div class="desc">Not generated prose.</div></div>
+      <div class="section-tile reveal"><div class="num">02</div><div class="name">Choice, Score, Noul</div><div class="desc">One geometry each.</div></div>
+      <div class="section-tile reveal"><div class="num">03</div><div class="name">Parallel evaluation</div><div class="desc">No invented causality.</div></div>
+      <div class="section-tile reveal"><div class="num">04</div><div class="name">RLCD &amp; calibration</div><div class="desc">Confidence as a claim.</div></div>
+      <div class="section-tile reveal"><div class="num">05</div><div class="name">Shape is not truth</div><div class="desc">Structure vs. correctness.</div></div>
+      <div class="section-tile reveal"><div class="num">06</div><div class="name">Decision layer</div><div class="desc">Policy above wire types.</div></div>
+      <div class="section-tile reveal"><div class="num">07</div><div class="name">Gates &amp; traces</div><div class="desc">Explainable from code.</div></div>
+      <div class="section-tile reveal"><div class="num">08</div><div class="name">Fixtures → auto-act</div><div class="desc">Promotion, not default.</div></div>
+      <div class="section-tile reveal"><div class="num">09</div><div class="name">Gavel &amp; Gown</div><div class="desc">Keep or revert.</div></div>
+      <div class="section-tile reveal"><div class="num">10</div><div class="name">One-pass engine</div><div class="desc">Cache once, judge often.</div></div>
+      <div class="section-tile reveal"><div class="num">11</div><div class="name">Judge, not writer</div><div class="desc">Effects stay in code.</div></div>
+      <div class="section-tile reveal"><div class="num">12</div><div class="name">Classification seam</div><div class="desc">Gate every answer.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 11 RECEIPTS -->
+<section class="slide" data-num="11 / 13">
+  <div class="slide-content">
+    <div class="slide-tag reveal">Receipts · the field guide</div>
+    <div class="split" style="align-items:end">
+      <div class="big-num-hero reveal"><div class="num" data-count="48">48</div><div class="label">milestones across 12 chapters</div></div>
+      <p class="subtitle reveal" style="margin-bottom:22px">Intermediate to advanced, System One through Practice. Every chapter ends in something you can gate, not just something you can quote.</p>
+    </div>
+    <div class="stat-row">
+      <div class="stat-block reveal"><div class="stat-num"><span data-count="3">3</span></div><div class="stat-label">typed primitives &mdash; Choice, Score, Noul.</div></div>
+      <div class="stat-block reveal"><div class="stat-num"><span data-count="12">12</span></div><div class="stat-label">deep-dive chapters, System One through Practice.</div></div>
+      <div class="stat-block reveal"><div class="stat-num"><span data-count="1">1</span></div><div class="stat-label">provider port &mdash; one decision layer, any model behind it.</div></div>
+      <div class="stat-block reveal"><div class="stat-num"><span data-count="0">0</span></div><div class="stat-label">model-owned effects. The model judges; the system decides what happens.</div></div>
+    </div>
+    <p class="footnote reveal">Gavel &amp; Gown turns "looks good" into a measurable keep-or-revert loop &mdash; live, with a laptop, October 16 in Austin.</p>
+  </div>
+</section>
+
+<!-- 12 GET STARTED -->
+<section class="slide" data-num="12 / 13">
+  <div class="slide-content">
+    <div class="slide-tag reveal">Bring a decision worth governing</div>
+    <h2 class="reveal">Leave with a loop you can <span class="highlight">defend with a trace.</span></h2>
+    <div class="cols-3">
+      <div class="card card-gold reveal"><span class="num">CURRICULUM</span><h3>Read the chapters</h3><p>12 chapters, 48 milestones, ordered intermediate to advanced. Start with typed judgments, not generated prose.</p></div>
+      <div class="card card-rust reveal"><span class="num">BUILD LIVE</span><h3>Gavel &amp; Gown · Oct 16</h3><p>Bring a laptop. Build the rubric, calibrated threshold, and keep-or-revert loop live, in Austin.</p></div>
+      <div class="card card-cyan reveal"><span class="num">REPO</span><h3>stape-agent-toolset</h3><p>The provider-neutral decision layer and gates/scopes implementation, open on GitHub.</p></div>
+    </div>
+    <div class="cmd reveal"><span class="p">&gt;</span>jev.declare({shape:"Choice", options:["regression","no_drift"]}) <span class="muted">&nbsp;// returns a typed judgment, never prose</span></div>
+    <p class="footnote reveal">Work through a chapter with an assistant or on paper. Keep the judgment trace for anything you actually gate.</p>
+  </div>
+</section>
+
+<!-- 13 LINKS -->
+<section class="slide" data-num="13 / 13">
+  <div class="title-glow" style="left:10%;top:30%"></div>
+  <div class="slide-content">
+    <div class="slide-tag reveal">Keep going</div>
+    <h2 class="reveal">Typed decisions. Bounded automation. <span class="highlight">Measured trust.</span></h2>
+    <div class="link-list reveal">
+      <div><span class="arrow">→</span><a href="https://guide.organizedai.vip/jev/" target="_blank" rel="noopener">guide.organizedai.vip/jev</a><span class="label">the field guide</span></div>
+      <div><span class="arrow">→</span><a href="https://guide.organizedai.vip/jev/glossary/index.html" target="_blank" rel="noopener">guide.organizedai.vip/jev/glossary</a><span class="label">glossary</span></div>
+      <div><span class="arrow">→</span><a href="https://guide.organizedai.vip/jev/sources/index.html" target="_blank" rel="noopener">guide.organizedai.vip/jev/sources</a><span class="label">sources</span></div>
+      <div><span class="arrow">→</span><a href="https://github.com/Organized-AI/stape-agent-toolset" target="_blank" rel="noopener">github · stape-agent-toolset</a><span class="label">engine</span></div>
+      <div><span class="arrow">→</span><a href="https://github.com/Organized-AI/gtm-autoresearch" target="_blank" rel="noopener">github · gtm-autoresearch</a><span class="label">case study</span></div>
+      <div><span class="arrow">→</span><a href="https://luma.com/organized-xgz3" target="_blank" rel="noopener">Gavel &amp; Gown · Oct 16</a><span class="label">build it live</span></div>
+      <div><span class="arrow">→</span><a href="https://www.linkedin.com/in/jordaaanhill" target="_blank" rel="noopener">linkedin.com/in/jordaaanhill</a><span class="label">Jordaaan</span></div>
+    </div>
+    <div class="signature reveal">ORGANIZED AI · DECISION MODELS · JEV · WITH JORDAAAN</div>
+  </div>
+</section>
+
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/DrawSVGPlugin.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/MotionPathPlugin.min.js"></script>
+<script>
+// Navigation (same pattern as the Skill Loop talk): dots, counter, keyboard, IntersectionObserver
+const slides=document.querySelectorAll('.slide'),dotsEl=document.getElementById('dots'),counter=document.getElementById('counter'),total=slides.length;let current=0;
+slides.forEach((_,i)=>{const d=document.createElement('div');d.className='dot'+(i===0?' active':'');d.onclick=()=>go(i);dotsEl.appendChild(d)});
+function go(i){if(i<0||i>=total)return;current=i;slides[i].scrollIntoView({behavior:'smooth'});ui(i)}
+function ui(i){document.querySelectorAll('.dot').forEach((d,j)=>d.classList.toggle('active',j===i));counter.textContent=slides[i].dataset.num}
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){current=[...slides].indexOf(e.target);ui(current)}}),{threshold:.5});slides.forEach(s=>io.observe(s));
+document.addEventListener('keydown',e=>{if(['INPUT','TEXTAREA'].includes(document.activeElement.tagName))return;switch(e.key){case'ArrowRight':case'ArrowDown':case'PageDown':case' ':case'Enter':e.preventDefault();go(current+1);break;case'ArrowLeft':case'ArrowUp':case'PageUp':case'Backspace':e.preventDefault();go(current-1);break;case'Home':e.preventDefault();go(0);break;case'End':e.preventDefault();go(total-1);break}});
+window.addEventListener('scroll',()=>{const h=document.documentElement;document.getElementById('progress').style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%'},{passive:true});
+
+// Jev loop figure: discrete reactive state updates SVG attributes; short CSS transitions interpolate the change.
+(() => {
+  const figure=document.getElementById('jevLoopFigure');
+  if(!figure)return;
+  const packet=document.getElementById('loopPacket'),ring=document.getElementById('loopPacketRing');
+  const stages=[...figure.querySelectorAll('.loop-stage')],readout=document.getElementById('loopReadout'),replay=document.getElementById('loopReplay');
+  const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const labels=[
+    '<strong>DECLARE</strong> — three typed questions over one cached context.',
+    '<strong>EVALUATE</strong> — independent judgments, run in parallel.',
+    '<strong>CALIBRATE</strong> — confidence checked against local fixtures.',
+    '<strong>APPLY POLICY</strong> — versioned rules turn evidence into a route.',
+    '<strong>TRACE</strong> — the route is recorded, explainable from code.',
+    '<strong>GATE</strong> — a human reviews, unless fixtures cleared auto-act.',
+    '<strong>RETURN</strong> — the trace becomes the next policy version.'
+  ];
+  const points=[
+    [100,176,0],[158,176,0],[220,176,0],
+    [290,176,1],[350,176,1],[405,176,1],
+    [470,176,2],[530,176,2],[585,176,2],
+    [650,176,3],[710,176,3],[765,176,3],
+    [830,176,4],[890,176,4],[945,176,4],
+    [1010,176,5],[1010,240,5],[1010,320,5],
+    [970,374,6],[790,374,6],[610,374,6],[430,374,6],[250,374,6],[120,374,6],[100,310,6],[100,235,6],[100,176,0]
+  ];
+  let frame=0,timer=null,visible=false;
+  function paint(i,finished=false){
+    const [x,y,stage]=points[i];
+    packet.setAttribute('cx',x);packet.setAttribute('cy',y);ring.setAttribute('cx',x);ring.setAttribute('cy',y);
+    stages.forEach((el,n)=>{el.classList.toggle('is-active',stage===n);el.classList.toggle('is-complete',stage>n||stage===6||finished)});
+    readout.innerHTML=finished?'<strong>ROUTE APPLIED</strong> — the trace becomes the next policy version.':labels[stage];
+    const sweep=figure.querySelector('.detect-sweep');sweep.style.transform=`rotate(${Math.max(0,frame-6)*42}deg)`;
+    figure.querySelectorAll('.score-bar').forEach((bar,n)=>{const active=stage===1||stage>1;const h=active?[18,31,43,52][n]:6;bar.setAttribute('height',h);bar.setAttribute('y',70-h)});
+    figure.querySelector('.research-links').style.opacity=stage>=3?'1':'.28';
+    figure.querySelector('.draft-pages').style.transform=stage>=4?'translate(2px,-2px)':'translate(0,0)';
+    figure.querySelector('.stage-check').setAttribute('opacity',stage>=5||finished?'1':'0');
+    figure.querySelector('.gate-left').style.transform=stage>=5?'translateX(-5px)':'translateX(0)';
+    figure.querySelector('.gate-right').style.transform=stage>=5?'translateX(5px)':'translateX(0)';
+    const rays=figure.querySelector('.trigger-rays');rays.style.opacity=stage===0?'1':'.35';
+  }
+  function stop(){if(timer){clearInterval(timer);timer=null}}
+  function tick(){if(!visible)return;frame+=1;if(frame>=points.length){stop();paint(points.length-1,true);return}paint(frame)}
+  function play(){stop();frame=0;paint(0);if(!reduced&&visible)timer=setInterval(tick,240)}
+  replay.addEventListener('click',play);
+  if(reduced){frame=points.length-1;paint(frame,true);readout.innerHTML='<strong>ROUTE APPLIED</strong> — the trace becomes the next policy version.';return}
+  const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{visible=entry.isIntersecting;if(visible){if(frame===0||frame>=points.length-1)play();else if(!timer)timer=setInterval(tick,240)}else stop()}),{threshold:.35});
+  observer.observe(figure);paint(0);
+})();
+
+// GSAP motion layer. Content is visible by default; animations only run if GSAP loads and motion is allowed.
+const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+if(window.gsap&&!reduce){
+  gsap.registerPlugin(ScrollTrigger,DrawSVGPlugin,MotionPathPlugin);
+  slides.forEach(s=>{const r=s.querySelectorAll('.reveal');if(r.length)gsap.from(r,{y:26,opacity:0,duration:.7,ease:'power3.out',stagger:.07,scrollTrigger:{trigger:s,start:'top 70%',once:true}})});
+  // 01 title diagram: prose (uncertain) resolves into a typed, checked judgment
+  gsap.timeline({delay:.5})
+    .from('.prose-line',{drawSVG:0,duration:.7,ease:'power1.inOut',stagger:.15})
+    .to('.prose-mark',{opacity:1,duration:.3,ease:'back.out(3)'},'-=.1')
+    .from('.hero-arrow',{drawSVG:0,duration:.4,ease:'power1.inOut'},'+=.1')
+    .from('.typed-box',{opacity:0,scale:.8,transformOrigin:'188px 67px',duration:.4,ease:'back.out(2)'})
+    .to('.typed-text',{opacity:1,duration:.4,stagger:.08},'-=.15')
+    .to('.typed-check',{opacity:1,duration:.3,ease:'back.out(3)'},'-=.1');
+  // 02 calibration bar chart: bars grow from baseline, then the recalibrated marker pops in
+  gsap.timeline({scrollTrigger:{trigger:'#confidenceChart',start:'top 75%',once:true}})
+    .to('.cal-bar',{height:(i,t)=>+t.dataset.finalH,y:(i,t)=>+t.dataset.finalY,duration:.8,ease:'power2.out',stagger:.09})
+    .to('#calMarker',{r:5,duration:.35,ease:'back.out(3)'},'-=.2')
+    .to('#calMarkerLabel',{opacity:1,duration:.3},'-=.15');
+  // 03 fan-out / converge: parallel branches draw together, then the route line
+  gsap.timeline({scrollTrigger:{trigger:'#jevFanout',start:'top 75%',once:true}})
+    .from('.fan-path',{drawSVG:0,duration:1,ease:'power1.inOut',stagger:{each:.12,from:'center'}})
+    .from('#jevRouteArrow',{drawSVG:0,duration:.5},'-=.1');
+  const cards=document.querySelectorAll('#jevCycleCards .card');
+  ScrollTrigger.create({trigger:'#jevFanout',start:'top 60%',end:'bottom 20%',onToggle:self=>cards.forEach(c=>c.classList.toggle('lit',self.isActive))});
+  // 09 count-up stats
+  document.querySelectorAll('[data-count]').forEach(el=>{const n=+el.dataset.count,o={v:0};gsap.to(o,{v:n,duration:1.4,ease:'power2.out',scrollTrigger:{trigger:el,start:'top 85%',once:true},onUpdate:()=>el.textContent=Math.round(o.v)})});
+}else{
+  document.querySelectorAll('.cal-bar').forEach(b=>{b.setAttribute('height',b.dataset.finalH);b.setAttribute('y',b.dataset.finalY)});
+  const m=document.getElementById('calMarker');if(m)m.setAttribute('r',5);
+  const ml=document.getElementById('calMarkerLabel');if(ml)ml.setAttribute('opacity',1);
+  document.querySelectorAll('.prose-mark,.typed-box,.typed-text,.typed-check').forEach(el=>{el.setAttribute('opacity',1);el.style.transform='none'});
+}
+</script>
+
+</body>
+</html>
