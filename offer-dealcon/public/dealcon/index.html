@@ -105,6 +105,24 @@ h2{font-weight:700;font-size:clamp(26px,3.4vw,40px);line-height:1.18;color:var(-
 footer{font-family:var(--mono);color:var(--muted);font-size:11.5px;text-align:center;padding:28px 0 44px;letter-spacing:.04em}
 footer a{color:var(--text-2);text-decoration:none}footer a:hover{color:var(--accent)}
 .rv{opacity:1}
+.ladder3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:30px}
+.step3{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:20px}
+.step3.on{border-color:var(--accent-deep);background:linear-gradient(180deg,var(--surface-2),var(--surface))}
+.step3 .n{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-2);margin-bottom:6px}
+.step3.on .n{color:var(--accent)}
+.step3 b{display:block;color:var(--text-hi);font-size:16px;margin-bottom:6px}
+.step3 p{font-size:13px;color:var(--text-2)}
+.plans{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:24px}
+.plan{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:28px;display:flex;flex-direction:column;gap:14px}
+.plan.best{border-color:var(--accent-deep);background:linear-gradient(180deg,var(--surface-2),var(--surface))}
+.plan .tag{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent-dim)}
+.plan .amt{font-family:var(--mono);font-weight:800;font-size:clamp(38px,5vw,52px);color:var(--accent);line-height:1}
+.plan .amt small{font-size:14px;color:var(--muted);font-weight:600;letter-spacing:.08em}
+.plan p{font-size:13.5px;color:var(--text-2)}
+.plan .btn{text-align:center;margin-top:auto}
+.seats{display:inline-flex;gap:6px;align-items:center;font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-2)}
+.seats i{width:12px;height:12px;border-radius:3px;border:1px solid var(--accent-deep);background:var(--accent-tint)}
+@media (max-width:920px){.ladder3,.plans{grid-template-columns:1fr}}
 @media (max-width:920px){.hero{grid-template-columns:1fr}.sessioncard{max-width:460px}.statrow{grid-template-columns:repeat(2,1fr)}.stat:nth-child(2){border-right:none}.stat:nth-child(-n+2){border-bottom:1px solid var(--line)}.buypanel,.twocol,.about{grid-template-columns:1fr}.ladder{grid-template-columns:1fr 1fr}.navlink{display:none}.photo{width:200px;height:200px}}
 @media (max-width:520px){.ladder{grid-template-columns:1fr}.brand .sec{display:none}.topnav .btn{padding:11px 14px;font-size:11.5px}.sessionrow{flex-direction:column;gap:2px}.sessionrow span:last-child{text-align:left}}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
@@ -118,6 +136,7 @@ footer a{color:var(--text-2);text-decoration:none}footer a:hover{color:var(--acc
     <a class="navlink" href="#fde">What's an FDE</a>
     <a class="navlink" href="#how">How it works</a>
     <a class="navlink" href="#audit">The audit</a>
+    <a class="navlink" href="#mastermind">Mastermind</a>
     <a class="navlink" href="#about">About</a>
     <a class="navlink" href="#faq">FAQ</a>
     <a class="btn btn-primary buy-link" href="https://buy.stripe.com/fZu7sKeD57Dhe87bma6oo0d">Book the audit →</a>
@@ -145,7 +164,7 @@ footer a{color:var(--text-2);text-decoration:none}footer a:hover{color:var(--acc
       <div class="k">Engagement //</div>
       <div class="sessionrow"><span>Kickoff</span><span>AI readiness audit</span></div>
       <div class="sessionrow"><span>Price</span><span>$5,000 · one business</span></div>
-      <div class="sessionrow"><span>Then</span><span>Fractional FDE, portfolio-wide</span></div>
+      <div class="sessionrow"><span>Then</span><span>Mastermind or fractional FDE</span></div>
       <div class="sessionrow"><span>Built on</span><span>Your accounts, on Cloudflare</span></div>
       <div class="sessionrow"><span>Measured</span><span>Before and after every kit</span></div>
       <div class="sessionrow"><span>Owned by</span><span>You</span></div>
@@ -267,6 +286,39 @@ footer a{color:var(--text-2);text-decoration:none}footer a:hover{color:var(--acc
   <!-- WINS: add hackathon placings here once confirmed -->
 </div></section>
 
+<section id="mastermind"><div class="wrap">
+  <div class="seclabel">Founding cohort //</div>
+  <h2>The Organized AI Mastermind. <span class="y">Five seats.</span></h2>
+  <p class="lead">For owners who want to build it themselves, with me in the room. Five owners, each running the same playbook across the businesses they own and buy. Your wins become the group's toolkit, and theirs become yours.</p>
+  <div class="ladder3">
+    <div class="step3 rv"><div class="n">Start · $5,000</div><b>AI readiness audit</b><p>One business scanned, measured and ranked. Credited in full toward the mastermind.</p></div>
+    <div class="step3 on rv"><div class="n">Build it together · founding cohort</div><b>Mastermind</b><p>You build, I steer. Five owners, one shared toolkit.</p></div>
+    <div class="step3 rv"><div class="n">Done for you · scoped after the audit</div><b>Fractional FDE</b><p>I build, deploy and run the toolkit across your portfolio.</p></div>
+  </div>
+  <div class="twocol">
+    <div class="panel good rv"><div class="k">What members get</div><ul>
+      <li>Live working sessions in Austin where one member's business is the hot seat, scored with Jev and built on in the room</li>
+      <li>Sprint calls every two weeks: pick the next quick win or big bet, ship it, report the number</li>
+      <li>The full Organized AI toolkit: the four kits, templates, step-zero checklists and the Jev intake</li>
+      <li>A shared board of every member's before and after numbers</li>
+    </ul></div>
+    <div class="panel good rv"><div class="k">Who it's for</div><ul>
+      <li>Owners running a real business, or buying one</li>
+      <li>Operators who want to learn the systems, not outsource them</li>
+      <li>People comfortable sharing numbers with four peers</li>
+      <li>Anyone ready to bring one business problem to the first session</li>
+    </ul></div>
+  </div>
+  <div class="plans">
+    <div class="plan best rv"><div class="tag">Founding annual</div><div class="amt">$15,000 <small>/ YEAR</small></div><p>Twelve months at $1,250 a month, locked for founding members.</p><a class="btn btn-primary" href="https://buy.stripe.com/eVq28q2UnbTx8NN89Y6oo0e">Join annual →<small>secure checkout on Stripe</small></a></div>
+    <div class="plan rv"><div class="tag">Founding monthly</div><div class="amt">$2,000 <small>/ MONTH</small></div><p>Month to month for the founding cohort.</p><a class="btn btn-ghost" href="https://buy.stripe.com/dRm3cucuX1eTe87eym6oo0f">Join monthly →<small>secure checkout on Stripe</small></a></div>
+  </div>
+  <div style="display:flex;gap:18px;flex-wrap:wrap;align-items:center;margin-top:18px">
+    <span class="seats"><i></i><i></i><i></i><i></i><i></i> 5 founding seats</span>
+    <span class="guarantee" style="margin:0">Already bought the audit? Your $5,000 is credited. Ask me for your code.</span>
+  </div>
+</div></section>
+
 <section id="register"><div class="wrap">
   <div class="seclabel">Start here //</div>
   <div class="buypanel rv" id="buy">
@@ -295,6 +347,7 @@ footer a{color:var(--text-2);text-decoration:none}footer a:hover{color:var(--acc
   <div class="faq">
     <details open><summary>What happens after I pay?</summary><p>You get a confirmation from Stripe, and I follow up by email to schedule the audit and get access to what I need to look at.</p></details>
     <details><summary>Is $5,000 the whole engagement?</summary><p>The audit is the kickoff and stands on its own: you keep the ranked plan either way. If you want a fractional FDE across your portfolio after that, we scope it from what the audit finds.</p></details>
+    <details><summary>What's the difference between the mastermind and the fractional FDE?</summary><p>In the mastermind you and four other owners build the systems yourselves, with me steering. As your fractional FDE, I build, deploy and run them for you. The audit is the first step for both, and it's credited toward the mastermind.</p></details>
     <details><summary>Can I run it on a business I haven't bought yet?</summary><p>Yes. Running the audit on a target during diligence shows what pays back first after close, and what could hurt the exit.</p></details>
     <details><summary>Do I need to be technical?</summary><p>No. My job is to keep the systems simple enough to explain to you, and solid enough to maintain, monitor and fix.</p></details>
     <details><summary>Who owns the tools?</summary><p>You do. Everything is built on your own accounts, so a future buyer can inherit it cleanly.</p></details>
