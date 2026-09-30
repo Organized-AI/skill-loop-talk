@@ -1,9 +1,10 @@
 import json, re, html
-SRC = '/tmp/claude-0/-home-claude-skill-loop-talk/1457cf68-a59e-5675-ae11-1c893a8eb0ad/scratchpad/live2/project/'
+SRC = '/tmp/claude-0/-home-claude-skill-loop-talk/1457cf68-a59e-5675-ae11-1c893a8eb0ad/scratchpad/live3/project/'
 OUT = '/home/claude/skill-loop-talk/public/dealcon/index.html'
 BLOBS = {'/_blob/7c9a20be9812a57fb655bc60e0705ad6': '/dealcon/intake-qr.png',
          '/_blob/5ca5bb7bdea2299398322a32b8374e38': '/dealcon/audit-qr.png',
-         '/_blob/0b3a3d32e7b42885d713804e2e91e5b4': '/dealcon/jordan.jpg'}
+         '/_blob/0b3a3d32e7b42885d713804e2e91e5b4': '/dealcon/jordan.jpg',
+         '/_blob/4db07ab58c0ab56535a91d64390e5c15': '/dealcon/mastermind-qr.png'}
 deck = json.load(open(SRC + 'deck.json'))
 order = deck['order']
 
@@ -92,7 +93,7 @@ section.sl ul,section.sl ol{{list-style:none}}
   var seen=new WeakSet();
   function reveal(st){{if(seen.has(st)||!window.gsap||matchMedia('(prefers-reduced-motion: reduce)').matches)return;seen.add(st);
     var kids=st.querySelectorAll('section.sl > *:not([style*="position:absolute"])');
-    gsap.from(kids,{{y:18,opacity:0,duration:.5,stagger:.06,ease:'power2.out',clearProps:'all'}});}}
+    gsap.from(kids,{{y:18,opacity:0,duration:.5,stagger:.06,ease:'power2.out',clearProps:'transform,opacity'}});}}
   addEventListener('scroll',function(){{var h=document.documentElement;prog.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%'}},{{passive:true}});
   function go(i){{i=Math.max(0,Math.min(n-1,i));stages[i].scrollIntoView({{behavior:'smooth',block:'start'}})}}
   addEventListener('keydown',function(e){{if(document.getElementById('vid').classList.contains('on')){{if(e.key==='Escape')closeVid();return}}
