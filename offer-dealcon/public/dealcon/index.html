@@ -122,6 +122,18 @@ footer a{color:var(--text-2);text-decoration:none}footer a:hover{color:var(--acc
 .plan .btn{text-align:center;margin-top:auto}
 .seats{display:inline-flex;gap:6px;align-items:center;font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-2)}
 .seats i{width:12px;height:12px;border-radius:3px;border:1px solid var(--accent-deep);background:var(--accent-tint)}
+.sprint4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:8px}
+.sp{background:var(--surface);border:1px solid var(--line);border-top:3px solid var(--accent-deep);border-radius:var(--r);padding:20px}
+.sp .n{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+.sp b{display:block;color:var(--text-hi);font-size:16px;margin-bottom:6px}
+.sp p{font-size:13px;color:var(--text-2)}
+.spnote{font-family:var(--mono);font-size:12px;letter-spacing:.06em;color:var(--text-2);margin-top:14px}
+.spnote a{color:var(--accent)}
+.guar{margin-top:24px;border:1px solid var(--accent-deep);background:var(--accent-tint);border-radius:var(--r);padding:20px 24px}
+.guar .k{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+.guar p{color:var(--text-hi);font-size:15px}
+@media (max-width:920px){.sprint4{grid-template-columns:1fr 1fr}}
+@media (max-width:520px){.sprint4{grid-template-columns:1fr}}
 @media (max-width:920px){.ladder3,.plans{grid-template-columns:1fr}}
 @media (max-width:920px){.hero{grid-template-columns:1fr}.sessioncard{max-width:460px}.statrow{grid-template-columns:repeat(2,1fr)}.stat:nth-child(2){border-right:none}.stat:nth-child(-n+2){border-bottom:1px solid var(--line)}.buypanel,.twocol,.about{grid-template-columns:1fr}.ladder{grid-template-columns:1fr 1fr}.navlink{display:none}.photo{width:200px;height:200px}}
 @media (max-width:520px){.ladder{grid-template-columns:1fr}.brand .sec{display:none}.topnav .btn{padding:11px 14px;font-size:11.5px}.sessionrow{flex-direction:column;gap:2px}.sessionrow span:last-child{text-align:left}}
@@ -293,14 +305,14 @@ footer a{color:var(--text-2);text-decoration:none}footer a:hover{color:var(--acc
 
 <section id="mastermind"><div class="wrap">
   <div class="seclabel">Founding cohort //</div>
-  <h2>The Organized AI Mastermind. <span class="y">Five seats.</span></h2>
-  <p class="lead">For owners who want to build it themselves, with me in the room. Five owners, each running the same playbook across the businesses they own and buy. Your wins become the group's toolkit, and theirs become yours.</p>
+  <h2>The AI mastermind for people who buy businesses. <span class="y">Five seats.</span></h2>
+  <p class="lead">For owners and acquirers who want AI to show up in the numbers, and in the sale price. Five members, a working FDE in the room, and one toolkit that carries into every business you buy.</p>
   <div class="ladder3">
     <div class="step3 rv"><div class="n">Start · $5,000</div><b>AI readiness audit</b><p>One business scanned, measured and ranked. Credited in full toward the mastermind.</p></div>
-    <div class="step3 on rv"><div class="n">Build it together · founding cohort</div><b>Mastermind</b><p>You build, I steer. Five owners, one shared toolkit.</p></div>
-    <div class="step3 rv"><div class="n">Done for you · scoped after the audit</div><b>Fractional FDE</b><p>I build, deploy and run the toolkit across your portfolio.</p></div>
+    <div class="step3 on rv"><div class="n">Ship it together · founding cohort</div><b>Mastermind</b><p>One kit shipped each quarter, with four other owners in the room.</p></div>
+    <div class="step3 rv"><div class="n">Done for you · scoped after the audit</div><b>Fractional FDE</b><p>I build, deploy and run the toolkit across your whole portfolio.</p></div>
   </div>
-  <div class="twocol" style="margin-bottom:18px">
+  <div class="twocol" style="margin-bottom:34px">
     <div class="panel bad rv"><div class="k">Most AI masterminds</div><ul>
       <li>A big room, a few minutes each</li>
       <li>Members build alone between calls</li>
@@ -314,28 +326,43 @@ footer a{color:var(--text-2);text-decoration:none}footer a:hover{color:var(--acc
       <li>Built for acquirers: score targets before close, carry the kit into every business you buy</li>
     </ul></div>
   </div>
-  <div class="twocol">
+
+  <div class="seclabel">Every member, every 90-day sprint //</div>
+  <div class="sprint4">
+    <div class="sp rv"><div class="n">01 · Score</div><b>Two target scans</b><p>Jev scans of businesses you're looking at, ranked before you sign the LOI.</p></div>
+    <div class="sp rv"><div class="n">02 · Ship</div><b>One kit in production</b><p>Built by me, running on your own accounts, not a slide about what's possible.</p></div>
+    <div class="sp rv"><div class="n">03 · Measure</div><b>A number on the board</b><p>Baseline and after, plus agent traces, tool calls and cost per run.</p></div>
+    <div class="sp rv"><div class="n">04 · Hand off</div><b>Exit-ready</b><p>Documented and transferable, with a page ready for your CIM when you sell.</p></div>
+  </div>
+  <p class="spnote rv">Each sprint ends at the quarterly in-person session in Austin, where the next one starts.</p>
+
+  <div class="twocol" style="margin-top:34px">
     <div class="panel good rv"><div class="k">What members get</div><ul>
-      <li>Quarterly in-person working sessions in Austin: one member's business in the hot seat, scored with Jev and built on in the room</li>
-      <li>Sprint calls every two weeks: pick the next quick win or big bet, ship it, report the number</li>
+      <li>Quarterly in-person working sessions in Austin, with every member in the hot seat</li>
+      <li>Sprint calls every two weeks, plus async access to me between calls</li>
+      <li>Two Jev target scans a quarter, for businesses you're considering buying</li>
       <li>The full Organized AI toolkit: the four kits, templates, step-zero checklists and the Jev intake</li>
-      <li>A shared board of every member's before and after numbers</li>
+      <li>A shared scoreboard of every member's before and after numbers, in dollars</li>
     </ul></div>
     <div class="panel good rv"><div class="k">Who it's for</div><ul>
-      <li>Owners running a real business, or buying one</li>
-      <li>Operators who want to learn the systems, not outsource them</li>
+      <li>Owners buying their next business, or building a portfolio</li>
+      <li>Operators who want the systems shipped, and want to understand them</li>
       <li>People comfortable sharing numbers with four peers</li>
-      <li>Anyone ready to bring one business problem to the first session</li>
+      <li>Anyone with one target or one business problem for the first session</li>
     </ul></div>
   </div>
+
+  <div class="guar rv"><div class="k">The measured-win guarantee</div><p>If your first 90-day sprint doesn't put a measured win on the scoreboard, your next quarter is on me.</p></div>
+
   <div class="plans">
-    <div class="plan best rv"><div class="tag">Founding annual</div><div class="amt">$15,000 <small>/ YEAR</small></div><p>Twelve months at $1,250 a month, locked for founding members.</p><a class="btn btn-primary" href="https://buy.stripe.com/eVq28q2UnbTx8NN89Y6oo0e">Join annual →<small>secure checkout on Stripe</small></a></div>
-    <div class="plan rv"><div class="tag">Founding monthly</div><div class="amt">$2,000 <small>/ MONTH</small></div><p>$2,000 a month with a 3-month minimum, then month to month.</p><a class="btn btn-ghost" href="https://buy.stripe.com/dRm3cucuX1eTe87eym6oo0f">Join monthly →<small>secure checkout on Stripe</small></a></div>
+    <div class="plan best rv"><div class="tag">Founding annual</div><div class="amt">$15,000 <small>/ YEAR</small></div><p>Four sprints, eight target scans, four kits shipped. Twelve months at $1,250 a month, locked for founding members.</p><a class="btn btn-primary" href="https://buy.stripe.com/eVq28q2UnbTx8NN89Y6oo0e">Join annual →<small>secure checkout on Stripe</small></a></div>
+    <div class="plan rv"><div class="tag">Founding monthly</div><div class="amt">$2,000 <small>/ MONTH</small></div><p>$2,000 a month with a 3-month minimum, so your first sprint finishes. Then month to month.</p><a class="btn btn-ghost" href="https://buy.stripe.com/dRm3cucuX1eTe87eym6oo0f">Join monthly →<small>secure checkout on Stripe</small></a></div>
   </div>
   <div style="display:flex;gap:18px;flex-wrap:wrap;align-items:center;margin-top:18px">
     <span class="seats"><i></i><i></i><i></i><i></i><i></i> 5 seats total, across both plans</span>
     <span class="guarantee" style="margin:0">Already bought the audit? Your $5,000 is credited. Ask me for your code.</span>
   </div>
+  <p class="spnote rv" style="margin-top:22px">Not ready for the audit? <a href="https://talk.organizedai.vip/dealcon/intake/">Run the free Jev intake</a> on one business first, and bring the result to a call.</p>
 </div></section>
 
 <section id="register"><div class="wrap">
@@ -366,7 +393,9 @@ footer a{color:var(--text-2);text-decoration:none}footer a:hover{color:var(--acc
   <div class="faq">
     <details open><summary>What happens after I pay?</summary><p>You get a confirmation from Stripe, and I follow up by email to schedule the audit and get access to what I need to look at.</p></details>
     <details><summary>Is $5,000 the whole engagement?</summary><p>The audit is the kickoff and stands on its own: you keep the ranked plan either way. If you want a fractional FDE across your portfolio after that, we scope it from what the audit finds.</p></details>
-    <details><summary>What's the difference between the mastermind and the fractional FDE?</summary><p>In the mastermind you and four other owners build the systems yourselves, with me steering. As your fractional FDE, I build, deploy and run them for you. The audit is the first step for both, and it's credited toward the mastermind.</p></details>
+    <details><summary>What's the difference between the mastermind and the fractional FDE?</summary><p>In the mastermind I ship one kit a quarter for you, and you learn to run it alongside four other owners. As your fractional FDE, I build, deploy and run the whole toolkit across your portfolio. The audit is the first step for both, and it's credited toward the mastermind.</p></details>
+    <details><summary>What if I don't see results?</summary><p>If your first 90-day sprint doesn't put a measured win on the scoreboard, your next quarter is on me. Every build gets a baseline before it goes in, so the number is agreed up front.</p></details>
+    <details><summary>What does exit-ready mean?</summary><p>Everything is built on your own accounts, documented, and monitored, so a buyer can inherit it without me. You get a one-page summary of the systems, what they do and what they've measured, ready to drop into your CIM.</p></details>
     <details><summary>Is there a minimum on the monthly plan?</summary><p>Yes, three months. Founding monthly is $2,000 a month for at least three months, then month to month. Five seats in total across annual and monthly, and the quarterly in-person sessions are in Austin.</p></details>
     <details><summary>Can I run it on a business I haven't bought yet?</summary><p>Yes. Running the audit on a target during diligence shows what pays back first after close, and what could hurt the exit.</p></details>
     <details><summary>Do I need to be technical?</summary><p>No. My job is to keep the systems simple enough to explain to you, and solid enough to maintain, monitor and fix.</p></details>
