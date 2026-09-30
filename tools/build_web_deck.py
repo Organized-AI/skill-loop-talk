@@ -5,7 +5,7 @@ BLOBS = {'/_blob/7c9a20be9812a57fb655bc60e0705ad6': '/dealcon/intake-qr.png',
          '/_blob/5ca5bb7bdea2299398322a32b8374e38': '/dealcon/audit-qr.png',
          '/_blob/0b3a3d32e7b42885d713804e2e91e5b4': '/dealcon/jordan.jpg',
          '/_blob/4db07ab58c0ab56535a91d64390e5c15': '/dealcon/mastermind-qr.png',
-         '/_blob/457964266a6c3e5235e189c59528f4d1': '/dealcon/workshop-qr.png'}
+         '/_blob/ed2439faaff917f0db48838073bb2a34': '/dealcon/workshop-qr.png'}
 deck = json.load(open(SRC + 'deck.json'))
 order = deck['order']
 
