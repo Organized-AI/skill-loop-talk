@@ -1,5 +1,5 @@
 import json, re, html
-SRC = '/tmp/claude-0/-home-claude-skill-loop-talk/1457cf68-a59e-5675-ae11-1c893a8eb0ad/scratchpad/live4/project/'
+SRC = '/tmp/claude-0/-home-claude-skill-loop-talk/1457cf68-a59e-5675-ae11-1c893a8eb0ad/scratchpad/live5/project/'
 OUT = '/home/claude/skill-loop-talk/public/dealcon/index.html'
 BLOBS = {'/_blob/7c9a20be9812a57fb655bc60e0705ad6': '/dealcon/intake-qr.png',
          '/_blob/5ca5bb7bdea2299398322a32b8374e38': '/dealcon/audit-qr.png',
@@ -39,8 +39,8 @@ page = f'''<!DOCTYPE html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Your Personal FDE · DealCon</title>
-<meta name="description" content="A personal forward deployed engineer for 7–9 figure acquirers: build, deploy and troubleshoot one toolkit across every business you buy.">
+<title>The FDE Playbook · DealCon</title>
+<meta name="description" content="The forward deployed engineer playbook for 7–9 figure acquirers: build, deploy and troubleshoot one toolkit across every business you buy.">
 <meta name="theme-color" content="#0c0b09">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -75,7 +75,7 @@ section.sl ul,section.sl ol{{list-style:none}}
 </head>
 <body>
 <div class="prog" id="prog"></div>
-<div class="bar"><span><b>Organized<i>AI</i></b><span class="sec"> · DealCon · Your personal FDE</span></span><span><span id="count">01 / {len(order)}</span><a href="https://dealcon-workshop.jordan-691.workers.dev/#home">Build one now</a></span></div>
+<div class="bar"><span><b>Organized<i>AI</i></b><span class="sec"> · DealCon · The FDE playbook</span></span><span><span id="count">01 / {len(order)}</span><a href="https://dealcon-workshop.jordan-691.workers.dev/#home">Build one now</a></span></div>
 <main>
 {body}</main>
 <div class="vid" id="vid"><button type="button" onclick="closeVid()">Close ✕</button><video id="v" src="/dealcon/rollup-playbook.mp4" controls playsinline preload="none"></video></div>
