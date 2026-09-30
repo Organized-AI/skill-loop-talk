@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Set up Lovable and Supabase before the DealCon agent workshop, so the session is spent building.">
+<meta name="theme-color" content="#121b46">
+<title>Workshop Setup · DealCon</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto:wght@400;500;700;900&display=swap">
+<style>
+:root{--ink:#121b46;--muted:#565a7c;--line:#cad5e2;--gold:#c6a24c;--gold-light:#f9d88c;--pale:#e2e8f0;--white:#fff;--cream:#fff8df;--ok:#2f7d4f;--ok-bg:#e8f5ec;
+--display:"Bebas Neue",Impact,"Arial Narrow",sans-serif;--body:Roboto,Arial,system-ui,sans-serif;color-scheme:light}
+*{box-sizing:border-box}
+body{margin:0;font-family:var(--body);color:var(--ink);background:var(--pale);background-image:linear-gradient(135deg,#eef3f8,#e2e8f0 55%,#d6e0ec);font-size:16px;line-height:1.55}
+.top{background:var(--ink);color:var(--white);padding:14px 16px;display:flex;justify-content:space-between;align-items:center;border-bottom:4px solid var(--gold)}
+.top b{font-family:var(--display);font-size:22px;letter-spacing:.06em}
+.top span{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-light)}
+main{max-width:640px;margin:0 auto;padding:22px 16px 60px}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--gold)}
+h1{font-family:var(--display);font-size:52px;line-height:.95;letter-spacing:.01em;margin:6px 0 10px;font-weight:400}
+.lead{color:var(--muted);margin:0 0 18px}
+.words{display:grid;gap:10px;margin:0 0 22px}
+.word{background:var(--white);border:1px solid var(--line);border-left:4px solid var(--gold);border-radius:8px;padding:12px 14px}
+.word b{display:block;font-size:15px}
+.word span{color:var(--muted);font-size:14px}
+.help{background:var(--ink);color:var(--white);border-radius:10px;padding:14px 16px;margin:0 0 22px;display:flex;gap:14px;align-items:center}
+.help .t6{font-family:var(--display);font-size:40px;line-height:1;color:var(--gold-light);flex:none}
+.help p{margin:0;font-size:14px}
+.progress{display:flex;align-items:center;gap:10px;margin:0 0 12px;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.bar{flex:1;height:8px;background:var(--white);border:1px solid var(--line);border-radius:99px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--gold);transition:width .3s}
+ol.steps{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.step{background:var(--white);border:1px solid var(--line);border-radius:10px;padding:14px 14px 14px 12px;display:grid;grid-template-columns:36px 1fr;gap:10px;align-items:start}
+.step.done{background:var(--ok-bg);border-color:#b7dcc3}
+.step input{appearance:none;width:26px;height:26px;border:2px solid var(--ink);border-radius:6px;margin:2px 0 0;cursor:pointer;display:grid;place-content:center;background:var(--white)}
+.step input:checked{background:var(--ok);border-color:var(--ok)}
+.step input:checked::after{content:"";width:8px;height:13px;border:solid #fff;border-width:0 3px 3px 0;transform:rotate(45deg) translate(-1px,-1px)}
+.step input:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.step h2{font-size:17px;margin:0 0 4px;line-height:1.3}
+.step p{margin:0;color:var(--muted);font-size:14px}
+.step a.go{display:inline-block;margin-top:8px;background:var(--ink);color:var(--white);text-decoration:none;font-weight:700;font-size:13px;letter-spacing:.06em;text-transform:uppercase;padding:9px 12px;border-radius:6px}
+.step .tip{margin-top:6px;font-size:13px;color:var(--ink);background:var(--cream);border-radius:6px;padding:6px 9px}
+.ready{display:none;margin-top:18px;background:var(--ok);color:#fff;border-radius:10px;padding:16px;text-align:center}
+.ready.on{display:block}
+.ready b{font-family:var(--display);font-size:34px;letter-spacing:.03em;display:block;line-height:1}
+.ready a{color:#fff;font-weight:700}
+footer{max-width:640px;margin:0 auto;padding:0 16px 40px;font-size:12px;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="top"><b>DealCon · Agent Workshop</b><span>Before you arrive</span></div>
+<main>
+  <div class="eyebrow">Setup checklist</div>
+  <h1>Get set up now. Build in the session.</h1>
+  <p class="lead">This takes about 10 minutes. Do it before the workshop so the session is spent building your agent, not signing in.</p>
+
+  <div class="words">
+    <div class="word"><b>Lovable</b><span>Where you build your app by describing it in plain English.</span></div>
+    <div class="word"><b>Supabase</b><span>Where your agent keeps its data. It's your own account, so what you build stays yours.</span></div>
+  </div>
+
+  <div class="help"><div class="t6">T6</div><p><b>Stuck? Find Jordan at table 6</b> during lunch, breaks or breakfast before the workshop. Bring your laptop and we'll finish it together.</p></div>
+
+  <div class="progress"><span id="count">0 of 6 done</span><div class="bar"><i id="fill"></i></div></div>
+  <ol class="steps" id="steps">
+    <li class="step"><input type="checkbox" id="s1" aria-label="Laptop ready"><div><h2>Bring a laptop, charged</h2><p>Chrome works best. A phone is fine for this checklist, but you'll build on the laptop.</p></div></li>
+    <li class="step"><input type="checkbox" id="s2" aria-label="Lovable account"><div><h2>Create your Lovable account</h2><p>Sign up with the email you'll use for work, and check that you have build credits available.</p><a class="go" href="https://lovable.dev" target="_blank" rel="noopener">Open Lovable →</a></div></li>
+    <li class="step"><input type="checkbox" id="s3" aria-label="Supabase project"><div><h2>Create a Supabase account and one project</h2><p>Name the project <b>dealcon-agent</b>. Save the database password somewhere safe.</p><a class="go" href="https://supabase.com" target="_blank" rel="noopener">Open Supabase →</a><div class="tip">Don't share keys or passwords with anyone, including in the workshop chat.</div></div></li>
+    <li class="step"><input type="checkbox" id="s4" aria-label="Connected"><div><h2>Connect Supabase inside Lovable</h2><p>In Lovable, use the built-in Supabase connection and choose your <b>dealcon-agent</b> project.</p></div></li>
+    <li class="step"><input type="checkbox" id="s5" aria-label="Workshop account"><div><h2>Open the workshop and create your account</h2><p>Go to <b>My workspace</b>, sign in, and add your team or business name.</p><a class="go" href="https://dealcon-workshop.jordan-691.workers.dev/#settings" target="_blank" rel="noopener">Open the workshop →</a></div></li>
+    <li class="step"><input type="checkbox" id="s6" aria-label="Sample run"><div><h2>Pick a track and run the sample once</h2><p>Tap <b>Find my starting point</b>, choose a track, and run its fictional sample. If you see a saved draft, you're ready.</p><a class="go" href="https://dealcon-workshop.jordan-691.workers.dev/#intake" target="_blank" rel="noopener">Find my starting point →</a></div></li>
+  </ol>
+  <div class="ready" id="ready"><b>You're ready.</b>See you in the workshop. <a href="https://dealcon-workshop.jordan-691.workers.dev/#home">Workshop home →</a></div>
+</main>
+<footer>Your checklist progress is saved on this device only.</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script>
+(function(){
+  var KEY='dealcon-setup-v1',boxes=[].slice.call(document.querySelectorAll('.step input')),state={};
+  try{state=JSON.parse(localStorage.getItem(KEY)||'{}')||{}}catch(e){state={}}
+  function render(animate){
+    var n=0;boxes.forEach(function(b){b.closest('.step').classList.toggle('done',b.checked);if(b.checked)n++});
+    document.getElementById('count').textContent=n+' of '+boxes.length+' done';
+    document.getElementById('fill').style.width=(n/boxes.length*100)+'%';
+    var r=document.getElementById('ready'),was=r.classList.contains('on');
+    r.classList.toggle('on',n===boxes.length);
+    if(animate&&!was&&n===boxes.length&&window.gsap)gsap.from(r,{y:12,opacity:0,duration:.4,ease:'power2.out'});
+  }
+  boxes.forEach(function(b){b.checked=!!state[b.id];b.addEventListener('change',function(){state[b.id]=b.checked;try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){}render(true)})});
+  render(false);
+  if(window.gsap&&!matchMedia('(prefers-reduced-motion: reduce)').matches){gsap.from('.word,.help,.step',{y:14,opacity:0,duration:.45,stagger:.05,ease:'power2.out',clearProps:'transform,opacity'})}
+})();
+</script>
+</body>
+</html>
