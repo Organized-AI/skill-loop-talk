@@ -1,5 +1,5 @@
 import json, re, html
-SRC = '/tmp/claude-0/-home-claude-skill-loop-talk/1457cf68-a59e-5675-ae11-1c893a8eb0ad/scratchpad/live5/project/'
+SRC = '/tmp/claude-0/-home-claude-skill-loop-talk/1457cf68-a59e-5675-ae11-1c893a8eb0ad/scratchpad/live6/project/'
 OUT = '/home/claude/skill-loop-talk/public/dealcon/index.html'
 BLOBS = {'/_blob/7c9a20be9812a57fb655bc60e0705ad6': '/dealcon/intake-qr.png',
          '/_blob/5ca5bb7bdea2299398322a32b8374e38': '/dealcon/audit-qr.png',
