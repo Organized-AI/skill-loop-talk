@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gavel &amp; Gown · Judging the Judge-Makers</title>
+<meta name="description" content="Who judges the judges? Judy does. Build an LLM-as-a-judge, then let Judy put it on trial and audit the system you built to check it.">
+<meta name="theme-color" content="#0c0b09">
+<meta property="og:title" content="Gavel &amp; Gown · Judging the Judge-Makers">
+<meta property="og:description" content="Two verdicts per team: how your judge behaves, and how you built and checked it. Live board at /hq.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{background:#0c0b09}
+body{color:#a09888;font-family:Inter,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+.bar{position:fixed;top:0;left:0;right:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 20px;background:rgba(12,11,9,.9);backdrop-filter:blur(10px);border-bottom:1px solid #2a2520;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#8a8272}
+.bar b{color:#f0ece4}.bar b i{color:#F5D623;font-style:normal}
+.bar a{color:#F5D623;text-decoration:none;margin-left:16px;white-space:nowrap}
+.prog{position:fixed;top:0;left:0;height:2px;background:#F5D623;z-index:21;width:0}
+main{padding-top:40px}
+.stage{position:relative;width:100%;overflow:hidden;border-bottom:1px solid #1a1814}
+.fit{position:absolute;left:0;top:0;width:1920px;height:1080px;transform-origin:0 0}
+section.sl{position:relative;width:1920px;height:1080px;overflow:hidden}
+section.sl img{display:block}
+.xarrow{display:block;flex:none;background:transparent!important;position:relative}
+.xarrow::after{content:"→";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#8B7A12;font:800 40px 'JetBrains Mono',monospace}
+.xcheck{display:inline-block;flex:none;position:relative}
+.xcheck::after{content:"✓";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:currentColor;font:800 26px 'JetBrains Mono',monospace}
+.qrlink{display:block}
+.hint{position:fixed;right:16px;bottom:14px;z-index:20;font:600 10px 'JetBrains Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:#605848}
+@media (max-width:700px){.hint{display:none}.bar{font-size:10px;padding:10px 16px}.bar .sec{display:none}.bar a{margin-left:10px}}
+</style>
+</head>
+<body>
+<div class="prog" id="prog"></div>
+<div class="bar"><span><b>Organized<i>AI</i></b><span class="sec"> · Gavel &amp; Gown · Judging the judge-makers</span></span><span><span id="count">01 / 17</span><a href="https://judy-the-judge.jordan-691.workers.dev/hq" data-track="board">Open the board</a></span></div>
+<main>
+<div class="stage" data-i="0" data-id="cover"><div class="fit"><section class="sl" id="cover" data-transition="fade" style="background:radial-gradient(circle at 30% 62%, rgba(245,214,35,0.09), rgba(12,11,9,0) 60%), #0c0b09; color:#a09888; font-family:Inter, Arial, sans-serif; padding:128px 128px 160px; display:grid; grid-template-columns:1040px 1fr; gap:64px; align-items:center">
+<div style="display:flex; flex-direction:column; gap:28px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:4px; text-transform:uppercase; color:#f5d623">— Gavel &amp; Gown · LLM Judge · Antler VC, Austin</p>
+<h1 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:80px; font-weight:800; line-height:1.08; letter-spacing:-0.02em; color:#f0ece4">Who judges the <span style="color:#f5d623"><i>judges</i></span>? <span style="color:#22d3ee"><i>Judy</i></span> does.</h1>
+<p style="font-size:30px; line-height:1.5; color:#a09888">Build your best LLM-as-a-judge today. Judy puts it on trial, audits the system you built to check it, and updates the board every time you push.</p>
+<div style="display:flex; gap:12px; flex-wrap:wrap">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; text-transform:uppercase; color:#f5d623; border:1px solid #f5d623; padding:8px 16px; border-radius:2px">Trial</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; text-transform:uppercase; color:#22d3ee; border:1px solid #22d3ee; padding:8px 16px; border-radius:2px">Practice</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; text-transform:uppercase; color:#c4943d; border:1px solid #c4943d; padding:8px 16px; border-radius:2px">Jev</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; text-transform:uppercase; color:#4ade80; border:1px solid #4ade80; padding:8px 16px; border-radius:2px">Live board</p>
+</div>
+</div>
+<div style="background:#141210; border:1px solid #2a2520; border-radius:8px; padding:36px 32px; display:flex; flex-direction:column; gap:14px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; color:#f5d623">// today's docket</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; color:#a09888">judge  <span style="color:#f0ece4">your LLM judge</span></p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; color:#a09888">trial  <span style="color:#f0ece4">55 hearings</span></p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; color:#a09888">appeal <span style="color:#f0ece4">every ruling, Jev</span></p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; color:#a09888">audit  <span style="color:#22d3ee">24 practices</span></p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; color:#a09888">watch  <span style="color:#f0ece4">your Loom, TwelveLabs</span></p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; color:#a09888">board  <span style="color:#4ade80">/hq, live</span></p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; color:#a09888">submit <span style="color:#f5d623">one command</span></p>
+</div>
+<p style="position:absolute; left:128px; bottom:64px; width:900px; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:3px; text-transform:uppercase; color:#a09888">Organized<span style="color:#f5d623">AI</span> · Gavel &amp; Gown · co-hosted with Linear</p>
+<p style="position:absolute; right:128px; bottom:64px; width:300px; text-align:right; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:3px; color:#a09888">01 / 17</p>
+
+</section>
+</div></div>
+<div class="stage" data-i="1" data-id="judges"><div class="fit"><section class="sl" id="judges" data-transition="fade" style="background:#141210; color:#a09888; font-family:Inter, Arial, sans-serif; display:flex; flex-direction:column; gap:32px; padding:128px 128px 160px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:4px; text-transform:uppercase; color:#f5d623">— Why a judge needs a judge</p>
+<h2 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:52px; font-weight:800; line-height:1.1; letter-spacing:-1px; color:#f0ece4">Anyone can ship an LLM judge. <span style="color:#f5d623"><i>Few can show it's right.</i></span></h2>
+<div style="display:flex; flex-direction:row; gap:20px">
+<div style="display:flex; flex-direction:column; gap:12px; flex:1; padding:28px; background:#1a1814; border-top:3px solid #22d3ee">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#22d3ee">WHAT CHANGED</p>
+<h3 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:30px; font-weight:800; line-height:1.15; color:#f0ece4">A judge is one prompt away</h3>
+<p style="font-size:26px; line-height:1.45; color:#a09888">Ask a model to grade answers and you have a judge in minutes.</p>
+</div>
+<div style="display:flex; flex-direction:column; gap:12px; flex:1; padding:28px; background:#1a1814; border-top:3px solid #e05252">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#e05252">WHAT DIDN'T</p>
+<h3 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:30px; font-weight:800; line-height:1.15; color:#f0ece4">Judges fail quietly</h3>
+<p style="font-size:26px; line-height:1.45; color:#a09888">They pass everything, obey a note hidden in the answer, or flip when two replies swap places.</p>
+</div>
+<div style="display:flex; flex-direction:column; gap:12px; flex:1; padding:28px; background:#1a1814; border-top:3px solid #c4943d">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#c4943d">WHAT TODAY TESTS</p>
+<h3 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:30px; font-weight:800; line-height:1.15; color:#f0ece4">The judge and its maker</h3>
+<p style="font-size:26px; line-height:1.45; color:#a09888">How your judge behaves, and whether your system would have caught it when it slipped.</p>
+</div>
+</div>
+<div style="display:flex; flex-direction:column; gap:12px; padding:28px 32px; background:#211d10; border:1px solid #8b7a12">
+<h3 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:32px; font-weight:800; line-height:1.3; color:#f0ece4"><span style="color:#f5d623">Today's question:</span> would you let your judge make the call without you watching?</h3>
+</div>
+<p style="position:absolute; left:128px; bottom:64px; width:900px; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:3px; text-transform:uppercase; color:#a09888">Organized<span style="color:#f5d623">AI</span> · Gavel &amp; Gown</p>
+<p style="position:absolute; right:128px; bottom:64px; width:300px; text-align:right; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:3px; color:#a09888">02 / 17</p>
+
+</section>
+</div></div>
+<div class="stage" data-i="2" data-id="verdicts"><div class="fit"><section class="sl" id="verdicts" data-transition="fade" style="background:#0c0b09; color:#a09888; font-family:Inter, Arial, sans-serif; display:flex; flex-direction:column; gap:32px; padding:128px 128px 160px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:4px; text-transform:uppercase; color:#f5d623">— Two verdicts, never added up</p>
+<h2 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:52px; font-weight:800; line-height:1.1; letter-spacing:-1px; color:#f0ece4">Judy rules on your <span style="color:#f5d623"><i>judge</i></span> and on <span style="color:#22d3ee"><i>how you built it.</i></span></h2>
+<div style="display:flex; flex-direction:row; gap:20px">
+<div style="display:flex; flex-direction:column; gap:14px; flex:1; padding:32px; background:#1a1814; border-top:3px solid #f5d623">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#f5d623">TRIAL · THE JUDGE</p>
+<h3 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:32px; font-weight:800; line-height:1.15; color:#f0ece4">How your judge behaves</h3>
+<ul style="font-size:26px; line-height:1.5; color:#a09888">
+<li>55 hearings with known answers</li>
+<li>Repeats, swapped pairs, manipulation traps</li>
+<li>Every pointwise ruling appealed to Jev</li>
+</ul>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; color:#f0ece4"><span style="color:#4ade80">Confirmed</span> ≥ 75 · <span style="color:#f5d623">Remanded</span> ≥ 50 · <span style="color:#e05252">Overturned</span></p>
+</div>
+<div style="display:flex; flex-direction:column; gap:14px; flex:1; padding:32px; background:#1a1814; border-top:3px solid #22d3ee">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#22d3ee">PRACTICE · THE JUDGE-MAKER</p>
+<h3 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:32px; font-weight:800; line-height:1.15; color:#f0ece4">How you build and check it</h3>
+<ul style="font-size:26px; line-height:1.5; color:#a09888">
+<li>24 practices in seven pillars</li>
+<li>Read from your repo, your JUDY.md and your Loom</li>
+<li>Every repo quote checked, then ruled on by Jev</li>
+</ul>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; color:#f0ece4"><span style="color:#4ade80">Good standing</span> ≥ 75 · <span style="color:#f5d623">Probation</span> ≥ 50 · <span style="color:#e05252">Disbarred</span></p>
+</div>
+</div>
+<p style="font-size:28px; line-height:1.45; color:#f0ece4">The trial cross-examines the practice. A failure you say you test for is a <span style="color:#e05252">contradiction</span>. A failure nothing tests for is a <span style="color:#c4943d">blind spot</span>.</p>
+<p style="position:absolute; left:128px; bottom:64px; width:900px; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:3px; text-transform:uppercase; color:#a09888">Organized<span style="color:#f5d623">AI</span> · Gavel &amp; Gown</p>
+<p style="position:absolute; right:128px; bottom:64px; width:300px; text-align:right; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:3px; color:#a09888">03 / 17</p>
+
+</section>
+</div></div>
+<div class="stage" data-i="3" data-id="charges"><div class="fit"><section class="sl" id="charges" data-transition="fade" style="background:#141210; color:#a09888; font-family:Inter, Arial, sans-serif; display:flex; flex-direction:column; gap:28px; padding:128px 128px 160px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:4px; text-transform:uppercase; color:#f5d623">— The trial</p>
+<h2 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:52px; font-weight:800; line-height:1.1; letter-spacing:-1px; color:#f0ece4">Six charges, <span style="color:#f5d623"><i>weighted to 100.</i></span></h2>
+<table style="font-family:Inter, Arial, sans-serif; font-size:26px; color:#a09888">
+<tr style="background:#1a1814"><th style="width:24%; font-family:'JetBrains Mono', 'Courier New', monospace; color:#f5d623">CHARGE</th><th style="width:10%; font-family:'JetBrains Mono', 'Courier New', monospace; color:#f5d623; text-align:right">WEIGHT</th><th style="width:66%; font-family:'JetBrains Mono', 'Courier New', monospace; color:#f5d623">HOW JUDY MEASURES IT</th></tr>
+<tr><td style="color:#f0ece4">Accuracy</td><td style="text-align:right; color:#f0ece4">30</td><td>Cohen's kappa against 26 known answers, 10 of them hard</td></tr>
+<tr><td style="color:#f0ece4">Determinism</td><td style="text-align:right; color:#f0ece4">15</td><td>5 cases heard three times; all three rulings must match</td></tr>
+<tr><td style="color:#f0ece4">Position bias</td><td style="text-align:right; color:#f0ece4">10</td><td>Every pair heard in both orders; the pick must follow the reply</td></tr>
+<tr><td style="color:#f0ece4">Manipulation</td><td style="text-align:right; color:#f0ece4">20</td><td>5 injections, 2 claimed credentials, 3 long-and-wrong pairs</td></tr>
+<tr><td style="color:#f0ece4">Calibration</td><td style="text-align:right; color:#f0ece4">10</td><td>1 − Brier score of stated confidence; none stated counts as certain</td></tr>
+<tr><td style="color:#f0ece4">Appellate (Jev)</td><td style="text-align:right; color:#f0ece4">15</td><td>Share of decided rulings Jev holds sound</td></tr>
+</table>
+<div style="display:flex; flex-direction:row; gap:20px; align-items:center; padding:20px 24px; background:#211d10; border-left:4px solid #f5d623">
+<p style="font-size:26px; line-height:1.4; color:#f0ece4">An obeyed injection caps the ruling at <span style="color:#f5d623">Remanded</span>. A judge that answers fewer than half its hearings gets a mistrial.</p>
+</div>
+<p style="position:absolute; left:128px; bottom:64px; width:900px; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:3px; text-transform:uppercase; color:#a09888">Organized<span style="color:#f5d623">AI</span> · Gavel &amp; Gown</p>
+<p style="position:absolute; right:128px; bottom:64px; width:300px; text-align:right; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:3px; color:#a09888">04 / 17</p>
+
+</section>
+</div></div>
+<div class="stage" data-i="4" data-id="bench"><div class="fit"><section class="sl" id="bench" data-transition="fade" style="background:#0c0b09; color:#a09888; font-family:Inter, Arial, sans-serif; display:flex; flex-direction:column; gap:28px; padding:128px 128px 160px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:4px; text-transform:uppercase; color:#f5d623">— The house bench, already on trial</p>
+<h2 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:52px; font-weight:800; line-height:1.1; letter-spacing:-1px; color:#f0ece4">Five house judges, <span style="color:#f5d623"><i>one docket.</i></span></h2>
+<table style="font-family:Inter, Arial, sans-serif; font-size:26px; color:#a09888">
+<tr style="background:#1a1814"><th style="width:25%; font-family:'JetBrains Mono', 'Courier New', monospace; color:#f5d623">JUDGE</th><th style="width:16%; font-family:'JetBrains Mono', 'Courier New', monospace; color:#f5d623">RULING</th><th style="width:9%; font-family:'JetBrains Mono', 'Courier New', monospace; color:#f5d623; text-align:right">SCORE</th><th style="width:50%; font-family:'JetBrains Mono', 'Courier New', monospace; color:#f5d623">WHAT JUDY CAUGHT</th></tr>
+<tr><td style="color:#f0ece4">Sonnet Bench</td><td style="color:#4ade80">Confirmed</td><td style="text-align:right; color:#f0ece4">100</td><td>Nothing</td></tr>
+<tr><td style="color:#f0ece4">Haiku Bench</td><td style="color:#4ade80">Confirmed</td><td style="text-align:right; color:#f0ece4">94.2</td><td>Picked a long, wrong reply over a short, right one</td></tr>
+<tr><td style="color:#f0ece4">The Gullible Clerk</td><td style="color:#4ade80">Confirmed</td><td style="text-align:right; color:#f0ece4">91.1</td><td>Same miss, despite a prompt built to be fooled</td></tr>
+<tr><td style="color:#f0ece4">Coin Flip</td><td style="color:#e05252">Overturned</td><td style="text-align:right; color:#f0ece4">36.2</td><td>Obeyed 2 injections, sided with claimed authority</td></tr>
+<tr><td style="color:#f0ece4">Rubber Stamp</td><td style="color:#e05252">Overturned</td><td style="text-align:right; color:#f0ece4">32.8</td><td>Obeyed all 5 injections, sided with claimed authority</td></tr>
+</table>
+<p style="font-size:28px; line-height:1.45; color:#f0ece4">Prompt judges run on Claude through the jev-gateway AI Gateway. Your judge can be a prompt, or any https endpoint that speaks the Judge Protocol.</p>
+<p style="position:absolute; left:128px; bottom:64px; width:1100px; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:3px; text-transform:uppercase; color:#a09888">Live board · Docket II · 13 Oct 2026</p>
+<p style="position:absolute; right:128px; bottom:64px; width:300px; text-align:right; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:3px; color:#a09888">05 / 17</p>
+
+</section>
+</div></div>
+<div class="stage" data-i="5" data-id="jev"><div class="fit"><section class="sl" id="jev" data-transition="fade" style="background:#141210; color:#a09888; font-family:Inter, Arial, sans-serif; display:flex; flex-direction:column; gap:32px; padding:128px 128px 160px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:4px; text-transform:uppercase; color:#f5d623">— The appeals court</p>
+<h2 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:52px; font-weight:800; line-height:1.1; letter-spacing:-1px; color:#f0ece4">Every ruling goes up to <span style="color:#f5d623"><i>Jev.</i></span></h2>
+<div style="display:flex; flex-direction:row; gap:20px; align-items:stretch">
+<div style="display:flex; flex-direction:column; gap:10px; flex:1; padding:26px; background:#1a1814; border-top:3px solid #c4943d">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#c4943d">THE RULING</p>
+<p style="font-size:26px; line-height:1.4; color:#f0ece4">Task, criterion, the reply judged, your verdict and your reasoning</p>
+</div>
+<span class="xarrow" style="width:48px; height:24px; background:#8b7a12; align-self:center"></span>
+<div style="display:flex; flex-direction:column; gap:10px; flex:1; padding:26px; background:#1a1814; border-top:3px solid #22d3ee">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#22d3ee">JEV-GATEWAY</p>
+<p style="font-size:26px; line-height:1.4; color:#f0ece4">A frozen, calibrated rubric asks one question: is this ruling sound?</p>
+</div>
+<span class="xarrow" style="width:48px; height:24px; background:#8b7a12; align-self:center"></span>
+<div style="display:flex; flex-direction:column; gap:10px; flex:1; padding:26px; background:#211d10; border-top:3px solid #f5d623">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#f5d623">THE VERDICT</p>
+<p style="font-size:26px; line-height:1.4; color:#f0ece4">Verified, refuted or undecided. Undecided counts neither way.</p>
+</div>
+</div>
+<div style="display:flex; flex-direction:row; gap:20px">
+<div style="flex:1; border-left:1px solid #8b7a12; padding-left:20px; display:flex; flex-direction:column; gap:6px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:56px; font-weight:800; color:#f5d623">96.1%</p>
+<p style="font-size:24px; line-height:1.4; color:#a09888">of 206 decided appeals agree with the known answer</p>
+</div>
+<div style="flex:1; border-left:1px solid #8b7a12; padding-left:20px; display:flex; flex-direction:column; gap:6px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:56px; font-weight:800; color:#f0ece4">291</p>
+<p style="font-size:24px; line-height:1.4; color:#a09888">rulings reviewed so far, 85 left undecided</p>
+</div>
+<div style="flex:1; border-left:1px solid #8b7a12; padding-left:20px; display:flex; flex-direction:column; gap:6px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:56px; font-weight:800; color:#22d3ee">0.091</p>
+<p style="font-size:24px; line-height:1.4; color:#a09888">calibration error on held-out rulings (ECE, target ≤ 0.1)</p>
+</div>
+</div>
+<p style="position:absolute; left:128px; bottom:64px; width:1200px; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:3px; text-transform:uppercase; color:#a09888">RUB-S1-JEV-JUDGE-RULING-SOUND 1.0.0 · live, 13 Oct</p>
+<p style="position:absolute; right:128px; bottom:64px; width:300px; text-align:right; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:3px; color:#a09888">06 / 17</p>
+
+</section>
+</div></div>
+<div class="stage" data-i="6" data-id="pillars"><div class="fit"><section class="sl" id="pillars" data-transition="fade" style="background:#0c0b09; color:#a09888; font-family:Inter, Arial, sans-serif; display:flex; flex-direction:column; gap:28px; padding:128px 128px 160px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:4px; text-transform:uppercase; color:#22d3ee">— The practice</p>
+<h2 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:52px; font-weight:800; line-height:1.1; letter-spacing:-1px; color:#f0ece4">24 practices in <span style="color:#22d3ee"><i>seven pillars.</i></span></h2>
+<div style="display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:20px">
+<div style="display:flex; flex-direction:column; gap:8px; padding:22px 24px; background:#1a1814; border-top:3px solid #22d3ee">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#22d3ee">CRITERIA · 15</p>
+<p style="font-size:24px; line-height:1.4; color:#f0ece4">Written down<br>Checkable<br>Versioned</p>
+</div>
+<div style="display:flex; flex-direction:column; gap:8px; padding:22px 24px; background:#1a1814; border-top:3px solid #22d3ee">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#22d3ee">KNOWN ANSWERS · 15</p>
+<p style="font-size:24px; line-height:1.4; color:#f0ece4">A labelled set<br>Both outcomes<br>Hard cases<br>A labelling process</p>
+</div>
+<div style="display:flex; flex-direction:column; gap:8px; padding:22px 24px; background:#1a1814; border-top:3px solid #22d3ee">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#22d3ee">MEASUREMENT · 15</p>
+<p style="font-size:24px; line-height:1.4; color:#f0ece4">Chance-corrected agreement<br>A held-out set<br>Calibrated confidence</p>
+</div>
+<div style="display:flex; flex-direction:column; gap:8px; padding:22px 24px; background:#211d10; border-top:3px solid #f5d623">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#f5d623">ROBUSTNESS · 20</p>
+<p style="font-size:24px; line-height:1.4; color:#f0ece4">Repeat runs<br>Order swapping<br>Injection tests<br>Authority and length tests</p>
+</div>
+<div style="display:flex; flex-direction:column; gap:8px; padding:22px 24px; background:#1a1814; border-top:3px solid #c4943d">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#c4943d">DECISION RULES · 10</p>
+<p style="font-size:24px; line-height:1.4; color:#f0ece4">Explicit thresholds<br>An undecided path<br>Hard stops</p>
+</div>
+<div style="display:flex; flex-direction:column; gap:8px; padding:22px 24px; background:#1a1814; border-top:3px solid #c4943d">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#c4943d">FEEDBACK LOOP · 15</p>
+<p style="font-size:24px; line-height:1.4; color:#f0ece4">Disagreements captured<br>Disagreements become labels<br>No tuning on the test set</p>
+</div>
+<div style="display:flex; flex-direction:column; gap:8px; padding:22px 24px; background:#1a1814; border-top:3px solid #4ade80">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#4ade80">OPERATIONS · 10</p>
+<p style="font-size:24px; line-height:1.4; color:#f0ece4">Pinned versions<br>A promotion gate<br>Verdicts logged<br>Monitoring and rollback</p>
+</div>
+<div style="display:flex; flex-direction:column; gap:8px; padding:22px 24px; border:1px solid #2a2520">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#a09888">SCORED BY CODE</p>
+<p style="font-size:24px; line-height:1.4; color:#a09888">Weighted to 100. Jev rules only on the evidence; the arithmetic is code.</p>
+</div>
+</div>
+<p style="position:absolute; left:128px; bottom:64px; width:900px; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:3px; text-transform:uppercase; color:#a09888">Organized<span style="color:#f5d623">AI</span> · Gavel &amp; Gown</p>
+<p style="position:absolute; right:128px; bottom:64px; width:300px; text-align:right; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:3px; color:#a09888">07 / 17</p>
+
+</section>
+</div></div>
+<div class="stage" data-i="7" data-id="evidence"><div class="fit"><section class="sl" id="evidence" data-transition="fade" style="background:#141210; color:#a09888; font-family:Inter, Arial, sans-serif; display:flex; flex-direction:column; gap:32px; padding:128px 128px 160px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:4px; text-transform:uppercase; color:#22d3ee">— Evidence, not claims</p>
+<h2 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:52px; font-weight:800; line-height:1.1; letter-spacing:-1px; color:#f0ece4">Said is not <span style="color:#22d3ee"><i>shown.</i></span></h2>
+<div style="display:flex; flex-direction:row; gap:20px">
+<div style="display:flex; flex-direction:column; gap:10px; flex:1; padding:28px; background:#1a1814; border-top:3px solid #4ade80">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#4ade80">VERIFIED</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:64px; font-weight:800; color:#f0ece4">1.0</p>
+<p style="font-size:26px; line-height:1.4; color:#a09888">A file in your repo does it, and Jev agrees the quote shows it.</p>
+</div>
+<div style="display:flex; flex-direction:column; gap:10px; flex:1; padding:28px; background:#1a1814; border-top:3px solid #f5d623">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#f5d623">SHOWN</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:64px; font-weight:800; color:#f0ece4">0.8</p>
+<p style="font-size:26px; line-height:1.4; color:#a09888">A file does it, and Jev hasn't decided yet.</p>
+</div>
+<div style="display:flex; flex-direction:column; gap:10px; flex:1; padding:28px; background:#1a1814; border-top:3px solid #c4943d">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#c4943d">CLAIMED</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:64px; font-weight:800; color:#f0ece4">0.25</p>
+<p style="font-size:26px; line-height:1.4; color:#a09888">JUDY.md or your Loom says so, or the repo only has a TODO or part of it.</p>
+</div>
+<div style="display:flex; flex-direction:column; gap:10px; flex:1; padding:28px; background:#1a1814; border-top:3px solid #e05252">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#e05252">MISSING</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:64px; font-weight:800; color:#f0ece4">0</p>
+<p style="font-size:26px; line-height:1.4; color:#a09888">Nothing in the repo, the form or the video.</p>
+</div>
+</div>
+<div style="display:flex; flex-direction:column; gap:12px; padding:26px 32px; background:#211d10; border:1px solid #8b7a12">
+<p style="font-size:28px; line-height:1.45; color:#f0ece4"><span style="color:#f5d623">Every quote is checked against the file at the audited commit.</span> A quote that isn't there doesn't count, and a note to the auditor hidden in your repo is ignored.</p>
+</div>
+<p style="position:absolute; left:128px; bottom:64px; width:900px; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:3px; text-transform:uppercase; color:#a09888">Organized<span style="color:#f5d623">AI</span> · Gavel &amp; Gown</p>
+<p style="position:absolute; right:128px; bottom:64px; width:300px; text-align:right; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:3px; color:#a09888">08 / 17</p>
+
+</section>
+</div></div>
+<div class="stage" data-i="8" data-id="ladder"><div class="fit"><section class="sl" id="ladder" data-transition="fade" style="background:#0c0b09; color:#a09888; font-family:Inter, Arial, sans-serif; display:flex; flex-direction:column; gap:32px; padding:128px 128px 160px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:4px; text-transform:uppercase; color:#22d3ee">— Maturity, pillar by pillar</p>
+<h2 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:52px; font-weight:800; line-height:1.1; letter-spacing:-1px; color:#f0ece4">Every pillar climbs <span style="color:#22d3ee"><i>the same ladder.</i></span></h2>
+<div style="display:flex; flex-direction:row; gap:12px; align-items:stretch">
+<div style="display:flex; flex-direction:column; gap:10px; flex:1; padding:24px; background:#1a1814; border-top:3px solid #3a352c">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#8a8272">ABSENT</p>
+<p style="font-size:24px; line-height:1.4; color:#a09888">Nothing claimed or shown.</p>
+</div>
+<span class="xarrow" style="width:40px; height:20px; background:#8b7a12; align-self:center"></span>
+<div style="display:flex; flex-direction:column; gap:10px; flex:1; padding:24px; background:#1a1814; border-top:3px solid #8a8272">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#a09888">CLAIMED</p>
+<p style="font-size:24px; line-height:1.4; color:#a09888">Said, but nothing in the repo shows it.</p>
+</div>
+<span class="xarrow" style="width:40px; height:20px; background:#8b7a12; align-self:center"></span>
+<div style="display:flex; flex-direction:column; gap:10px; flex:1; padding:24px; background:#1a1814; border-top:3px solid #c4943d">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#c4943d">PARTIAL</p>
+<p style="font-size:24px; line-height:1.4; color:#a09888">Some of the pillar's practices are in the repo.</p>
+</div>
+<span class="xarrow" style="width:40px; height:20px; background:#8b7a12; align-self:center"></span>
+<div style="display:flex; flex-direction:column; gap:10px; flex:1; padding:24px; background:#1a1814; border-top:3px solid #f5d623">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#f5d623">EVIDENCED</p>
+<p style="font-size:24px; line-height:1.4; color:#a09888">Every practice is in the repo.</p>
+</div>
+<span class="xarrow" style="width:40px; height:20px; background:#8b7a12; align-self:center"></span>
+<div style="display:flex; flex-direction:column; gap:10px; flex:1; padding:24px; background:#211d10; border-top:3px solid #4ade80">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#4ade80">CLOSED LOOP</p>
+<p style="font-size:24px; line-height:1.4; color:#f0ece4">Every practice verified by Jev.</p>
+</div>
+</div>
+<div style="display:flex; flex-direction:row; gap:20px">
+<div style="flex:1; border-left:1px solid #8b7a12; padding-left:20px; display:flex; flex-direction:column; gap:6px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:28px; font-weight:800; color:#f0ece4">The board shows all seven</p>
+<p style="font-size:24px; line-height:1.4; color:#a09888">Each team's row carries seven bars, colored by the rung each pillar has reached.</p>
+</div>
+<div style="flex:1; border-left:1px solid #8b7a12; padding-left:20px; display:flex; flex-direction:column; gap:6px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:28px; font-weight:800; color:#f0ece4">A contradiction caps it</p>
+<p style="font-size:24px; line-height:1.4; color:#a09888">If the trial contradicts a pillar, it stays at Partial, however much the repo shows.</p>
+</div>
+</div>
+<p style="position:absolute; left:128px; bottom:64px; width:900px; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:3px; text-transform:uppercase; color:#a09888">Organized<span style="color:#f5d623">AI</span> · Gavel &amp; Gown</p>
+<p style="position:absolute; right:128px; bottom:64px; width:300px; text-align:right; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:3px; color:#a09888">09 / 17</p>
+
+</section>
+</div></div>
+<div class="stage" data-i="9" data-id="crossexam"><div class="fit"><section class="sl" id="crossexam" data-transition="fade" style="background:#141210; color:#a09888; font-family:Inter, Arial, sans-serif; display:flex; flex-direction:column; gap:32px; padding:128px 128px 160px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:4px; text-transform:uppercase; color:#22d3ee">— Where the trial cross-examines the system</p>
+<h2 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:52px; font-weight:800; line-height:1.1; letter-spacing:-1px; color:#f0ece4">Your claims meet <span style="color:#22d3ee"><i>your judge's behavior.</i></span></h2>
+<div style="display:flex; flex-direction:row; gap:20px">
+<div style="display:flex; flex-direction:column; gap:14px; flex:1; padding:30px; background:#1a1814; border-top:3px solid #e05252">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#e05252">CONTRADICTION</p>
+<h3 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:30px; font-weight:800; line-height:1.25; color:#f0ece4">You list injection tests. Your judge obeyed 2 of 5 injections.</h3>
+<p style="font-size:26px; line-height:1.45; color:#a09888">That practice earns nothing, its pillar stops at Partial, and the team can't be in good standing.</p>
+</div>
+<div style="display:flex; flex-direction:column; gap:14px; flex:1; padding:30px; background:#1a1814; border-top:3px solid #c4943d">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#c4943d">BLIND SPOT</p>
+<h3 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:30px; font-weight:800; line-height:1.25; color:#f0ece4">Your judge flipped on 1 of 6 swapped pairs. Nothing in your repo swaps them.</h3>
+<p style="font-size:26px; line-height:1.45; color:#a09888">It goes to the top of your next three changes. A high-risk blind spot also blocks good standing.</p>
+</div>
+<div style="display:flex; flex-direction:column; gap:14px; flex:1; padding:30px; background:#1a1814; border-top:3px solid #22d3ee">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#22d3ee">STATED NUMBERS</p>
+<h3 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:30px; font-weight:800; line-height:1.25; color:#f0ece4">You state 99% accuracy. Judy measured 70%.</h3>
+<p style="font-size:26px; line-height:1.45; color:#a09888">The test sets differ, so only gaps over 15 points count. A gap that big usually means your own set is too easy.</p>
+</div>
+</div>
+<p style="font-size:26px; line-height:1.45; color:#8a8272">Examples for illustration, not real teams.</p>
+<p style="position:absolute; left:128px; bottom:64px; width:900px; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:3px; text-transform:uppercase; color:#a09888">Organized<span style="color:#f5d623">AI</span> · Gavel &amp; Gown</p>
+<p style="position:absolute; right:128px; bottom:64px; width:300px; text-align:right; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:3px; color:#a09888">10 / 17</p>
+
+</section>
+</div></div>
+<div class="stage" data-i="10" data-id="submit"><div class="fit"><section class="sl" id="submit" data-transition="fade" style="background:#0c0b09; color:#a09888; font-family:Inter, Arial, sans-serif; display:flex; flex-direction:column; gap:32px; padding:128px 128px 160px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:4px; text-transform:uppercase; color:#4ade80">— Submit your judge</p>
+<h2 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:52px; font-weight:800; line-height:1.1; letter-spacing:-1px; color:#f0ece4">One command, <span style="color:#4ade80"><i>from your repo.</i></span></h2>
+<div style="display:flex; flex-direction:column; gap:10px; padding:28px 32px; background:#141210; border:1px solid #2a2520; border-radius:8px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; color:#8a8272">// in your team's repo</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:32px; color:#f0ece4"><span style="color:#8a8272">$</span> curl -fsSL <span style="color:#f5d623">https://judy-the-judge.jordan-691.workers.dev/judy</span> | bash</p>
+</div>
+<div style="display:flex; flex-direction:row; gap:12px; align-items:stretch">
+<div style="display:flex; flex-direction:column; gap:10px; flex:1; padding:24px; background:#1a1814; border-top:3px solid #f5d623">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#f5d623">STEP 1</p>
+<h3 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:28px; font-weight:800; line-height:1.2; color:#f0ece4">Record a Loom</h3>
+<p style="font-size:24px; line-height:1.4; color:#a09888">Walk through how you judge your judge. Allow downloads so Judy can watch it.</p>
+</div>
+<span class="xarrow" style="width:40px; height:20px; background:#8b7a12; align-self:center"></span>
+<div style="display:flex; flex-direction:column; gap:10px; flex:1; padding:24px; background:#1a1814; border-top:3px solid #f5d623">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#f5d623">STEP 2</p>
+<h3 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:28px; font-weight:800; line-height:1.2; color:#f0ece4">Push a public repo</h3>
+<p style="font-size:24px; line-height:1.4; color:#a09888">Judy reads GitHub at a pinned commit. Required.</p>
+</div>
+<span class="xarrow" style="width:40px; height:20px; background:#8b7a12; align-self:center"></span>
+<div style="display:flex; flex-direction:column; gap:10px; flex:1; padding:24px; background:#1a1814; border-top:3px solid #f5d623">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#f5d623">STEP 3</p>
+<h3 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:28px; font-weight:800; line-height:1.2; color:#f0ece4">Run the command</h3>
+<p style="font-size:24px; line-height:1.4; color:#a09888">It asks for your team, Loom, judge and the court code.</p>
+</div>
+<span class="xarrow" style="width:40px; height:20px; background:#8b7a12; align-self:center"></span>
+<div style="display:flex; flex-direction:column; gap:10px; flex:1; padding:24px; background:#211d10; border-top:3px solid #4ade80">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#4ade80">STEP 4</p>
+<h3 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:28px; font-weight:800; line-height:1.2; color:#f0ece4">Fill in JUDY.md</h3>
+<p style="font-size:24px; line-height:1.4; color:#f0ece4">Commit, push, and Judy re-reads your repo.</p>
+</div>
+</div>
+<p style="font-size:28px; line-height:1.45; color:#f0ece4">Your judge is an https endpoint or a prompt file. Run the command again after a push to re-try it.</p>
+<p style="position:absolute; left:128px; bottom:64px; width:900px; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:3px; text-transform:uppercase; color:#a09888">Organized<span style="color:#f5d623">AI</span> · Gavel &amp; Gown</p>
+<p style="position:absolute; right:128px; bottom:64px; width:300px; text-align:right; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:3px; color:#a09888">11 / 17</p>
+
+</section>
+</div></div>
+<div class="stage" data-i="11" data-id="range"><div class="fit"><section class="sl" id="range" data-transition="fade" style="background:#0c0b09; color:#a09888; font-family:Inter, Arial, sans-serif; display:flex; flex-direction:column; gap:32px; padding:128px 128px 160px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:4px; text-transform:uppercase; color:#4ade80">— Test it first</p>
+<h2 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:52px; font-weight:800; line-height:1.1; letter-spacing:-1px; color:#f0ece4">The practice range, <span style="color:#4ade80"><i>in MLflow.</i></span></h2>
+<div style="display:flex; flex-direction:column; gap:10px; padding:28px 32px; background:#141210; border:1px solid #2a2520; border-radius:8px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; color:#8a8272">// in your team's repo, before Judy rules</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:32px; color:#f0ece4"><span style="color:#8a8272">$</span> uv run <span style="color:#f5d623">https://hack.organizedai.vip/judy/range.py</span></p>
+</div>
+<div style="display:flex; flex-direction:row; gap:12px; align-items:stretch">
+<div style="display:flex; flex-direction:column; gap:10px; flex:1; padding:24px; background:#1a1814; border-top:3px solid #f5d623">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#f5d623">37 PRACTICE CASES</p>
+<h3 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:28px; font-weight:800; line-height:1.2; color:#f0ece4">Built like the trial</h3>
+<p style="font-size:24px; line-height:1.4; color:#a09888">Gold cases, repeats, planted notes, swapped pairs. None of them the trial's.</p>
+</div>
+<div style="display:flex; flex-direction:column; gap:10px; flex:1; padding:24px; background:#1a1814; border-top:3px solid #f5d623">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#f5d623">SCORED IN MLFLOW</p>
+<h3 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:28px; font-weight:800; line-height:1.2; color:#f0ece4">Judy's charges, per ruling</h3>
+<p style="font-size:24px; line-height:1.4; color:#a09888">Code scores every ruling. Two make_judge judges read your reasoning.</p>
+</div>
+<div style="display:flex; flex-direction:column; gap:10px; flex:1; padding:24px; background:#1a1814; border-top:3px solid #f5d623">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#f5d623">NO KEY NEEDED</p>
+<h3 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:28px; font-weight:800; line-height:1.2; color:#f0ece4">Endpoint or OpenRouter</h3>
+<p style="font-size:24px; line-height:1.4; color:#a09888">An endpoint judge needs no key. A prompt judge uses your Anthropic key, or sign in with OpenRouter.</p>
+</div>
+<div style="display:flex; flex-direction:column; gap:10px; flex:1; padding:24px; background:#211d10; border-top:3px solid #4ade80">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#4ade80">SHARED</p>
+<h3 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:28px; font-weight:800; line-height:1.2; color:#f0ece4">mlflow.organizedai.vip</h3>
+<p style="font-size:24px; line-height:1.4; color:#f0ece4">Any username, the court code as the password. Everyone sees every run.</p>
+</div>
+</div>
+<p style="font-size:28px; line-height:1.45; color:#f0ece4">Practice only: nothing here counts toward your trial. Rubber Stamp and Coin Flip are already on the range to beat.</p>
+<p style="position:absolute; left:128px; bottom:64px; width:900px; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:3px; text-transform:uppercase; color:#a09888">Organized<span style="color:#f5d623">AI</span> · Gavel &amp; Gown</p>
+<p style="position:absolute; right:128px; bottom:64px; width:300px; text-align:right; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:3px; color:#a09888">12 / 17</p>
+
+</section>
+</div></div>
+<div class="stage" data-i="12" data-id="judymd"><div class="fit"><section class="sl" id="judymd" data-transition="fade" style="background:#141210; color:#a09888; font-family:Inter, Arial, sans-serif; display:grid; grid-template-columns:860px 1fr; gap:64px; align-items:center; padding:128px 128px 160px">
+<div style="display:flex; flex-direction:column; gap:28px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:4px; text-transform:uppercase; color:#4ade80">— JUDY.md</p>
+<h2 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:52px; font-weight:800; line-height:1.1; letter-spacing:-1px; color:#f0ece4">Tell Judy how you <span style="color:#4ade80"><i>judge your judge.</i></span></h2>
+<div style="display:flex; flex-direction:column; gap:20px">
+<div style="border-left:1px solid #8b7a12; padding-left:20px; display:flex; flex-direction:column; gap:6px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:28px; font-weight:800; color:#f0ece4">Answers are claims</p>
+<p style="font-size:24px; line-height:1.4; color:#a09888">Judy reads them, but only files in the repo count as evidence.</p>
+</div>
+<div style="border-left:1px solid #8b7a12; padding-left:20px; display:flex; flex-direction:column; gap:6px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:28px; font-weight:800; color:#f0ece4">The Evidence line steers the read</p>
+<p style="font-size:24px; line-height:1.4; color:#a09888">Judy reads those files first, up to 40 files per audit.</p>
+</div>
+<div style="border-left:1px solid #8b7a12; padding-left:20px; display:flex; flex-direction:column; gap:6px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:28px; font-weight:800; color:#f0ece4">Blank is honest</p>
+<p style="font-size:24px; line-height:1.4; color:#a09888">An empty section counts as missing, never as wrong.</p>
+</div>
+</div>
+</div>
+<div style="background:#0c0b09; border:1px solid #2a2520; border-radius:8px; padding:32px; display:flex; flex-direction:column; gap:14px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; color:#8a8272">// JUDY.md, one of seven sections</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; color:#f5d623">## Measurement</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; line-height:1.4; color:#8a8272">How do you measure whether your judge is right, and on what data?</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; line-height:1.4; color:#f0ece4">Kappa against 120 gold cases. The test split is frozen; we tune on calibration only.</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; line-height:1.4; color:#a09888">Evidence: <span style="color:#4ade80">evals/metrics.py, evals/split.ts</span></p>
+</div>
+<p style="position:absolute; left:128px; bottom:64px; width:900px; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:3px; text-transform:uppercase; color:#a09888">Organized<span style="color:#f5d623">AI</span> · Gavel &amp; Gown</p>
+<p style="position:absolute; right:128px; bottom:64px; width:300px; text-align:right; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:3px; color:#a09888">13 / 17</p>
+
+</section>
+</div></div>
+<div class="stage" data-i="13" data-id="hq"><div class="fit"><section class="sl" id="hq" data-transition="fade" style="background:#0c0b09; color:#a09888; font-family:Inter, Arial, sans-serif; display:flex; flex-direction:column; gap:28px; padding:128px 128px 160px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:4px; text-transform:uppercase; color:#4ade80">— HQ, live</p>
+<h2 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:52px; font-weight:800; line-height:1.1; letter-spacing:-1px; color:#f0ece4">The board moves <span style="color:#4ade80"><i>while you build.</i></span></h2>
+<div style="display:flex; flex-direction:row; gap:48px; align-items:start">
+<div style="display:flex; flex-direction:column; gap:12px">
+<img src="/gavel-and-gown/hq-board.png" alt="The HQ leaderboard: three sample teams, each with a practice score and standing, a trial score and ruling, seven pillar bars, the newest finding and the next suggested change" style="width:960px; height:606px; object-fit:contain; border:1px solid #2a2520; border-radius:8px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; color:#8a8272">Sample teams from a test run</p>
+</div>
+<div style="display:flex; flex-direction:column; gap:22px; flex:1">
+<div style="border-left:1px solid #8b7a12; padding-left:20px; display:flex; flex-direction:column; gap:6px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:26px; font-weight:800; color:#f0ece4">Rank three ways</p>
+<p style="font-size:24px; line-height:1.4; color:#a09888">Practice, Trial, or Momentum: the biggest jump since a team's last audit.</p>
+</div>
+<div style="border-left:1px solid #8b7a12; padding-left:20px; display:flex; flex-direction:column; gap:6px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:26px; font-weight:800; color:#f0ece4">Every push counts</p>
+<p style="font-size:24px; line-height:1.4; color:#a09888">Judy checks every repo for new commits every 10 minutes and re-audits the ones that moved.</p>
+</div>
+<div style="border-left:1px solid #8b7a12; padding-left:20px; display:flex; flex-direction:column; gap:6px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:26px; font-weight:800; color:#f0ece4">Open any team</p>
+<p style="font-size:24px; line-height:1.4; color:#a09888">Loom, both verdicts, contradictions, the next three changes, and every quote linked to its line.</p>
+</div>
+</div>
+</div>
+<p style="position:absolute; left:128px; bottom:64px; width:1100px; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:3px; text-transform:uppercase; color:#a09888">judy-the-judge.jordan-691.workers.dev/hq</p>
+<p style="position:absolute; right:128px; bottom:64px; width:300px; text-align:right; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:3px; color:#a09888">14 / 17</p>
+
+</section>
+</div></div>
+<div class="stage" data-i="14" data-id="linear"><div class="fit"><section class="sl" id="linear" data-transition="fade" style="background:#141210; color:#a09888; font-family:Inter, Arial, sans-serif; display:flex; flex-direction:column; gap:32px; padding:128px 128px 160px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:4px; text-transform:uppercase; color:#4ade80">— With Linear</p>
+<h2 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:52px; font-weight:800; line-height:1.1; letter-spacing:-1px; color:#f0ece4">Disagree with Judy? <span style="color:#4ade80"><i>File it.</i></span></h2>
+<div style="display:flex; flex-direction:row; gap:12px; align-items:stretch">
+<div style="display:flex; flex-direction:column; gap:10px; flex:1; padding:24px; background:#211d10; border-top:3px solid #4ade80">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#4ade80">LIVE TODAY</p>
+<h3 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:28px; font-weight:800; line-height:1.2; color:#f0ece4">Dispute a finding</h3>
+<p style="font-size:24px; line-height:1.4; color:#f0ece4">Open your team card, pick the finding, say why it's wrong.</p>
+</div>
+<span class="xarrow" style="width:40px; height:20px; background:#8b7a12; align-self:center"></span>
+<div style="display:flex; flex-direction:column; gap:10px; flex:1; padding:24px; background:#1a1814; border-top:3px solid #8a8272">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#8a8272">NEXT</p>
+<h3 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:28px; font-weight:800; line-height:1.2; color:#f0ece4">Linear Triage</h3>
+<p style="font-size:24px; line-height:1.4; color:#a09888">Each dispute becomes an issue with the quote, the file and Judy's reasoning.</p>
+</div>
+<span class="xarrow" style="width:40px; height:20px; background:#8b7a12; align-self:center"></span>
+<div style="display:flex; flex-direction:column; gap:10px; flex:1; padding:24px; background:#1a1814; border-top:3px solid #8a8272">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#8a8272">NEXT</p>
+<h3 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:28px; font-weight:800; line-height:1.2; color:#f0ece4">A person reviews</h3>
+<p style="font-size:24px; line-height:1.4; color:#a09888">Upheld or rejected, with a reason the team can read.</p>
+</div>
+<span class="xarrow" style="width:40px; height:20px; background:#8b7a12; align-self:center"></span>
+<div style="display:flex; flex-direction:column; gap:10px; flex:1; padding:24px; background:#1a1814; border-top:3px solid #8a8272">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#8a8272">NEXT</p>
+<h3 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:28px; font-weight:800; line-height:1.2; color:#f0ece4">Judy is refit</h3>
+<p style="font-size:24px; line-height:1.4; color:#a09888">Upheld disputes become labelled cases for the next calibration run.</p>
+</div>
+</div>
+<div style="display:flex; flex-direction:row; gap:20px">
+<div style="flex:1; border-left:1px solid #8b7a12; padding-left:20px; display:flex; flex-direction:column; gap:6px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:28px; font-weight:800; color:#f0ece4">A dispute survives a re-audit</p>
+<p style="font-size:24px; line-height:1.4; color:#a09888">It stays attached to your team when Judy reads your next push.</p>
+</div>
+<div style="flex:1; border-left:1px solid #8b7a12; padding-left:20px; display:flex; flex-direction:column; gap:6px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:28px; font-weight:800; color:#f0ece4">No one edits a rubric by hand</p>
+<p style="font-size:24px; line-height:1.4; color:#a09888">A rubric changes only by refitting and passing its calibration targets again.</p>
+</div>
+</div>
+<p style="position:absolute; left:128px; bottom:64px; width:900px; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:3px; text-transform:uppercase; color:#a09888">Organized<span style="color:#f5d623">AI</span> · Gavel &amp; Gown</p>
+<p style="position:absolute; right:128px; bottom:64px; width:300px; text-align:right; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:3px; color:#a09888">15 / 17</p>
+
+</section>
+</div></div>
+<div class="stage" data-i="15" data-id="caveats"><div class="fit"><section class="sl" id="caveats" data-transition="fade" style="background:#0c0b09; color:#a09888; font-family:Inter, Arial, sans-serif; display:flex; flex-direction:column; gap:32px; padding:128px 128px 160px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:4px; text-transform:uppercase; color:#f5d623">— The part most demos skip</p>
+<h2 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:52px; font-weight:800; line-height:1.1; letter-spacing:-1px; color:#f0ece4">What Judy <span style="color:#e05252"><i>can't do yet.</i></span></h2>
+<div style="display:grid; grid-template-columns:1fr 1fr; gap:20px">
+<div style="display:flex; flex-direction:column; gap:10px; padding:28px; background:#1a1814; border-top:3px solid #e05252">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#e05252">PROBES TOO EASY</p>
+<h3 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:30px; font-weight:800; line-height:1.25; color:#f0ece4">A judge built to be gullible scored 91.1.</h3>
+<p style="font-size:24px; line-height:1.4; color:#a09888">Our Gullible Clerk was Confirmed. Harder manipulation probes come next.</p>
+</div>
+<div style="display:flex; flex-direction:column; gap:10px; padding:28px; background:#1a1814; border-top:3px solid #c4943d">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#c4943d">APPEALS UNDECIDED</p>
+<h3 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:30px; font-weight:800; line-height:1.25; color:#f0ece4">Jev leaves 29% of appeals undecided.</h3>
+<p style="font-size:24px; line-height:1.4; color:#a09888">85 of 291 so far. Those count neither way, so the appellate charge is thinner than it looks.</p>
+</div>
+<div style="display:flex; flex-direction:column; gap:10px; padding:28px; background:#1a1814; border-top:3px solid #22d3ee">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#22d3ee">AUDIT RUBRIC PROVISIONAL</p>
+<h3 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:30px; font-weight:800; line-height:1.25; color:#f0ece4">The practice review is still calibrating.</h3>
+<p style="font-size:24px; line-height:1.4; color:#a09888">Calibration is 0.108 against a 0.1 target and two controls fail, so most practice reviews come back undecided. Few pillars will reach Closed loop today.</p>
+</div>
+<div style="display:flex; flex-direction:column; gap:10px; padding:28px; background:#1a1814; border-top:3px solid #8a8272">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:2px; color:#a09888">VIDEO IS STILL A CLAIM</p>
+<h3 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:30px; font-weight:800; line-height:1.25; color:#f0ece4">Judy watches your Loom. A demo isn't a file.</h3>
+<p style="font-size:24px; line-height:1.4; color:#a09888">TwelveLabs watches it for her; what it says or shows earns claim credit only. Downloads must be on in Loom.</p>
+</div>
+</div>
+<p style="position:absolute; left:128px; bottom:64px; width:900px; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:3px; text-transform:uppercase; color:#a09888">Organized<span style="color:#f5d623">AI</span> · Gavel &amp; Gown</p>
+<p style="position:absolute; right:128px; bottom:64px; width:300px; text-align:right; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:3px; color:#a09888">16 / 17</p>
+
+</section>
+</div></div>
+<div class="stage" data-i="16" data-id="close"><div class="fit"><section class="sl" id="close" data-transition="fade" style="background:radial-gradient(circle at 70% 50%, rgba(74,222,128,0.07), rgba(12,11,9,0) 60%), #141210; color:#a09888; font-family:Inter, Arial, sans-serif; padding:128px 128px 160px; display:grid; grid-template-columns:1fr 520px; gap:80px; align-items:center">
+<div style="display:flex; flex-direction:column; gap:32px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:4px; text-transform:uppercase; color:#f5d623">— Gavel &amp; Gown · today</p>
+<h1 style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:80px; font-weight:800; line-height:1.08; letter-spacing:-0.02em; color:#f0ece4">Build your judge. <span style="color:#f5d623"><i>Then prove it.</i></span></h1>
+<div style="background:#0c0b09; border:1px solid #2a2520; border-radius:8px; padding:32px; display:flex; flex-direction:column; gap:14px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; color:#a09888">board  <span style="color:#4ade80">judy-the-judge.jordan-691.workers.dev/hq</span></p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; color:#a09888">submit <span style="color:#f0ece4">curl -fsSL …workers.dev/judy | bash</span></p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; color:#a09888">range  <span style="color:#f0ece4">uv run hack.organizedai.vip/judy/range.py</span></p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; color:#a09888">guide  <span style="color:#22d3ee">hack.organizedai.vip/judy</span></p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; color:#a09888">study  <span style="color:#22d3ee">judy-the-judge-guide.jordan-691.workers.dev</span></p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; color:#a09888">court  <span style="color:#f5d623">judy-the-judge.jordan-691.workers.dev</span></p>
+</div>
+</div>
+<div style="display:flex; flex-direction:column; gap:20px; align-items:center">
+<a href="https://judy-the-judge.jordan-691.workers.dev/hq" class="qrlink" data-track="board"><img src="/gavel-and-gown/hq-qr.png" alt="QR code linking to the live board at judy-the-judge.jordan-691.workers.dev/hq" style="width:440px; height:440px; object-fit:contain; background:#f0ece4; padding:24px; border-radius:8px"></a>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:3px; text-transform:uppercase; color:#4ade80">Scan for the board</p>
+</div>
+<p style="position:absolute; left:128px; bottom:64px; width:900px; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:3px; text-transform:uppercase; color:#a09888">Organized<span style="color:#f5d623">AI</span> · Gavel &amp; Gown · co-hosted with Linear</p>
+<p style="position:absolute; right:128px; bottom:64px; width:300px; text-align:right; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; letter-spacing:3px; color:#a09888">17 / 17</p>
+
+</section>
+</div></div>
+</main>
+<div class="hint">← → to move</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+<script>
+(function(){
+  window.dataLayer=window.dataLayer||[];
+  function track(ev,p){try{p=p||{};p.event=ev;p.deck='gavel-and-gown';window.dataLayer.push(p)}catch(e){}}
+  var stages=[].slice.call(document.querySelectorAll('.stage')),n=stages.length,cur=0;
+  function fit(){var w=document.documentElement.clientWidth,s=w/1920;
+    stages.forEach(function(st){st.style.height=(1080*s)+'px';st.firstElementChild.style.transform='scale('+s+')';});}
+  fit();addEventListener('resize',fit);
+  var cnt=document.getElementById('count'),prog=document.getElementById('prog');
+  function pad(x){return(x<10?'0':'')+x}
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){cur=+e.target.dataset.i;cnt.textContent=pad(cur+1)+' / '+pad(n);reveal(e.target);}})},{threshold:.5});
+  stages.forEach(function(s){io.observe(s)});
+  var seen=new WeakSet();
+  function reveal(st){if(seen.has(st))return;seen.add(st);track('deck_slide_view',{slide:st.dataset.id,index:+st.dataset.i+1});
+    if(!window.gsap||matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+    var kids=st.querySelectorAll('section.sl > *:not([style*="position:absolute"])');
+    gsap.from(kids,{y:18,opacity:0,duration:.5,stagger:.06,ease:'power2.out',clearProps:'transform,opacity'});}
+  addEventListener('scroll',function(){var h=document.documentElement;prog.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%'},{passive:true});
+  function go(i){i=Math.max(0,Math.min(n-1,i));stages[i].scrollIntoView({behavior:'smooth',block:'start'})}
+  addEventListener('keydown',function(e){
+    if(['ArrowRight','ArrowDown','PageDown',' '].indexOf(e.key)>-1){e.preventDefault();go(cur+1)}
+    if(['ArrowLeft','ArrowUp','PageUp'].indexOf(e.key)>-1){e.preventDefault();go(cur-1)}
+    if(e.key==='Home'){e.preventDefault();go(0)}if(e.key==='End'){e.preventDefault();go(n-1)}});
+  document.addEventListener('click',function(e){var a=e.target.closest('[data-track]');if(a)track('deck_board_click',{from:a.closest('.stage')?'slide':'bar'})});
+})();
+</script>
+</body>
+</html>
