@@ -8,7 +8,8 @@
     { "pattern": "talk.organizedai.vip/skill-loop*", "zone_id": "446a0461f84d37aba20abc5834480783" },
     { "pattern": "talk.organizedai.vip/jev*", "zone_id": "446a0461f84d37aba20abc5834480783" },
     { "pattern": "talk.organizedai.vip/dealcon*", "zone_id": "446a0461f84d37aba20abc5834480783" },
-    { "pattern": "talk.organizedai.vip/gavel-and-gown*", "zone_id": "446a0461f84d37aba20abc5834480783" }
+    { "pattern": "talk.organizedai.vip/gavel-and-gown*", "zone_id": "446a0461f84d37aba20abc5834480783" },
+    { "pattern": "talk.organizedai.vip/NASA*", "zone_id": "446a0461f84d37aba20abc5834480783" }
   ],
   "workers_dev": false
 }

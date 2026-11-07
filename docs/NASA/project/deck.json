@@ -1,0 +1,64 @@
+{
+  "v": 4,
+  "attachments": {},
+  "cover": "cover",
+  "createdOnFiles": {
+    "at": "2026-11-07T20:20:00Z",
+    "v": 1
+  },
+  "designSystems": [],
+  "faces": {
+    "inter": {
+      "family": "Inter",
+      "href": "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
+    },
+    "jetbrains-mono": {
+      "family": "JetBrains Mono",
+      "href": "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&display=swap"
+    }
+  },
+  "lists": "css",
+  "order": [
+    "cover",
+    "lab",
+    "build",
+    "steps",
+    "launch",
+    "stops",
+    "rules",
+    "levelup",
+    "close",
+    "finale"
+  ],
+  "sections": {
+    "s1": {
+      "description": "What the build lab is and why we practice on a throwaway app first",
+      "start": "cover"
+    },
+    "s2": {
+      "description": "The four parts of the build lab and what each one is like",
+      "start": "lab"
+    },
+    "s2b": {
+      "description": "Building a change, step by step: the team decides and the agent asks first",
+      "start": "build"
+    },
+    "s2c": {
+      "description": "Pressing Launch!, stop by stop: one request from the button to the backend and back",
+      "start": "launch"
+    },
+    "s3": {
+      "description": "The rules we work by and the hackathon weekend, hour by hour",
+      "start": "rules"
+    },
+    "s3b": {
+      "description": "Next level: DSH, the DeepSeek superagent and Cloudflare Workers, with questions to research",
+      "start": "levelup"
+    },
+    "s4": {
+      "description": "The finale: stack the rocket and launch it",
+      "start": "finale"
+    }
+  },
+  "title": "The Build Lab · RiverHacks × NASA Space Apps"
+}
