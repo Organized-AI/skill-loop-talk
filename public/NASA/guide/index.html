@@ -1,0 +1,591 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Build Lab Guide · RiverHacks × NASA Space Apps</title>
+<meta name="description" content="How our team builds with an AI agent at RiverHacks × NASA Space Apps: the build lab, building a change, pressing Launch!, the rules, the weekend schedule, and what to research next.">
+<meta name="theme-color" content="#0c0b09">
+<meta property="og:title" content="The Build Lab Guide · RiverHacks × NASA Space Apps">
+<meta property="og:description" content="The team decides. The agent builds. Every fact has a source.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230c0b09'/%3E%3Cpath d='M32 8c9 9 11 21 10 34H22C21 29 23 17 32 8z' fill='%23f0ece4'/%3E%3Ccircle cx='32' cy='28' r='5' fill='%2322d3ee'/%3E%3Cpath d='M22 36l-7 14 8-3zM42 36l7 14-8-3z' fill='%23F5D623'/%3E%3Cpath d='M27 42h10l-5 14z' fill='%23C4943D'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;0,800;1,800&display=swap">
+<style>
+:root { --bg: #0c0b09; --panel: #141210; --line: #2a2520; --ink: #f0ece4; --mute: #a09888; --faint: #6d6658; --brand: #F5D623; --on-brand: #0c0b09; --accent: #F5D623; --cyan: #22d3ee; --live: #4ade80; --gold: #C4943D; --code: #0a0908; --display: "JetBrains Mono", ui-monospace, Menlo, monospace; --sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif; --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace; color-scheme: dark; }
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) { --bg: #faf9f4; --panel: #ffffff; --line: #e4e1d6; --ink: #111110; --mute: #5f5b50; --faint: #8c877a; --brand: #f5d528; --on-brand: #0c0b09; --accent: #7a5f00; --cyan: #0e7490; --live: #1f8a4c; --gold: #8a5a12; --code: #f2f0e7; color-scheme: light; }
+}
+:root[data-theme="light"] { --bg: #faf9f4; --panel: #ffffff; --line: #e4e1d6; --ink: #111110; --mute: #5f5b50; --faint: #8c877a; --brand: #f5d528; --on-brand: #0c0b09; --accent: #7a5f00; --cyan: #0e7490; --live: #1f8a4c; --gold: #8a5a12; --code: #f2f0e7; color-scheme: light; }
+* { box-sizing: border-box; }
+html { text-size-adjust: 100%; -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.55 var(--sans); }
+a { color: var(--accent); }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+.col { max-width: 560px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 28px 64px; display: grid; gap: 34px; }
+.col > * { min-width: 0; }
+
+/* hero */
+.hero { display: grid; gap: 14px; justify-items: start; }
+.org { display: flex; align-items: center; gap: 10px; }
+.org .word { font: 800 15px var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink); }
+.org .word span { color: var(--brand); }
+.org .sq { width: 26px; height: 26px; border-radius: 6px; display: block; }
+.sponsor { font: 500 12px var(--mono); color: var(--mute); letter-spacing: 0.06em; }
+h1 { font: 800 clamp(46px, 13vw, 68px)/0.95 var(--display); margin: 0; letter-spacing: -0.04em; }
+h1 span { display: block; color: var(--brand); font-style: italic; }
+.tagline { font: 500 19px/1.4 var(--sans); margin: 0; max-width: 32ch; }
+.eventtag { font: 500 13px var(--mono); letter-spacing: 0.06em; color: var(--mute); }
+.count { font: 500 13px var(--mono); color: var(--mute); }
+.count b { color: var(--ink); }
+
+/* section heads and copy-as-markdown */
+h2 { font: 600 12px var(--mono); letter-spacing: 0.14em; text-transform: uppercase; color: var(--mute); margin: 0 0 12px; }
+.sh { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 0 0 12px; flex-wrap: wrap; }
+.sh h2 { margin: 0; }
+.md { font: 500 12px var(--mono); color: var(--mute); background: transparent; border: 1px solid var(--line); border-radius: 999px; padding: 4px 10px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
+.md::before { content: "M↓"; font-weight: 600; font-size: 10.5px; letter-spacing: -0.02em; color: var(--faint); }
+.md:hover { color: var(--ink); border-color: var(--brand); }
+.md.done { color: var(--live); border-color: var(--live); }
+.md.done::before { color: var(--live); }
+.md.all { color: var(--ink); background: var(--panel); }
+.mdbox { width: 100%; min-height: 160px; margin-top: 8px; font: 12.5px/1.5 var(--mono); color: var(--ink); background: var(--code); border: 1px solid var(--line); border-radius: 8px; padding: 10px; resize: vertical; }
+
+/* venue */
+.venue { display: grid; gap: 4px; }
+.venue .name { font: 600 18px var(--sans); }
+.venue .addr { color: var(--mute); }
+.wayfind { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 6px; }
+.wayfind span { font: 500 12.5px var(--mono); border: 1px solid var(--line); border-radius: 999px; padding: 3px 10px; color: var(--mute); }
+
+/* links */
+.links { display: flex; flex-wrap: wrap; gap: 8px; }
+.links a { font: 500 13.5px var(--mono); text-decoration: none; color: var(--ink); border: 1px solid var(--line); background: var(--panel); border-radius: 999px; padding: 7px 13px; white-space: nowrap; }
+.links a:hover { border-color: var(--brand); }
+.links a.pri { background: var(--brand); border-color: var(--brand); color: var(--on-brand); font-weight: 600; }
+
+/* shared blocks */
+.blk { display: grid; gap: 12px; }
+.blk > p { margin: 0; color: var(--mute); max-width: 58ch; }
+.blk > p b, .blk li b { color: var(--ink); font-weight: 500; }
+.blk code, .card code { font: 12.5px var(--mono); color: var(--ink); background: var(--code); border: 1px solid var(--line); border-radius: 4px; padding: 0 4px; overflow-wrap: anywhere; }
+.cmd { display: flex; align-items: stretch; border: 1px solid var(--line); border-radius: 8px; background: var(--code); overflow: hidden; min-width: 0; }
+.cmd pre { margin: 0; padding: 11px 12px; font: 13px/1.5 var(--mono); overflow-x: auto; flex: 1; min-width: 0; color: var(--ink); white-space: pre; }
+.cmd.wrap pre { white-space: pre-wrap; }
+.cmd button { border: 0; border-left: 1px solid var(--line); background: transparent; color: var(--ink); font: 500 12.5px var(--mono); padding: 0 14px; cursor: pointer; }
+.cmd button:hover { color: var(--brand); }
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.two > div { border: 1px solid var(--line); border-top: 3px solid var(--c, var(--line)); border-radius: 8px; padding: 12px; background: var(--panel); display: grid; gap: 2px; align-content: start; min-width: 0; }
+.two .k { font: 600 11.5px var(--mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--c, var(--mute)); }
+.two b { font: 600 15px var(--sans); }
+.two span { color: var(--mute); font-size: 14px; }
+.two span em { font-style: normal; color: var(--accent); }
+@media (max-width: 420px) { .two { grid-template-columns: 1fr; } }
+.card { border: 1px solid var(--line); border-radius: 10px; background: var(--panel); padding: 14px; display: grid; gap: 10px; min-width: 0; }
+.card h3 { margin: 0; font: 600 16px var(--sans); }
+.card h3 small { font: 500 12px var(--mono); color: var(--mute); letter-spacing: 0.04em; margin-left: 6px; }
+.card > p { margin: 0; color: var(--mute); font-size: 15px; }
+.card > p b { color: var(--ink); font-weight: 500; }
+.rows { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.rows li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 12px; align-items: baseline; }
+.rows b { font: 600 14.5px var(--sans); color: var(--ink); }
+.rows i { font: 500 13px var(--mono); font-style: normal; color: var(--accent); text-align: right; white-space: nowrap; }
+.rows i.c { color: var(--cyan); } .rows i.g { color: var(--live); } .rows i.o { color: var(--gold); }
+.rows span { grid-column: 1 / -1; color: var(--mute); font-size: 13.5px; line-height: 1.45; }
+.bands { display: flex; flex-wrap: wrap; gap: 6px; }
+.bands span { font: 500 12.5px var(--mono); border: 1px solid var(--line); border-radius: 999px; padding: 3px 10px; color: var(--ink); }
+.bands span.y { border-color: var(--brand); color: var(--accent); } .bands span.c { border-color: var(--cyan); color: var(--cyan); } .bands span.g { border-color: var(--live); color: var(--live); }
+.steps { margin: 0; padding-left: 22px; display: grid; gap: 8px; color: var(--mute); font-size: 15px; line-height: 1.5; }
+.steps b { color: var(--ink); font-weight: 600; }
+.steps i { font: 500 11.5px var(--mono); font-style: normal; color: var(--accent); letter-spacing: 0.04em; margin-left: 4px; white-space: nowrap; }
+.steps i.c { color: var(--cyan); } .steps i.o { color: var(--gold); } .steps i.g { color: var(--live); }
+.steps li::marker { font: 600 13px var(--mono); color: var(--faint); }
+.note { border: 1px dashed var(--line); border-radius: 8px; padding: 10px 12px; display: grid; gap: 6px; min-width: 0; color: var(--mute); font-size: 14.5px; }
+.note b { color: var(--ink); font-weight: 600; }
+.note.y { border-color: var(--brand); }
+.chap { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; font-size: 15px; }
+.chap li { display: flex; gap: 12px; align-items: baseline; }
+.chap a { font: 500 13px var(--mono); color: var(--accent); text-decoration: none; }
+.chap a:hover { text-decoration: underline; }
+.chap span { color: var(--ink); }
+
+/* sign-off */
+.community { display: grid; grid-template-columns: 132px minmax(0, 1fr); gap: 16px; align-items: center; }
+.qr { background: #fff; border-radius: 10px; padding: 8px; width: 132px; height: 132px; display: block; }
+.qr img { display: block; width: 100%; height: 100%; }
+.community p { margin: 0; color: var(--mute); }
+.community b { display: block; color: var(--ink); font: 600 16px var(--sans); margin-bottom: 2px; }
+@media (max-width: 360px) { .community { grid-template-columns: 1fr; } }
+.signoff { font: 800 28px/1.15 var(--display); margin: 0; letter-spacing: -0.03em; display: flex; align-items: flex-end; gap: 12px; }
+.signoff span { color: var(--brand); font-style: italic; }
+.signoff svg { flex: none; width: 34px; height: 68px; }
+.foot { font: 12.5px var(--mono); color: var(--faint); display: flex; gap: 6px 14px; flex-wrap: wrap; }
+.foot a { color: var(--faint); }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+</style>
+</head>
+<body>
+<main class="col">
+
+<header class="hero">
+  <div class="org">
+    <svg class="sq" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="12" fill="#1a1814"/><path d="M32 8c9 9 11 21 10 34H22C21 29 23 17 32 8z" fill="#f0ece4"/><circle cx="32" cy="28" r="5" fill="#22d3ee"/><path d="M22 36l-7 14 8-3zM42 36l7 14-8-3z" fill="#F5D623"/><path d="M27 42h10l-5 14z" fill="#C4943D"/></svg>
+    <span class="word">Organized<span>AI</span></span>
+    <span class="sponsor">· RiverHacks × NASA Space Apps</span>
+  </div>
+  <h1>The build <span>lab.</span></h1>
+  <p class="tagline">How our team builds with an AI agent. The team decides, the agent builds, and every fact has a source.</p>
+  <div class="eventtag">ATX · Sat–Sun, Nov 14–15 · ACC Rio Grande</div>
+  <div class="count"><b>2</b> deadlines · <b>1</b> practice app · <b>0</b> made-up facts</div>
+  <button class="md all" type="button" data-md="all">Copy whole guide as Markdown</button>
+</header>
+
+<section aria-labelledby="h-venue">
+  <div class="sh"><h2 id="h-venue">Venue details</h2><button class="md" type="button" data-md="venue">Copy as Markdown</button></div>
+  <div class="venue">
+    <div class="name">Austin Community College, Rio Grande Campus</div>
+    <div class="addr">Building 1000 · 1212 Rio Grande St, Austin, TX 78701</div>
+    <div class="wayfind"><span>Check-in 8:30 AM</span><span>Hacking 11:00 AM</span><span>Under 18 · leave 5:00 PM</span></div>
+  </div>
+</section>
+
+<section aria-labelledby="h-links">
+  <div class="sh"><h2 id="h-links">Links</h2><button class="md" type="button" data-md="links">Copy as Markdown</button></div>
+  <nav class="links" aria-label="Guide links">
+    <a class="pri" href="#build" data-l="build">Build a change</a>
+    <a href="/NASA/" data-l="deck">The Deck ↗</a>
+    <a href="/NASA/build-lab-film.mp4" data-l="film">The Film · 3 min ↗</a>
+    <a href="https://riverhacks-spaceapps.org/schedule" data-l="schedule">Schedule ↗</a>
+    <a href="https://riverhacks-spaceapps.org/legal#minors" data-l="minors">Under-18 rules ↗</a>
+    <a href="https://www.spaceappschallenge.org/2026/" data-l="spaceapps">NASA Space Apps ↗</a>
+    <a href="https://github.com/signup" data-l="github">GitHub sign-up ↗</a>
+    <a href="https://organizedai.vip/" data-l="organizedai">Organized AI ↗</a>
+  </nav>
+</section>
+
+<section aria-labelledby="h-lab" class="blk">
+  <div class="sh"><h2 id="h-lab">The build lab</h2><button class="md" type="button" data-md="lab">Copy as Markdown</button></div>
+  <p>Four parts work together on one computer. The <b>agent</b> does the typing; the <b>team</b> makes every decision.</p>
+  <div class="two">
+    <div style="--c: var(--gold)"><span class="k">Setup</span><b>Build environment</b><span>Every tool a computer needs to build and run an app. <em>Like</em> a kitchen, set up before you cook.</span></div>
+    <div style="--c: var(--cyan)"><span class="k">The app</span><b>T3 Code</b><span>Mission control: where we type what we want built.</span></div>
+    <div style="--c: var(--accent)"><span class="k">The agent</span><b>Claude Code</b><span>Reads, writes and runs code. In Supervised mode it asks before it acts.</span></div>
+    <div style="--c: var(--live)"><span class="k">Toolbox</span><b>Python, Node, git</b><span>Python runs the backend, npm fetches parts, git makes save points.</span></div>
+  </div>
+  <p>The Claude login belongs to the mentor, because Claude accounts are for adults. Everyone can use their own GitHub account (13 and up).</p>
+</section>
+
+<section aria-labelledby="h-build" class="blk" id="build">
+  <div class="sh"><h2 id="h-build">Build a change</h2><button class="md" type="button" data-md="build">Copy as Markdown</button></div>
+  <p>Every change takes the same eight steps. Step five matters most: <b>the agent asks, the team votes.</b></p>
+  <div class="card">
+    <h3>One change, step by step <small>the rocket launch</small></h3>
+    <ol class="steps">
+      <li><b>Pick a change.</b> Look at the page, pitch ideas, vote for one. <i>Team</i></li>
+      <li><b>Write the prompt.</b> Say exactly what to change, and to change nothing else. <i>Team</i></li>
+      <li><b>Send it.</b> Paste it into T3 Code and hit send. The agent reads our files first. <i class="o">Mentor</i></li>
+      <li><b>The agent makes a plan.</b> It says what it will do, then waits for our OK. <i class="c">Agent</i></li>
+      <li><b>The team votes.</b> Read the request out loud. Hands up? Approve. Not what we asked for? Deny, and say why. <i>Team</i></li>
+      <li><b>Get the parts.</b> npm downloads GSAP and adds it to <code>package.json</code>, the app’s parts list. <i class="c">Agent</i></li>
+      <li><b>The agent writes code.</b> It changes one file and tells us what it did. We can read every line. <i class="c">Agent</i></li>
+      <li><b>Launch!</b> Vite reloads the page by itself. Press Launch! together. It works? Make a save point: a git commit. <i class="g">Everyone</i></li>
+    </ol>
+    <div class="bands"><span class="y">Approve</span><span>Deny, and say why</span><span>One change at a time</span></div>
+  </div>
+  <p>The prompt we use, word for word. Swap the middle line for the team’s own idea.</p>
+  <div class="cmd wrap"><pre id="prompt">The team wants to change the page. Make just this one change, and keep everything else the same:
+When Launch! is pressed, make a 🚀 fly from the bottom of the screen to the top. Install gsap and @gsap/react with npm, and use the useGSAP hook for the animation.
+When you're done, tell me which file you changed and what you changed in it, in one sentence.</pre><button type="button" data-copy="prompt" aria-label="Copy the prompt">Copy</button></div>
+  <div class="bands"><span>Orange wiggle button</span><span>3-2-1 countdown</span><span class="y">Rocket launch</span><span>Launch counter</span><span>New title</span></div>
+</section>
+
+<section aria-labelledby="h-launch" class="blk">
+  <div class="sh"><h2 id="h-launch">Press Launch!</h2><button class="md" type="button" data-md="launch">Copy as Markdown</button></div>
+  <p>One click makes a round trip in less than a second. Follow it like a meal in a restaurant: <b>click, order, cook, serve.</b></p>
+  <div class="card">
+    <h3>One click, there and back <small>Space Fact Machine</small></h3>
+    <ul class="rows">
+      <li><b>1 · Click</b><i class="c">door 5173</i><span>You press Launch! on the page, the frontend. React sends an order: <code>fetch("/api/fact")</code>. Like the dining room.</span></li>
+      <li><b>2 · Order</b><i class="o">GET /api/fact</i><span>“Get me a fact.” Vite passes anything that starts with <code>/api</code> to door 8000. The API is the menu.</span></li>
+      <li><b>3 · Cook</b><i class="o">door 8000</i><span>The backend (Python, FastAPI) picks one of six checked facts at random, with its source. Like the kitchen.</span></li>
+      <li><b>4 · Serve</b><i class="g">JSON</i><span>The answer comes back as JSON, a filled-in form with labels. The page shows the fact and a Source: NASA chip.</span></li>
+    </ul>
+    <div class="bands"><span class="c">localhost = this computer</span><span>port = a numbered door</span></div>
+  </div>
+  <div class="cmd wrap"><pre id="json">{ "fact": "Mars has two small moons, Phobos and Deimos.", "source": "NASA" }</pre><button type="button" data-copy="json" aria-label="Copy the JSON">Copy</button></div>
+  <div class="note"><span><b>The menu has two items.</b> <code>GET /api/health</code> asks “are you awake?” and gets <code>{"ok": true}</code>. <code>GET /api/fact</code> gets one fact and its source. Anything else gets an error, not a fact.</span><span><b>Server asleep?</b> The page doesn’t crash. It says: “The fact server is asleep. Ask your mentor to wake it up.”</span></div>
+</section>
+
+<section aria-labelledby="h-words" class="blk">
+  <div class="sh"><h2 id="h-words">Words to know</h2><button class="md" type="button" data-md="words">Copy as Markdown</button></div>
+  <div class="card">
+    <ul class="rows">
+      <li><b>Prompt</b><i>your order</i><span>Plain-language instructions for the agent.</span></li>
+      <li><b>Frontend</b><i>the dining room</i><span>The part of an app you see and click. Ours runs at door 5173.</span></li>
+      <li><b>Backend</b><i>the kitchen</i><span>A program that waits for requests and sends back answers. Ours runs at door 8000.</span></li>
+      <li><b>API</b><i>the menu</i><span>The list of requests a server knows how to answer.</span></li>
+      <li><b>localhost</b><i class="c">this computer</i><span>The address your own computer uses for itself.</span></li>
+      <li><b>Port</b><i class="c">a numbered door</i><span>A way in to one program on the computer, like 5173 or 8000.</span></li>
+      <li><b>JSON</b><i class="g">a filled-in form</i><span>Text data with labels that people and programs can both read.</span></li>
+      <li><b>Commit</b><i class="g">a save point</i><span>A snapshot of the code made with git, so you can always go back.</span></li>
+    </ul>
+  </div>
+</section>
+
+<section aria-labelledby="h-rules" class="blk">
+  <div class="sh"><h2 id="h-rules">Three rules</h2><button class="md" type="button" data-md="rules">Copy as Markdown</button></div>
+  <div class="card">
+    <ul class="rows">
+      <li><b>The team decides.</b><i>We vote</i><span>The agent asks; someone reads the request out loud; the team votes before anyone presses Approve.</span></li>
+      <li><b>One change at a time.</b><i class="c">Small steps</i><span>Small changes are easy to check and easy to undo. Look at the page together before the next one.</span></li>
+      <li><b>Every fact needs a source.</b><i class="g">Show the source</i><span>In the app, in the pitch and in the NASA submission. We hand the agent its facts; it never makes them up.</span></li>
+    </ul>
+  </div>
+</section>
+
+<section aria-labelledby="h-weekend" class="blk">
+  <div class="sh"><h2 id="h-weekend">The weekend</h2><button class="md" type="button" data-md="weekend">Copy as Markdown</button></div>
+  <div class="card">
+    <h3>Saturday, Nov 14</h3>
+    <ul class="rows">
+      <li><b>Doors open, check-in</b><i>8:30 AM</i></li>
+      <li><b>Under 18: arrive with your parent or guardian</b><i>9:00 AM</i></li>
+      <li><b>Opening ceremony</b><i>10:00 AM</i></li>
+      <li><b>Hacking starts</b><i>11:00 AM</i><span>AstroVitals starts here, from an empty repo.</span></li>
+      <li><b>Lunch</b><i>12:45 PM</i></li>
+      <li><b>Optional breakouts with mentors</b><i>2:00 PM</i></li>
+      <li><b>30-minute warning, under 18</b><i>4:30 PM</i></li>
+      <li><b>Under 18 leave with their guardian</b><i>5:00 PM</i><span>Keep building online from home. Overnight is 18+ only.</span></li>
+    </ul>
+  </div>
+  <div class="card">
+    <h3>Sunday, Nov 15</h3>
+    <ul class="rows">
+      <li><b>Under 18 back, with your yellow card</b><i>9:00 AM</i></li>
+      <li><b>RiverHacks submission, on GitHub</b><i>1:00 PM</i><span>Judged in Austin. Ship once before 1:00 PM.</span></li>
+      <li><b>Pitch competition</b><i>2:00 PM</i></li>
+      <li><b>Winners announced, closing</b><i>~5:00 PM</i></li>
+      <li><b>NASA global submission</b><i>11:59 PM</i><span>Push the same project. Global winners are announced in January 2027.</span></li>
+    </ul>
+    <div class="bands"><span class="y">1:00 PM · RiverHacks</span><span class="g">11:59 PM · NASA</span></div>
+  </div>
+  <div class="note"><span><b>Under 18:</b> a parent or guardian stays on campus with you the whole time. One guardian can cover one team of up to 6.</span><span>From riverhacks-spaceapps.org, checked Nov 7. The save-the-date says doors at 9:00 AM and the agenda says check-in at 8:30 AM, so confirm at kickoff.</span></div>
+</section>
+
+<section aria-labelledby="h-before" class="blk">
+  <div class="sh"><h2 id="h-before">Before Saturday</h2><button class="md" type="button" data-md="before">Copy as Markdown</button></div>
+  <ol class="steps">
+    <li><b>Get a GitHub account.</b> GitHub allows 13 and up. Our submission goes in on GitHub.</li>
+    <li><b>Check your laptop.</b> You need Python 3.10 or newer, Node 22 or newer, and git.</li>
+    <li><b>Practice on Space Fact Machine.</b> Run the loop as many times as you like. AstroVitals itself starts from an empty repo at the event.</li>
+    <li><b>Know the NASA rules.</b> No recognizable names, voices or faces of anyone under 18 in any submission or video, and cite every source we use.</li>
+    <li><b>Keep a list of the AI tools we use.</b> T3 Code and Claude Code to start, so the submission can say how we used AI.</li>
+  </ol>
+  <div class="cmd wrap"><pre id="check">python3 --version && node --version && npm --version && git --version</pre><button type="button" data-copy="check" aria-label="Copy the laptop check">Copy</button></div>
+  <p>Missing one on a Mac with Homebrew? <code>brew install python node git</code>. On Windows, ask your mentor first.</p>
+</section>
+
+<section aria-labelledby="h-next" class="blk">
+  <div class="sh"><h2 id="h-next">Next level · research one</h2><button class="md" type="button" data-md="next">Copy as Markdown</button></div>
+  <p>Got the basics? Pick one of these, find one answer, and bring it Saturday with <b>where you found it.</b></p>
+  <div class="card">
+    <h3>DSH <small>DeepSeek Harness</small></h3>
+    <p>An open-source agent app where every part is a plugin. <b>Like LEGO: swap any piece.</b> It’s a developer preview, so expect breaking changes.</p>
+    <div class="cmd"><pre id="dsh">npx @deepseek-ai/dsh web</pre><button type="button" data-copy="dsh" aria-label="Copy the DSH command">Copy</button></div>
+    <p><b>Research:</b> which AI model does it talk to, and what does that cost?</p>
+  </div>
+  <div class="card">
+    <h3>Superagent <small>a prototype that runs on DSH</small></h3>
+    <p>It watches one GitHub repo. Ask it on an issue and it answers with a pull request. DeepSeek calls it a research prototype, not an official product.</p>
+    <div class="cmd wrap"><pre id="super">Read SETUP.md in this repository and set up dsh-superagent with me.</pre><button type="button" data-copy="super" aria-label="Copy the superagent prompt">Copy</button></div>
+    <p><b>Research:</b> does it ask before it acts? How does that fit our rule, the team decides?</p>
+  </div>
+  <div class="card">
+    <h3>Cloudflare Workers <small>go live</small></h3>
+    <p>Puts our page on a real link anyone can open. <b>Like a food truck: it goes where the people are.</b> This guide runs on one.</p>
+    <div class="cmd"><pre id="cf">npm create cloudflare@latest</pre><button type="button" data-copy="cf" aria-label="Copy the Cloudflare command">Copy</button></div>
+    <p><b>Research:</b> how could Space Fact Machine go live, and what does the free plan cover?</p>
+  </div>
+  <div class="note y"><span><b>Adult accounts.</b> DeepSeek’s terms say people under 18 need a guardian’s consent, and Cloudflare and Claude accounts belong to an adult. Your mentor sets these up with you.</span></div>
+  <div class="bands"><span><a href="https://github.com/deepseek-ai/deepseek-harness">deepseek-harness</a></span><span><a href="https://github.com/deepseek-ai/dsh-superagent-prototype">dsh-superagent-prototype</a></span><span><a href="https://developers.cloudflare.com/workers/">Workers docs</a></span></div>
+</section>
+
+<section aria-labelledby="h-film" class="blk">
+  <div class="sh"><h2 id="h-film">Watch the film</h2><button class="md" type="button" data-md="film">Copy as Markdown</button></div>
+  <p>Three minutes, narrated, with every new word defined on screen. Jump to a chapter.</p>
+  <ul class="chap">
+    <li><a href="/NASA/build-lab-film.mp4#t=0">0:00</a><span>How our build lab works</span></li>
+    <li><a href="/NASA/build-lab-film.mp4#t=7.6">0:07</a><span>Part 1 · Meet the build lab</span></li>
+    <li><a href="/NASA/build-lab-film.mp4#t=50.3">0:50</a><span>Part 2 · Build a change</span></li>
+    <li><a href="/NASA/build-lab-film.mp4#t=82.3">1:22</a><span>Part 3 · Press Launch!</span></li>
+    <li><a href="/NASA/build-lab-film.mp4#t=150.9">2:30</a><span>What’s next: AstroVitals</span></li>
+    <li><a href="/NASA/build-lab-film.mp4#t=169.4">2:49</a><span>Three rules</span></li>
+  </ul>
+</section>
+
+<section class="community" aria-label="Event schedule">
+  <a class="qr" href="https://riverhacks-spaceapps.org/schedule" data-l="qr"><img src="/NASA/event-qr.png" alt="QR code to riverhacks-spaceapps.org" width="116" height="116"></a>
+  <div>
+    <p><b>RiverHacks × NASA Space Apps</b>Scan for the latest schedule. Times can move, and the site has the final word.</p>
+    <p style="margin-top:8px"><button class="md" type="button" data-md="community">Copy as Markdown</button></p>
+  </div>
+</section>
+
+<p class="signoff"><svg viewBox="0 0 64 128" aria-hidden="true" id="rk"><path class="fl" d="M24 92 Q32 128 40 92Z" fill="#F5D623"/><path d="M32 4 C48 20 52 44 50 80 L14 80 C12 44 16 20 32 4Z" fill="#f0ece4"/><circle cx="32" cy="42" r="9" fill="#22d3ee" stroke="#0c0b09" stroke-width="3"/><path d="M14 62 L2 92 L16 86Z M50 62 L62 92 L48 86Z" fill="#F5D623"/><path d="M20 80 L44 80 L40 92 L24 92Z" fill="#C4943D"/></svg><span style="color:inherit;font-style:normal">Bring your laptop. <span>Leave with a launch.</span></span></p>
+
+<footer class="foot"><span>Organized AI · Austin</span><span>Hosted on Cloudflare Workers</span><a href="/NASA/">The deck</a></footer>
+</main>
+
+<!-- Markdown for the copy buttons: one block per section, written so a person or an agent can use it on its own. -->
+<script type="text/markdown" data-md="head">
+# The Build Lab · RiverHacks × NASA Space Apps
+
+How our team builds with an AI agent. The team decides, the agent builds, and every fact has a source.
+
+ATX · Saturday–Sunday, November 14–15, 2026 · ACC Rio Grande Campus
+
+Guide: https://talk.organizedai.vip/NASA/guide/ · Deck: https://talk.organizedai.vip/NASA/
+</script>
+<script type="text/markdown" data-md="venue">
+## Venue details
+
+Austin Community College, Rio Grande Campus, Building 1000, 1212 Rio Grande St, Austin, TX 78701.
+
+- Check-in opens at 8:30 AM Saturday.
+- Hacking starts at 11:00 AM Saturday.
+- Participants under 18 leave at 5:00 PM Saturday with their parent or guardian.
+</script>
+<script type="text/markdown" data-md="links">
+## Links
+
+- The deck: https://talk.organizedai.vip/NASA/
+- The film (3 minutes, narrated): https://talk.organizedai.vip/NASA/build-lab-film.mp4
+- RiverHacks schedule: https://riverhacks-spaceapps.org/schedule
+- Rules for participants under 18: https://riverhacks-spaceapps.org/legal#minors
+- NASA Space Apps Challenge 2026: https://www.spaceappschallenge.org/2026/
+- GitHub sign-up (13 and up): https://github.com/signup
+- Organized AI: https://organizedai.vip/
+</script>
+<script type="text/markdown" data-md="lab">
+## The build lab
+
+Four parts work together on one computer. The agent does the typing; the team makes every decision.
+
+- **Build environment** (setup): every tool a computer needs to build and run an app. Like a kitchen, set up before you cook.
+- **T3 Code** (the app): mission control, where we type what we want built.
+- **Claude Code** (the agent): reads, writes and runs code. In Supervised mode it asks before it acts.
+- **Toolbox**: Python runs the backend, Node and npm fetch the web parts, git makes save points.
+
+The Claude login belongs to the mentor, because Claude accounts are for adults. Everyone can use their own GitHub account (13 and up).
+</script>
+<script type="text/markdown" data-md="build">
+## Build a change
+
+Every change takes the same eight steps. Step five matters most: the agent asks, the team votes.
+
+1. **Pick a change** (team): look at the page, pitch ideas, vote for one.
+2. **Write the prompt** (team): say exactly what to change, and to change nothing else.
+3. **Send it** (mentor): paste it into T3 Code and hit send. The agent reads the project files first.
+4. **The agent makes a plan** (agent): it says what it will do, then waits for an OK.
+5. **The team votes** (team): read the request out loud. Hands up? Approve. Not what we asked for? Deny, and say why.
+6. **Get the parts** (agent): npm downloads GSAP and adds it to `package.json`, the app's parts list.
+7. **The agent writes code** (agent): it changes one file and says what it did. Every line can be read.
+8. **Launch!** (everyone): Vite reloads the page by itself. Press Launch! together. If it works, make a save point (a git commit).
+
+The prompt, word for word (swap the middle line for the team's own idea):
+
+```text
+The team wants to change the page. Make just this one change, and keep everything else the same:
+When Launch! is pressed, make a 🚀 fly from the bottom of the screen to the top. Install gsap and @gsap/react with npm, and use the useGSAP hook for the animation.
+When you're done, tell me which file you changed and what you changed in it, in one sentence.
+```
+
+Other ideas: an orange wiggle button, a 3-2-1 countdown, a launch counter, a new title.
+</script>
+<script type="text/markdown" data-md="launch">
+## Press Launch!
+
+One click makes a round trip in less than a second: click, order, cook, serve.
+
+1. **Click** (frontend, door 5173): pressing Launch! runs `fetch("/api/fact")`. Like the dining room.
+2. **Order** (the API): `GET /api/fact` means "get me a fact." Vite passes anything that starts with `/api` to door 8000. The API is the menu.
+3. **Cook** (backend, door 8000): the backend (Python, FastAPI) picks one of six checked facts at random, with its source. Like the kitchen.
+4. **Serve** (JSON): the answer comes back as JSON, and the page shows the fact with a Source: NASA chip.
+
+```json
+{ "fact": "Mars has two small moons, Phobos and Deimos.", "source": "NASA" }
+```
+
+- The menu has two items: `GET /api/health` answers `{"ok": true}`, and `GET /api/fact` answers one fact and its source. Anything else gets an error.
+- If the server is asleep, the page says: "The fact server is asleep. Ask your mentor to wake it up."
+- localhost means this computer. A port is a numbered door into it.
+</script>
+<script type="text/markdown" data-md="words">
+## Words to know
+
+| Word | Like | Meaning |
+| --- | --- | --- |
+| Prompt | your order | Plain-language instructions for the agent |
+| Frontend | the dining room | The part of an app you see and click (door 5173) |
+| Backend | the kitchen | A program that waits for requests and sends back answers (door 8000) |
+| API | the menu | The list of requests a server knows how to answer |
+| localhost | this computer | The address your own computer uses for itself |
+| Port | a numbered door | A way in to one program on the computer |
+| JSON | a filled-in form | Text data with labels that people and programs can both read |
+| Commit | a save point | A snapshot of the code made with git |
+</script>
+<script type="text/markdown" data-md="rules">
+## Three rules
+
+1. **The team decides.** The agent asks; someone reads the request out loud; the team votes before anyone presses Approve.
+2. **One change at a time.** Small changes are easy to check and easy to undo. Look at the page together before the next one.
+3. **Every fact needs a source.** In the app, in the pitch and in the NASA submission. We hand the agent its facts; it never makes them up.
+</script>
+<script type="text/markdown" data-md="weekend">
+## The weekend
+
+From https://riverhacks-spaceapps.org/schedule, checked November 7. The save-the-date says doors at 9:00 AM and the agenda says check-in at 8:30 AM, so confirm at kickoff.
+
+**Saturday, November 14**
+
+- 8:30 AM: doors open, check-in
+- 9:00 AM: participants under 18 arrive with their parent or guardian
+- 10:00 AM: opening ceremony
+- 11:00 AM: hacking starts (AstroVitals starts here, from an empty repo)
+- 12:45 PM: lunch
+- 2:00 PM: optional breakouts with mentors
+- 4:30 PM: 30-minute warning for participants under 18
+- 5:00 PM: participants under 18 leave with their guardian and keep building online from home (overnight is 18+ only)
+
+**Sunday, November 15**
+
+- 9:00 AM: participants under 18 return with their yellow card
+- 1:00 PM: RiverHacks submission deadline, on GitHub, judged in Austin
+- 2:00 PM: pitch competition
+- About 5:00 PM: winners announced, closing
+- 11:59 PM: NASA global submission deadline (global winners announced January 2027)
+
+Under 18: a parent or guardian stays on campus with you the whole time. One guardian can cover one team of up to 6.
+</script>
+<script type="text/markdown" data-md="before">
+## Before Saturday
+
+1. **Get a GitHub account.** GitHub allows 13 and up. The submission goes in on GitHub.
+2. **Check your laptop.** You need Python 3.10 or newer, Node 22 or newer, and git.
+3. **Practice on Space Fact Machine.** Run the loop as many times as you like. AstroVitals itself starts from an empty repo at the event.
+4. **Know the NASA rules.** No recognizable names, voices or faces of anyone under 18 in any submission or video, and cite every source used.
+5. **Keep a list of the AI tools you use.** T3 Code and Claude Code to start, so the submission can say how AI was used.
+
+```bash
+python3 --version && node --version && npm --version && git --version
+```
+
+Missing one on a Mac with Homebrew: `brew install python node git`. On Windows, ask your mentor first.
+</script>
+<script type="text/markdown" data-md="next">
+## Next level · research one
+
+Pick one, find one answer, and bring it Saturday with where you found it.
+
+- **DSH (DeepSeek Harness):** an open-source agent app where every part is a plugin (like LEGO). Developer preview, so expect breaking changes. Try: `npx @deepseek-ai/dsh web`. Research: which AI model does it talk to, and what does that cost? https://github.com/deepseek-ai/deepseek-harness
+- **Superagent (dsh-superagent-prototype):** watches one GitHub repo; ask it on an issue and it answers with a pull request. DeepSeek calls it a research prototype, not an official product. Setup prompt for your coding agent: "Read SETUP.md in this repository and set up dsh-superagent with me." Research: does it ask before it acts, and how does that fit "the team decides"? https://github.com/deepseek-ai/dsh-superagent-prototype
+- **Cloudflare Workers:** puts a page on a real link anyone can open. Try: `npm create cloudflare@latest`. Research: how could Space Fact Machine go live, and what does the free plan cover? https://developers.cloudflare.com/workers/
+
+Adult accounts: DeepSeek's terms say people under 18 need a guardian's consent, and Cloudflare and Claude accounts belong to an adult. The mentor sets these up with you.
+</script>
+<script type="text/markdown" data-md="film">
+## Watch the film
+
+Three minutes, narrated, with every new word defined on screen: https://talk.organizedai.vip/NASA/build-lab-film.mp4
+
+- 0:00 How our build lab works
+- 0:07 Part 1 · Meet the build lab
+- 0:50 Part 2 · Build a change
+- 1:22 Part 3 · Press Launch!
+- 2:30 What's next: AstroVitals
+- 2:49 Three rules
+</script>
+<script type="text/markdown" data-md="community">
+## RiverHacks × NASA Space Apps
+
+Latest schedule: https://riverhacks-spaceapps.org/schedule (times can move; the site has the final word).
+
+Bring your laptop. Leave with a launch.
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"></script>
+<script>
+(function () {
+  "use strict";
+  var RM = !!(window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches);
+  var G = window.gsap && !RM ? window.gsap : null;
+  window.dataLayer = window.dataLayer || [];
+  function track(e, p) { var o = { event: e, guide: "nasa-build-lab" }; for (var k in p) o[k] = p[k]; window.dataLayer.push(o); }
+  track("guide_view", {});
+
+  // Copy buttons on commands and prompts. If the clipboard is refused, the text is selected for copying by hand.
+  [].forEach.call(document.querySelectorAll("button[data-copy]"), function (btn) {
+    var pre = document.getElementById(btn.dataset.copy);
+    btn.addEventListener("click", function () {
+      function sel() { var r = document.createRange(); r.selectNodeContents(pre); var s = window.getSelection(); s.removeAllRanges(); s.addRange(r); btn.textContent = "Selected"; }
+      function ok() { btn.textContent = "Copied"; setTimeout(function () { btn.textContent = "Copy"; }, 1500); }
+      try { navigator.clipboard.writeText(pre.textContent).then(ok, sel); } catch (e) { sel(); }
+      track("guide_copy_command", { command: btn.dataset.copy });
+    });
+  });
+  [].forEach.call(document.querySelectorAll("[data-l]"), function (a) { a.addEventListener("click", function () { track("guide_link", { link: a.dataset.l }); }); });
+
+  // Copy as Markdown.
+  var MD = {};
+  [].forEach.call(document.querySelectorAll('script[type="text/markdown"]'), function (s) { MD[s.dataset.md] = s.textContent.replace(/^\s+|\s+$/g, "") + "\n"; });
+  var ORDER = ["head", "venue", "links", "lab", "build", "launch", "words", "rules", "weekend", "before", "next", "film", "community"];
+  function md(k) { return k === "all" ? ORDER.map(function (x) { return MD[x]; }).join("\n") : MD[k]; }
+  [].forEach.call(document.querySelectorAll("button[data-md]"), function (b) {
+    var label = b.textContent, box = null, timer = 0;
+    b.addEventListener("click", function () {
+      var k = b.dataset.md, txt = md(k);
+      function ok() {
+        clearTimeout(timer); b.textContent = "Copied"; b.classList.add("done");
+        if (G) G.fromTo(b, { scale: 0.94 }, { scale: 1, duration: 0.35, ease: "back.out(3)", clearProps: "transform" });
+        timer = setTimeout(function () { b.textContent = label; b.classList.remove("done"); }, 1600);
+      }
+      function byHand() {
+        if (!box) {
+          box = document.createElement("textarea"); box.className = "mdbox"; box.readOnly = true;
+          box.setAttribute("aria-label", label + ": " + k);
+          (b.closest(".sh") || b).insertAdjacentElement("afterend", box);
+        }
+        box.value = txt; box.hidden = false; box.focus(); box.select(); b.textContent = "Selected below";
+      }
+      try { navigator.clipboard.writeText(txt).then(ok, byHand); } catch (e) { byHand(); }
+      track("guide_copy_markdown", { section: k });
+    });
+  });
+
+  if (!G) return;
+  G.from(".hero > *", { y: 12, opacity: 0, duration: 0.45, stagger: 0.06, ease: "power2.out", clearProps: "opacity,transform" });
+  if (window.ScrollTrigger) {
+    G.registerPlugin(ScrollTrigger);
+    [].forEach.call(document.querySelectorAll(".col > section"), function (sec) {
+      var parts = sec.querySelectorAll(".steps li, .rows li, .two > div, .chap li");
+      var tl = G.timeline({ scrollTrigger: { trigger: sec, start: "top 88%", once: true } });
+      tl.from(sec, { y: 16, opacity: 0, duration: 0.45, ease: "power2.out", clearProps: "opacity,transform" });
+      if (parts.length) tl.from(parts, { y: 10, opacity: 0, duration: 0.3, stagger: 0.045, ease: "power2.out", clearProps: "opacity,transform" }, 0.15);
+    });
+    // The rocket by the sign-off lifts off once it scrolls into view, then lands back in place.
+    var rk = document.getElementById("rk");
+    if (rk) {
+      G.to(rk.querySelector(".fl"), { scaleY: 1.4, transformOrigin: "50% 0%", duration: 0.09, yoyo: true, repeat: -1 });
+      G.timeline({ scrollTrigger: { trigger: rk, start: "top 92%", once: true } })
+        .to(rk, { y: -6, duration: 0.12, yoyo: true, repeat: 5, ease: "none" })
+        .to(rk, { y: -260, opacity: 0, duration: 1.1, ease: "power2.in" })
+        .set(rk, { y: 40 })
+        .to(rk, { y: 0, opacity: 1, duration: 0.6, ease: "back.out(1.6)" });
+    }
+  }
+})();
+</script>
+</body>
+</html>

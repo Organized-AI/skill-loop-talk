@@ -100,7 +100,7 @@ section.sl ul,section.sl ol{{list-style:none}}
 </head>
 <body>
 <div class="prog" id="prog"></div>
-<div class="bar"><span><b>Organized<i>AI</i></b><span class="sec"> · RiverHacks × NASA Space Apps · The build lab</span></span><span><span id="count">01 / {len(order):02d}</span><a href="{EVENT}" data-track="event">Event schedule</a><button type="button" class="pbtn" id="presentBtn" aria-label="Present full screen (P)">▶ Present</button></span></div>
+<div class="bar"><span><b>Organized<i>AI</i></b><span class="sec"> · RiverHacks × NASA Space Apps · The build lab</span></span><span><span id="count">01 / {len(order):02d}</span><a href="{EVENT}" data-track="event">Event schedule</a><a href="{BASE}/guide/" data-track="guide">Guide</a><button type="button" class="pbtn" id="presentBtn" aria-label="Present full screen (P)">▶ Present</button></span></div>
 <canvas id="stars" aria-hidden="true"></canvas><canvas id="warp" aria-hidden="true"></canvas>
 <main>
 {body}</main>
