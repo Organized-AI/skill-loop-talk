@@ -295,6 +295,82 @@
           gsap.to(c, { opacity: 0, duration: 0.4, delay: d - 0.4 });
         }
       }, null, 2.4);
+    },
+    steps: function (s, r, tl) {
+      var grid = kids(s).filter(function (el) { return el.tagName === 'DIV'; })[0], panels = kids(grid);
+      head(r, tl, q('h2', s), 0.2);
+      panels.forEach(function (p, i) {
+        var t = 0.6 + i * 0.5;
+        tl.from(p, { rotationX: -90, transformOrigin: '50% 0%', transformPerspective: 1200, opacity: 0, duration: 0.7, ease: 'back.out(1.6)' }, t);
+        scr(r, tl, kids(kids(p)[0])[0], t + 0.2, '0123456789', 0.6);
+        tl.from(kids(p)[1], { x: 60, opacity: 0, duration: 0.5, ease: 'power3.out' }, t + 0.35);
+      });
+      // 1–2: the prompt types itself
+      var sp = split(r, kids(kids(panels[0])[1])[1], 'chars');
+      if (sp) tl.from(sp.chars, { opacity: 0, duration: 0.01, stagger: 0.018 }, 1.0);
+      // 3–4: Approve waits for us
+      var ap = kids(kids(kids(panels[1])[1])[2])[0];
+      r.loops.push(gsap.to(ap, { boxShadow: '0 0 26px rgba(245,214,35,.85)', duration: 0.7, yoyo: true, repeat: -1, delay: 2.4 }));
+      // 5–6: hands up, stamp
+      var m3 = kids(panels[2])[1], stamp = kids(kids(m3)[0])[1], tiles = kids(kids(m3)[1]), t3 = 2.2;
+      tl.from(tiles, { scale: 0, opacity: 0, duration: 0.28, stagger: 0.1, ease: 'back.out(3)' }, t3);
+      tl.fromTo(stamp, { scale: 3, rotation: -24, opacity: 0 }, { scale: 1, rotation: -6, opacity: 1, duration: 0.3, ease: 'power4.in' }, t3 + 0.75);
+      shake(tl, panels[2], t3 + 1.05);
+      // 7–8: code lands, page reloads, the rocket flies
+      var m4 = kids(panels[3])[1], bk = kids(kids(m4)[1]), rel = bk[1], emo = bk[2], t4 = 3.3;
+      tl.from(qa('p', kids(m4)[0]).slice(1), { x: -20, opacity: 0, duration: 0.3, stagger: 0.15 }, t4 - 0.6);
+      tl.from(rel, { rotation: -360, opacity: 0, duration: 0.6, ease: 'power2.out' }, t4 - 0.2);
+      var ex = emo.offsetLeft + emo.offsetWidth / 2, ey = emo.offsetTop;
+      tl.to(emo, { y: -30, opacity: 0, duration: 0.25 }, t4 + 0.3);
+      launchRocket(r, tl, s, ex, ey - 60, ex + 80, -320, t4 + 0.3, 1.3);
+      tl.to(emo, { y: 0, opacity: 1, duration: 0.4 }, t4 + 2.2);
+    },
+    stops: function (s, r, tl) {
+      var divs = kids(s).filter(function (el) { return el.tagName === 'DIV'; }), cards = kids(divs[0]), bar = divs[1];
+      head(r, tl, q('h2', s), 0.2);
+      cards.forEach(function (c, i) {
+        var t = 0.6 + i * 0.4;
+        tl.from(c, { y: 140, opacity: 0, rotation: [-7, -2, 2, 7][i], duration: 0.7, ease: 'back.out(1.8)' }, t);
+        scr(r, tl, kids(c)[0], t + 0.15, null, 0.6);
+        tl.from(kids(c)[2], { scale: 0.6, opacity: 0, duration: 0.45, ease: 'back.out(2.5)' }, t + 0.35);
+      });
+      tl.from(bar, { scaleX: 0, transformOrigin: '0% 50%', duration: 0.6, ease: 'power3.inOut' }, 2.4);
+      tl.from(kids(bar), { opacity: 0, y: 10, duration: 0.35, stagger: 0.1 }, 2.8);
+      // one order runs the whole trip: click, order, cook, serve, then back to the page
+      var pk = add(r, s, '', 'packet'), btn = kids(kids(cards[0])[2])[1], pick = kids(kids(cards[2])[2])[1];
+      var cs = cards.map(function (c) { return { x: c.offsetLeft + c.offsetWidth / 2, y: c.offsetTop + 1.5 }; });
+      gsap.set(pk, { x: cs[0].x, y: cs[0].y, opacity: 0 });
+      var loop = gsap.timeline({ repeat: -1, repeatDelay: 1, delay: 3 });
+      loop.fromTo(btn, { scale: 1 }, { scale: 0.88, duration: 0.12, yoyo: true, repeat: 1 });
+      loop.set(pk, { x: cs[0].x, y: cs[0].y, backgroundColor: '#F5D623', boxShadow: '0 0 26px 10px rgba(245,214,35,.55)', opacity: 1, scale: 1 });
+      for (var i = 1; i < cs.length; i++) {
+        loop.to(pk, { x: cs[i].x, duration: 0.6, ease: 'power1.inOut' });
+        loop.fromTo(cards[i], { boxShadow: '0 0 0 rgba(34,211,238,0)' }, { boxShadow: '0 0 44px rgba(34,211,238,.5)', duration: 0.18, yoyo: true, repeat: 1 }, '<0.45');
+        if (i === 2) loop.fromTo(pick, { scale: 1 }, { scale: 1.25, duration: 0.15, yoyo: true, repeat: 1 }, '<');
+      }
+      loop.to(pk, { backgroundColor: '#4ade80', boxShadow: '0 0 26px 10px rgba(74,222,128,.55)', scale: 1.3, duration: 0.2 });
+      loop.to(pk, { x: cs[0].x, scale: 1, duration: 1.2, ease: 'power2.inOut' });
+      loop.fromTo(cards[0], { boxShadow: '0 0 0 rgba(74,222,128,0)' }, { boxShadow: '0 0 44px rgba(74,222,128,.6)', duration: 0.18, yoyo: true, repeat: 1 });
+      loop.to(pk, { opacity: 0, duration: 0.25 }, '<');
+      r.loops.push(loop);
+    },
+    levelup: function (s, r, tl) {
+      var divs = kids(s).filter(function (el) { return el.tagName === 'DIV'; }), pill = kids(divs[0])[1], cards = kids(divs[1]), bar = divs[2];
+      var COL = ['#22d3ee', '#C4943D', '#4ade80'];
+      head(r, tl, q('h2', s), 0.2);
+      tl.from(pill, { scale: 0, opacity: 0, duration: 0.5, ease: 'back.out(3)' }, 0.5);
+      cards.forEach(function (c, i) {
+        var t = 0.7 + i * 0.35, ks = kids(c), tryBox = ks[ks.length - 2], res = ks[ks.length - 1];
+        tl.from(c, { y: 260, rotationX: -40, transformPerspective: 1200, opacity: 0, duration: 0.9, ease: 'back.out(1.5)' }, t);
+        scr(r, tl, ks[0], t + 0.2, null, 0.7);
+        tl.call(function () { for (var k = 0; k < 12; k++) sparks(r, s, c.offsetLeft + rnd(30, c.offsetWidth - 30), c.offsetTop, COL[i]); }, null, t + 0.7);
+        tl.fromTo(kids(tryBox)[1], { clipPath: 'inset(0 100% 0 0)' }, { clipPath: 'inset(0 0% 0 0)', duration: 0.7, ease: 'steps(24)' }, t + 1.0);
+        tl.from(res, { x: 40, opacity: 0, duration: 0.5 }, t + 1.5);
+      });
+      tl.from(bar, { scaleX: 0, transformOrigin: '0% 50%', duration: 0.6, ease: 'power3.inOut' }, 2.9);
+      tl.from(kids(bar), { opacity: 0, y: 10, duration: 0.35, stagger: 0.1 }, 3.3);
+      var resBoxes = cards.map(function (c) { var ks = kids(c); return ks[ks.length - 1]; });
+      r.loops.push(gsap.timeline({ repeat: -1, repeatDelay: 1.5, delay: 3.8 }).to(resBoxes, { boxShadow: '0 0 30px rgba(245,214,35,.5)', duration: 0.4, yoyo: true, repeat: 1, stagger: 0.5 }));
     }
   };
 
